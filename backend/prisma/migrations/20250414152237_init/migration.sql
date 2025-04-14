@@ -1,10 +1,10 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
+CREATE TYPE "Role" AS ENUM ('ADMIN', 'USER');
 
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
-    "nickname" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE "Response" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_nickname_key" ON "User"("nickname");
+CREATE UNIQUE INDEX "User_name_key" ON "User"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");

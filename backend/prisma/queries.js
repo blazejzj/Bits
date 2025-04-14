@@ -1,29 +1,35 @@
 const prisma = require("./prisma");
 
 async function getUserById(id) {
-    await prisma.user.findUnique({
-        where: {
-            id,
-        },
+    const user = await prisma.user.findUnique({
+        where: { id },
     });
-
     return user;
 }
 
-async function userNameExists(username) {
+async function usernameExists(username) {
+    console.log(username);
     const user = await prisma.user.findUnique({
         where: {
-            username,
+            username: username,
         },
     });
+    return !!user;
+}
 
-    if (user) {
-        return true;
-    }
-
-    return false;
+async function createNewUser(name, email, username, password) {
+    await prisma.user.create({
+        data: {
+            name: name,
+            email: email,
+            username: username,
+            password: password,
+        },
+    });
 }
 
 module.exports = {
     getUserById,
+    usernameExists,
+    createNewUser,
 };

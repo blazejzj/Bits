@@ -1,3 +1,5 @@
+const passport = require("passport");
+
 const authenticateJWT = passport.authenticate("jwt", { session: false });
 
 function isAuthenticated(req, res, next) {
