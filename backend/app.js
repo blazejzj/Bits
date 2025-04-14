@@ -7,6 +7,7 @@ const app = express();
 // passportjs
 const passport = require("passport");
 const configurePassport = require("./config/passportConfig");
+configurePassport(passport);
 
 // cors
 const cors = require("cors");
@@ -17,7 +18,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-configurePassport(passport);
 
 // routers
 const indexRouter = require("./routes/indexRouter");

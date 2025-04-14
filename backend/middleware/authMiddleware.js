@@ -28,4 +28,5 @@ module.exports = {
     authenticateJWT,
     isAuthenticated,
     isAdmin,
+    isGuest,
 };
