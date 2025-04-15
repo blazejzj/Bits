@@ -2,17 +2,19 @@ const { body } = require("express-validator");
 const db = require("../prisma/queries");
 
 const emailFormatErr = "Email is not valid";
-const alphaErr = "Your name must only contain letters";
-const nameLengthErr = "Your name must be between 2 and 100 letters";
+const emailExistsErr = "Email address already in use.";
 const usernamePatternErr =
     "Your username must only contain letters, digits, '-' or '_'";
 const usernameLengthErr = "Your username must be between 2 and 100 characters";
-const tooShortPasswordErr = "Password must be at least 8 characters long";
-const tooLongPasswordErr = "Password cannot be longer than 100 characters";
-const passwordsDontMatchErr = "Passwords do not match";
-const usernameAlreadyExists = "Username is already in use.";
-
+const usernameAlreadyExistsErr = "Username is already in use.";
+const namePatternErr = "Your name must only contain letters";
+const nameLengthErr = "Your name must be between 2 and 100 letters";
+const passwordShortErr = "Password must be at least 8 characters long";
+const passwordLongErr = "Password cannot be longer than 100 characters";
+const passwordMismatchErr = "Passwords do not match";
 const loginErr = "Username or password is incorrect";
+const oldPasswordRequiredErr = "Please provide your old password.";
+const passwordRangeErr = "Password must be between 8 and 100 characters";
 
 exports.validateUserRegister = [
     body("name")
@@ -20,7 +22,7 @@ exports.validateUserRegister = [
         .withMessage("Name is required")
         .bail()
         .matches(/^[a-zA-ZæøåÆØÅ\s-]{2,100}$/)
-        .withMessage(alphaErr)
+        .withMessage(namePatternErr)
         .bail()
         .isLength({ min: 2, max: 100 })
         .withMessage(nameLengthErr),
@@ -30,7 +32,14 @@ exports.validateUserRegister = [
         .withMessage("Email is required")
         .bail()
         .matches(/^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$/)
-        .withMessage(emailFormatErr),
+        .withMessage(emailFormatErr)
+        .bail()
+        .custom(async (value) => {
+            const user = await db.emailExists(value);
+            if (user) {
+                throw new Error(emailExistsErr);
+            }
+        }),
 
     body("username")
         .notEmpty()
@@ -45,21 +54,19 @@ exports.validateUserRegister = [
         .custom(async (value) => {
             const exists = await db.usernameExists(value);
             if (exists) {
-                throw new Error(usernameAlreadyExists);
+                throw new Error(usernameAlreadyExistsErr);
             }
         }),
+
     body("password")
         .isLength({ min: 8 })
-        .withMessage(tooShortPasswordErr)
+        .withMessage(passwordShortErr)
         .isLength({ max: 100 })
-        .withMessage(tooLongPasswordErr),
+        .withMessage(passwordLongErr),
 
     body("confirmPassword").custom((value, { req }) => {
-        if (!req.password) {
-            throw new Error("Must provide a valid password");
-        }
         if (value !== req.body.password) {
-            throw new Error(passwordsDontMatchErr);
+            throw new Error(passwordMismatchErr);
         }
         return true;
     }),
@@ -75,9 +82,64 @@ exports.validateUserLogin = [
         .bail()
         .isLength({ min: 2, max: 100 })
         .withMessage(loginErr),
+
     body("password")
         .isLength({ min: 8 })
         .withMessage(loginErr)
         .isLength({ max: 100 })
         .withMessage(loginErr),
+];
+
+exports.validateUpdatedUser = [
+    body("name")
+        .optional()
+        .matches(/^[a-zA-ZæøåÆØÅ\s-]{2,100}$/)
+        .withMessage(namePatternErr)
+        .bail()
+        .isLength({ min: 2, max: 100 })
+        .withMessage(nameLengthErr),
+
+    body("email")
+        .optional()
+        .matches(/^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$/)
+        .withMessage(emailFormatErr)
+        .bail()
+        .custom(async (value, { req }) => {
+            const user = await db.emailExists(value);
+            if (user && user.id !== req.user.id) {
+                throw new Error(emailExistsErr);
+            }
+        }),
+
+    body("password")
+        .optional()
+        .isLength({ min: 8 })
+        .withMessage(passwordRangeErr)
+        .isLength({ max: 100 })
+        .withMessage(passwordRangeErr),
+
+    body("confirmPassword")
+        .if(body("password").exists())
+        .custom((value, { req }) => {
+            if (value !== req.body.password) {
+                throw new Error(passwordMismatchErr);
+            }
+            return true;
+        }),
+
+    body("authPassword")
+        .notEmpty()
+        .withMessage(oldPasswordRequiredErr)
+        .bail()
+        .isLength({ min: 8 })
+        .withMessage(passwordRangeErr)
+        .isLength({ max: 100 })
+        .withMessage(passwordRangeErr),
+
+    body("username").custom((value, { req }) => {
+        if (req.body.username !== undefined) {
+            throw new Error("Username cannot be updated.");
+        }
+        return true;
+    }),
 ];

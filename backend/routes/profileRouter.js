@@ -12,17 +12,17 @@ profileRouter.get(
     isAuthenticated,
     profileController.getOwnProfile
 );
-// profileRouter.put(
-//     "/",
-//     authenticateJWT,
-//     isAuthenticated,
-//     profileController.updateUserProfile
-// );
-// profileRouter.delete(
-//     "/",
-//     authenticateJWT,
-//     isAuthenticated,
-//     profileController.deleteUser
-// );
+profileRouter.patch(
+    "/",
+    authenticateJWT,
+    isAuthenticated,
+    profileController.updateUserProfile
+);
+profileRouter.delete(
+    "/",
+    authenticateJWT,
+    isAuthenticated,
+    profileController.deleteUser
+);
 
 module.exports = profileRouter;

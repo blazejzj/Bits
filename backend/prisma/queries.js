@@ -16,7 +16,6 @@ async function getUserByUsername(username) {
 }
 
 async function usernameExists(username) {
-    console.log(username);
     const user = await prisma.user.findUnique({
         where: {
             username: username,
@@ -36,9 +35,64 @@ async function createNewUser(name, email, username, password) {
     });
 }
 
+async function emailExists(email) {
+    const user = await prisma.user.findUnique({
+        where: {
+            email,
+        },
+    });
+    return !!user;
+}
+
+async function updateUserName(username, name) {
+    await prisma.user.update({
+        where: {
+            username,
+        },
+        data: {
+            name,
+        },
+    });
+}
+
+async function updateUserEmail(username, email) {
+    await prisma.user.update({
+        where: {
+            username,
+        },
+        data: {
+            email,
+        },
+    });
+}
+
+async function updateUserPassword(username, password) {
+    await prisma.user.update({
+        where: {
+            username,
+        },
+        data: {
+            password,
+        },
+    });
+}
+
+async function deleteUser(username) {
+    await prisma.user.delete({
+        where: {
+            username,
+        },
+    });
+}
+
 module.exports = {
     getUserById,
     usernameExists,
     createNewUser,
     getUserByUsername,
+    emailExists,
+    updateUserEmail,
+    updateUserName,
+    updateUserPassword,
+    deleteUser,
 };
