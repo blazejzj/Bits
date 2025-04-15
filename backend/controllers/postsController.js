@@ -16,3 +16,15 @@ exports.getSinglePostById = async (req, res) => {
 
     return res.status(200).json({ post });
 };
+
+exports.getAllPostsComments = async (req, res) => {
+    const postId = Number(req.params.id);
+    const skip = Number(req.query.skip) || 0;
+    const take = Number(req.query.take) || 10;
+
+    const comments = await db.getCommentsByPostId(postId, skip, take);
+
+    res.status(200).json({
+        comments,
+    });
+};

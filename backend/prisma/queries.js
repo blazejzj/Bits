@@ -114,6 +114,22 @@ async function getSinglePostById(id) {
     });
 }
 
+async function getCommentsByPostId(postId, skip, take) {
+    return await prisma.comment.findMany({
+        where: {
+            postId,
+        },
+        orderBy: {
+            published_at: "desc",
+        },
+        include: {
+            responses: true,
+        },
+        skip,
+        take,
+    });
+}
+
 module.exports = {
     getUserById,
     usernameExists,
@@ -126,4 +142,5 @@ module.exports = {
     deleteUser,
     getAllPublishedPosts,
     getSinglePostById,
+    getCommentsByPostId,
 };
