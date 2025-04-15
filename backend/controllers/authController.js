@@ -25,7 +25,6 @@ exports.registerNewUser = [
 
         res.status(201).json({
             message: "User successfully created!",
-            data: req.body,
         });
     },
 ];
@@ -36,7 +35,7 @@ exports.loginUser = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({
-                msg: "Something wnt wrong with logging in",
+                msg: "Something went wrong with logging in",
                 errors: errors.array(),
             });
         }
@@ -87,3 +86,5 @@ exports.logOut = (req, res) => {
         message: "Logged out successfully.",
     });
 };
+
+exports.delete;

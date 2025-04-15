@@ -25,9 +25,11 @@ app.use(express.json());
 
 // routers
 const indexRouter = require("./routes/indexRouter");
-const userRouter = require("./routes/userRouter");
+const profileRouter = require("./routes/profileRouter");
+const authRouter = require("./routes/authRouter");
 app.use("/", indexRouter);
-app.use("/user/", userRouter);
+app.use("/auth", authRouter);
+app.use("/profile", profileRouter);
 
 // listen
 const port = process.env.PORT;
