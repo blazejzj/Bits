@@ -16,22 +16,33 @@ const loginErr = "Username or password is incorrect";
 
 exports.validateUserRegister = [
     body("name")
+        .notEmpty()
+        .withMessage("Name is required")
+        .bail()
         .matches(/^[a-zA-ZæøåÆØÅ\s-]{2,100}$/)
         .withMessage(alphaErr)
+        .bail()
         .isLength({ min: 2, max: 100 })
         .withMessage(nameLengthErr),
 
     body("email")
+        .notEmpty()
+        .withMessage("Email is required")
+        .bail()
         .matches(/^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$/)
         .withMessage(emailFormatErr),
 
     body("username")
+        .notEmpty()
+        .withMessage("Username is required")
+        .bail()
         .matches(/^[a-zA-Z0-9-_]{2,100}$/)
         .withMessage(usernamePatternErr)
+        .bail()
         .isLength({ min: 2, max: 100 })
         .withMessage(usernameLengthErr)
+        .bail()
         .custom(async (value) => {
-            console.log("username: " + value);
             const exists = await db.usernameExists(value);
             if (exists) {
                 throw new Error(usernameAlreadyExists);
@@ -44,6 +55,9 @@ exports.validateUserRegister = [
         .withMessage(tooLongPasswordErr),
 
     body("confirmPassword").custom((value, { req }) => {
+        if (!req.password) {
+            throw new Error("Must provide a valid password");
+        }
         if (value !== req.body.password) {
             throw new Error(passwordsDontMatchErr);
         }
@@ -53,8 +67,12 @@ exports.validateUserRegister = [
 
 exports.validateUserLogin = [
     body("username")
+        .notEmpty()
+        .withMessage("Username is required")
+        .bail()
         .matches(/^[a-zA-Z0-9-_]{2,100}$/)
         .withMessage(loginErr)
+        .bail()
         .isLength({ min: 2, max: 100 })
         .withMessage(loginErr),
     body("password")

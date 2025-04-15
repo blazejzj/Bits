@@ -4,6 +4,10 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
+// cookie
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 // passportjs
 const passport = require("passport");
 const configurePassport = require("./config/passportConfig");

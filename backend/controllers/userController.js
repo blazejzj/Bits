@@ -1,3 +1,4 @@
+require("dotenv").config();
 const db = require("../prisma/queries");
 const bcrypt = require("bcryptjs");
 const {
@@ -5,13 +6,11 @@ const {
     validateUserLogin,
 } = require("../validators/validateUser");
 const { validationResult } = require("express-validator");
-const passport = require("passport");
+const jwt = require("jsonwebtoken");
 
 exports.registerNewUser = [
     validateUserRegister,
     async (req, res) => {
-        const { name, email, username, password } = req.body;
-
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({
@@ -20,6 +19,7 @@ exports.registerNewUser = [
             });
         }
 
+        const { name, email, username, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         await db.createNewUser(name, email, username, hashedPassword);
 
@@ -32,10 +32,46 @@ exports.registerNewUser = [
 
 exports.loginUser = [
     validateUserLogin,
-    passport.authenticate("jwt", { session: false }),
     async (req, res) => {
-        if (!req.user) {
-            throw new Error("Couldn't sign in user");
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                msg: "Something wnt wrong with logging in",
+                errors: errors.array(),
+            });
         }
+
+        const { username, password } = req.body;
+        const user = await db.getUserByUsername(username);
+
+        if (!user) {
+            return res.status(401).json({ msg: "Invalid credentials" });
+        }
+
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            return res.status(401).json({ msg: "Invalid credentials" });
+        }
+
+        const payload = {
+            id: user.id,
+            username: user.username,
+            role: user.role,
+        };
+
+        const token = jwt.sign(payload, process.env.JWT_SECRET, {
+            expiresIn: "1h",
+        });
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            maxAge: 3600000,
+            sameSite: "strict",
+        });
+
+        res.status(200).json({
+            msg: "Login successfull",
+        });
     },
 ];

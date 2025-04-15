@@ -1,6 +1,6 @@
 const passport = require("passport");
 
-const authenticateJWT = passport.authenticate("jwt", { session: false });
+const authenticateJWT = passport.authenticate("token", { session: false });
 
 function isAuthenticated(req, res, next) {
     if (!req.user) {
@@ -19,7 +19,8 @@ function isAdmin(req, res, next) {
 }
 
 function isGuest(req, res, next) {
-    if (req.user) {
+    const token = req.cookies && req.cookies["token"];
+    if (token) {
         return res.status(400).json({ message: "User already authenticated." });
     }
 
