@@ -1,6 +1,6 @@
 const passport = require("passport");
 
-const authenticateJWT = passport.authenticate("token", { session: false });
+const authenticateJWT = passport.authenticate("jwt", { session: false });
 
 function isAuthenticated(req, res, next) {
     if (!req.user) {
