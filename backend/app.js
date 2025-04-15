@@ -24,10 +24,10 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // routers
-const indexRouter = require("./routes/indexRouter");
+const postsRouter = require("./routes/postsRouter");
 const profileRouter = require("./routes/profileRouter");
 const authRouter = require("./routes/authRouter");
-app.use("/", indexRouter);
+app.use("/posts", postsRouter);
 app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
 

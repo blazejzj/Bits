@@ -85,6 +85,29 @@ async function deleteUser(username) {
     });
 }
 
+async function getAllPublishedPosts() {
+    return await prisma.post.findMany({
+        where: {
+            published: true,
+        },
+    });
+}
+
+async function getSinglePostById(id) {
+    return await prisma.post.findUnique({
+        where: {
+            id,
+        },
+        include: {
+            comments: {
+                orderBy: {
+                    published_at: "desc",
+                },
+            },
+        },
+    });
+}
+
 module.exports = {
     getUserById,
     usernameExists,
@@ -95,4 +118,6 @@ module.exports = {
     updateUserName,
     updateUserPassword,
     deleteUser,
+    getAllPublishedPosts,
+    getSinglePostById,
 };
