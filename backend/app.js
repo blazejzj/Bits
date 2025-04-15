@@ -23,7 +23,7 @@ app.use(express.json());
 const indexRouter = require("./routes/indexRouter");
 const userRouter = require("./routes/userRouter");
 app.use("/", indexRouter);
-app.use("/user", userRouter);
+app.use("/user/", userRouter);
 
 // listen
 const port = process.env.PORT;

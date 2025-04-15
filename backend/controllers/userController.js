@@ -1,9 +1,13 @@
 const db = require("../prisma/queries");
 const bcrypt = require("bcryptjs");
-const { validateUserRegister } = require("../validators/validateUser");
+const {
+    validateUserRegister,
+    validateUserLogin,
+} = require("../validators/validateUser");
 const { validationResult } = require("express-validator");
+const passport = require("passport");
 
-exports.createNewUser = [
+exports.registerNewUser = [
     validateUserRegister,
     async (req, res) => {
         const { name, email, username, password } = req.body;
@@ -23,5 +27,15 @@ exports.createNewUser = [
             message: "User successfully created!",
             data: req.body,
         });
+    },
+];
+
+exports.loginUser = [
+    validateUserLogin,
+    passport.authenticate("jwt", { session: false }),
+    async (req, res) => {
+        if (!req.user) {
+            throw new Error("Couldn't sign in user");
+        }
     },
 ];

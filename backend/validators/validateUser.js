@@ -12,6 +12,8 @@ const tooLongPasswordErr = "Password cannot be longer than 100 characters";
 const passwordsDontMatchErr = "Passwords do not match";
 const usernameAlreadyExists = "Username is already in use.";
 
+const loginErr = "Username or password is incorrect";
+
 exports.validateUserRegister = [
     body("name")
         .matches(/^[a-zA-ZæøåÆØÅ\s-]{2,100}$/)
@@ -47,4 +49,17 @@ exports.validateUserRegister = [
         }
         return true;
     }),
+];
+
+exports.validateUserLogin = [
+    body("username")
+        .matches(/^[a-zA-Z0-9-_]{2,100}$/)
+        .withMessage(loginErr)
+        .isLength({ min: 2, max: 100 })
+        .withMessage(loginErr),
+    body("password")
+        .isLength({ min: 8 })
+        .withMessage(loginErr)
+        .isLength({ max: 100 })
+        .withMessage(loginErr),
 ];
