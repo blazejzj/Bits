@@ -90,6 +90,12 @@ async function getAllPublishedPosts() {
         where: {
             published: true,
         },
+        select: {
+            id: true,
+            title: true,
+            published_at: true,
+            updated_at: true,
+        },
     });
 }
 
