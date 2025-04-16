@@ -60,7 +60,7 @@ exports.deleteResponse = async (req, res) => {
 
     if (responseToUpdate.userId !== user.id) {
         return res.status(401).json({
-            msg: "Not authorized to edit this comment.",
+            msg: "Not authorized to delete this comment.",
         });
     }
 

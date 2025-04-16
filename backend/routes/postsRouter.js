@@ -34,7 +34,6 @@ postsRouter.delete(
 );
 
 // responses
-// TODO: responseController here + authentication
 postsRouter.post(
     "/:id/comments/:commentId",
     authenticateJWT,
@@ -48,7 +47,7 @@ postsRouter.patch(
     responseController.updateResponse
 );
 postsRouter.delete(
-    "/id/comments/:commentId/:responseId",
+    "/:id/comments/:commentId/:responseId",
     authenticateJWT,
     isAuthenticated,
     responseController.deleteResponse
