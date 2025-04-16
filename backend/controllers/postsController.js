@@ -69,8 +69,6 @@ exports.updateComment = [
         const user = req.user;
         const commentToUpdate = await db.getCommentById(req.params.commentId);
 
-        console.log(commentToUpdate);
-        console.log(commentToUpdate.userId);
         if (commentToUpdate.userId !== user.id) {
             return res.status(401).json({
                 msg: "Not authorized to edit this comment.",
@@ -84,3 +82,18 @@ exports.updateComment = [
         });
     },
 ];
+
+exports.deleteComment = async (req, res) => {
+    const user = req.user;
+    const commentToUpdate = await db.getCommentById(req.params.commentId);
+    if (commentToUpdate.userId !== user.id) {
+        return res.status(401).json({
+            msg: "Not authorized to delete this comment.",
+        });
+    }
+
+    await db.deleteComment(req.params.commentId);
+    res.status(200).json({
+        msg: "Comment succesfully deleted.",
+    });
+};

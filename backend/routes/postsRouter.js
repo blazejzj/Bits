@@ -3,7 +3,6 @@ const postsRouter = Router();
 const postsController = require("../controllers/postsController");
 const {
     authenticateJWT,
-    isAdmin,
     isAuthenticated,
 } = require("../middleware/authMiddleware");
 
@@ -26,7 +25,12 @@ postsRouter.patch(
     isAuthenticated,
     postsController.updateComment
 );
-// postsRouter.delete("/id/comments/:commentId")
+postsRouter.delete(
+    "/:id/comments/:commentId",
+    authenticateJWT,
+    isAuthenticated,
+    postsController.deleteComment
+);
 
 // responses
 // TODO: responseController here + authentication
