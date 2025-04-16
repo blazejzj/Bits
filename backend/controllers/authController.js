@@ -86,5 +86,3 @@ exports.logOut = (req, res) => {
         message: "Logged out successfully.",
     });
 };
-
-exports.delete;

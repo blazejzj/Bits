@@ -2,7 +2,6 @@ const { validationResult, body } = require("express-validator");
 const { validateUpdatedUser } = require("../validators/validateUser");
 const db = require("../prisma/queries");
 const bcrypt = require("bcryptjs");
-const authController = require("./authController");
 
 exports.getOwnProfile = async (req, res) => {
     const { name, username, email, created_at } = req.user;

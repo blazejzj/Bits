@@ -14,7 +14,12 @@ postsRouter.get("/:id", postsController.getSinglePostById);
 // comments
 // TODO : commentsController here + authentication
 postsRouter.get("/:id/comments", postsController.getAllPostsComments);
-// postsRouter.post("/:id/comments")
+postsRouter.post(
+    "/:id/comments",
+    authenticateJWT,
+    isAuthenticated,
+    postsController.postComment
+);
 // postsRouter.patch("/:id/comments/:commentId")
 // postsRouter.delete("/id/comments/:commentId")
 

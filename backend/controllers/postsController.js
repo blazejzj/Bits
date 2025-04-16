@@ -1,4 +1,6 @@
+const { validationResult } = require("express-validator");
 const db = require("../prisma/queries");
+const { validateComment } = require("../validators/validateComment");
 
 exports.getAllPosts = async (req, res) => {
     const posts = await db.getAllPublishedPosts();
@@ -28,3 +30,26 @@ exports.getAllPostsComments = async (req, res) => {
         comments,
     });
 };
+
+exports.postComment = [
+    validateComment,
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                msg: "Something went wrong while posting a comment",
+                errors: errors.array(),
+            });
+        }
+
+        const postId = Number(req.params.id);
+        const text = req.body.text;
+        const userId = req.user.id;
+
+        await db.postComment(text, postId, userId);
+
+        res.status(200).json({
+            msg: "Comment successfully posted.",
+        });
+    },
+];

@@ -130,6 +130,18 @@ async function getCommentsByPostId(postId, skip, take) {
     });
 }
 
+async function postComment(text, postId, userId) {
+    return await prisma.comment.create({
+        data: {
+            text: text,
+            postId: postId,
+            userId: userId,
+            published_at: new Date(),
+            updated_at: new Date(),
+        },
+    });
+}
+
 module.exports = {
     getUserById,
     usernameExists,
@@ -140,7 +152,9 @@ module.exports = {
     updateUserName,
     updateUserPassword,
     deleteUser,
+
     getAllPublishedPosts,
     getSinglePostById,
     getCommentsByPostId,
+    postComment,
 };
