@@ -107,6 +107,13 @@ async function getSinglePostById(id) {
         },
         include: {
             comments: {
+                include: {
+                    responses: {
+                        orderBy: {
+                            published_at: "desc",
+                        },
+                    },
+                },
                 orderBy: {
                     published_at: "desc",
                 },
