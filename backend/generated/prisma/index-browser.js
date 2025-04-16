@@ -131,7 +131,7 @@ exports.Prisma.PostScalarFieldEnum = {
   id: 'id',
   title: 'title',
   text: 'text',
-  category: 'category',
+  categoryId: 'categoryId',
   published_at: 'published_at',
   updated_at: 'updated_at',
   published: 'published'
@@ -155,6 +155,11 @@ exports.Prisma.ResponseScalarFieldEnum = {
   commentId: 'commentId'
 };
 
+exports.Prisma.CategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -173,7 +178,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   Post: 'Post',
   Comment: 'Comment',
-  Response: 'Response'
+  Response: 'Response',
+  Category: 'Category'
 };
 
 /**
