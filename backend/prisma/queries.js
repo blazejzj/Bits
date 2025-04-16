@@ -177,6 +177,43 @@ async function deleteComment(id) {
     });
 }
 
+async function postResponse(commentId, text, userId) {
+    await prisma.response.create({
+        data: {
+            commentId,
+            text,
+            userId,
+        },
+    });
+}
+
+async function deleteResponse(responseId) {
+    await prisma.response.delete({
+        where: {
+            id: responseId,
+        },
+    });
+}
+
+async function updateResponse(resposneId, text) {
+    await prisma.response.update({
+        where: {
+            id: responseId,
+        },
+        data: {
+            text,
+        },
+    });
+}
+
+async function getResponseById(id) {
+    return await prisma.response.findUnique({
+        where: {
+            id,
+        },
+    });
+}
+
 module.exports = {
     getUserById,
     usernameExists,
@@ -195,4 +232,9 @@ module.exports = {
     getCommentById,
     updateComment,
     deleteComment,
+
+    postResponse,
+    deleteResponse,
+    updateResponse,
+    getResponseById,
 };

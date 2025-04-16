@@ -50,7 +50,7 @@ model Comment {
   updated_at DateTime @default(now())
   user User @relation(fields: [userId], references: [id])
   userId String 
-  post Post @relation(fields: [postId], references: [id])
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId Int
   responses Response[]
 }
@@ -62,6 +62,6 @@ model Response {
   updated_at DateTime @default(now())
   user User @relation(fields: [userId], references: [id])
   userId String
-  comment Comment @relation(fields: [commentId], references: [id])
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
   commentId String
 }
