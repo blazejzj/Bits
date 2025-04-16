@@ -20,7 +20,12 @@ postsRouter.post(
     isAuthenticated,
     postsController.postComment
 );
-// postsRouter.patch("/:id/comments/:commentId")
+postsRouter.patch(
+    "/:id/comments/:commentId",
+    authenticateJWT,
+    isAuthenticated,
+    postsController.updateComment
+);
 // postsRouter.delete("/id/comments/:commentId")
 
 // responses

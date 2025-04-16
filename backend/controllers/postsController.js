@@ -53,3 +53,34 @@ exports.postComment = [
         });
     },
 ];
+
+exports.updateComment = [
+    validateComment,
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                msg: "Something went wrong while trying to updtae a comment.",
+                errors: errors.array(),
+            });
+        }
+
+        // check if comment trying to update belongs to user
+        const user = req.user;
+        const commentToUpdate = await db.getCommentById(req.params.commentId);
+
+        console.log(commentToUpdate);
+        console.log(commentToUpdate.userId);
+        if (commentToUpdate.userId !== user.id) {
+            return res.status(401).json({
+                msg: "Not authorized to edit this comment.",
+            });
+        }
+
+        await db.updateComment(req.params.commentId, req.body.text);
+
+        res.status(200).json({
+            msg: "Comment succesfully updated.",
+        });
+    },
+];

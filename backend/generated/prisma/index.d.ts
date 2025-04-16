@@ -2408,6 +2408,7 @@ export namespace Prisma {
     id: number | null
     title: string | null
     text: string | null
+    category: string | null
     published_at: Date | null
     updated_at: Date | null
     published: boolean | null
@@ -2417,6 +2418,7 @@ export namespace Prisma {
     id: number | null
     title: string | null
     text: string | null
+    category: string | null
     published_at: Date | null
     updated_at: Date | null
     published: boolean | null
@@ -2426,6 +2428,7 @@ export namespace Prisma {
     id: number
     title: number
     text: number
+    category: number
     published_at: number
     updated_at: number
     published: number
@@ -2445,6 +2448,7 @@ export namespace Prisma {
     id?: true
     title?: true
     text?: true
+    category?: true
     published_at?: true
     updated_at?: true
     published?: true
@@ -2454,6 +2458,7 @@ export namespace Prisma {
     id?: true
     title?: true
     text?: true
+    category?: true
     published_at?: true
     updated_at?: true
     published?: true
@@ -2463,6 +2468,7 @@ export namespace Prisma {
     id?: true
     title?: true
     text?: true
+    category?: true
     published_at?: true
     updated_at?: true
     published?: true
@@ -2559,6 +2565,7 @@ export namespace Prisma {
     id: number
     title: string
     text: string
+    category: string
     published_at: Date
     updated_at: Date
     published: boolean
@@ -2587,6 +2594,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     text?: boolean
+    category?: boolean
     published_at?: boolean
     updated_at?: boolean
     published?: boolean
@@ -2598,6 +2606,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     text?: boolean
+    category?: boolean
     published_at?: boolean
     updated_at?: boolean
     published?: boolean
@@ -2607,6 +2616,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     text?: boolean
+    category?: boolean
     published_at?: boolean
     updated_at?: boolean
     published?: boolean
@@ -2616,12 +2626,13 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     text?: boolean
+    category?: boolean
     published_at?: boolean
     updated_at?: boolean
     published?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "text" | "published_at" | "updated_at" | "published", ExtArgs["result"]["post"]>
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "text" | "category" | "published_at" | "updated_at" | "published", ExtArgs["result"]["post"]>
   export type PostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     comments?: boolean | Post$commentsArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
@@ -2638,6 +2649,7 @@ export namespace Prisma {
       id: number
       title: string
       text: string
+      category: string
       published_at: Date
       updated_at: Date
       published: boolean
@@ -3068,6 +3080,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Post", 'Int'>
     readonly title: FieldRef<"Post", 'String'>
     readonly text: FieldRef<"Post", 'String'>
+    readonly category: FieldRef<"Post", 'String'>
     readonly published_at: FieldRef<"Post", 'DateTime'>
     readonly updated_at: FieldRef<"Post", 'DateTime'>
     readonly published: FieldRef<"Post", 'Boolean'>
@@ -5754,6 +5767,7 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     text: 'text',
+    category: 'category',
     published_at: 'published_at',
     updated_at: 'updated_at',
     published: 'published'
@@ -5962,6 +5976,7 @@ export namespace Prisma {
     id?: IntFilter<"Post"> | number
     title?: StringFilter<"Post"> | string
     text?: StringFilter<"Post"> | string
+    category?: StringFilter<"Post"> | string
     published_at?: DateTimeFilter<"Post"> | Date | string
     updated_at?: DateTimeFilter<"Post"> | Date | string
     published?: BoolFilter<"Post"> | boolean
@@ -5972,6 +5987,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     text?: SortOrder
+    category?: SortOrder
     published_at?: SortOrder
     updated_at?: SortOrder
     published?: SortOrder
@@ -5985,6 +6001,7 @@ export namespace Prisma {
     NOT?: PostWhereInput | PostWhereInput[]
     title?: StringFilter<"Post"> | string
     text?: StringFilter<"Post"> | string
+    category?: StringFilter<"Post"> | string
     published_at?: DateTimeFilter<"Post"> | Date | string
     updated_at?: DateTimeFilter<"Post"> | Date | string
     published?: BoolFilter<"Post"> | boolean
@@ -5995,6 +6012,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     text?: SortOrder
+    category?: SortOrder
     published_at?: SortOrder
     updated_at?: SortOrder
     published?: SortOrder
@@ -6012,6 +6030,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Post"> | number
     title?: StringWithAggregatesFilter<"Post"> | string
     text?: StringWithAggregatesFilter<"Post"> | string
+    category?: StringWithAggregatesFilter<"Post"> | string
     published_at?: DateTimeWithAggregatesFilter<"Post"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"Post"> | Date | string
     published?: BoolWithAggregatesFilter<"Post"> | boolean
@@ -6229,8 +6248,9 @@ export namespace Prisma {
   export type PostCreateInput = {
     title: string
     text: string
+    category: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     published?: boolean
     comments?: CommentCreateNestedManyWithoutPostInput
   }
@@ -6239,8 +6259,9 @@ export namespace Prisma {
     id?: number
     title: string
     text: string
+    category: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     published?: boolean
     comments?: CommentUncheckedCreateNestedManyWithoutPostInput
   }
@@ -6248,6 +6269,7 @@ export namespace Prisma {
   export type PostUpdateInput = {
     title?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     published_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -6258,6 +6280,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     published_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -6268,14 +6291,16 @@ export namespace Prisma {
     id?: number
     title: string
     text: string
+    category: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     published?: boolean
   }
 
   export type PostUpdateManyMutationInput = {
     title?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     published_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -6285,6 +6310,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     published_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -6294,7 +6320,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     user: UserCreateNestedOneWithoutCommentsInput
     post: PostCreateNestedOneWithoutCommentsInput
     responses?: ResponseCreateNestedManyWithoutCommentInput
@@ -6304,7 +6330,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     userId: string
     postId: number
     responses?: ResponseUncheckedCreateNestedManyWithoutCommentInput
@@ -6334,7 +6360,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     userId: string
     postId: number
   }
@@ -6359,7 +6385,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     user: UserCreateNestedOneWithoutResponsesInput
     comment: CommentCreateNestedOneWithoutResponsesInput
   }
@@ -6368,7 +6394,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     userId: string
     commentId: string
   }
@@ -6395,7 +6421,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     userId: string
     commentId: string
   }
@@ -6561,6 +6587,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     text?: SortOrder
+    category?: SortOrder
     published_at?: SortOrder
     updated_at?: SortOrder
     published?: SortOrder
@@ -6574,6 +6601,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     text?: SortOrder
+    category?: SortOrder
     published_at?: SortOrder
     updated_at?: SortOrder
     published?: SortOrder
@@ -6583,6 +6611,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     text?: SortOrder
+    category?: SortOrder
     published_at?: SortOrder
     updated_at?: SortOrder
     published?: SortOrder
@@ -7069,7 +7098,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     post: PostCreateNestedOneWithoutCommentsInput
     responses?: ResponseCreateNestedManyWithoutCommentInput
   }
@@ -7078,7 +7107,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     postId: number
     responses?: ResponseUncheckedCreateNestedManyWithoutCommentInput
   }
@@ -7097,7 +7126,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     comment: CommentCreateNestedOneWithoutResponsesInput
   }
 
@@ -7105,7 +7134,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     commentId: string
   }
 
@@ -7179,7 +7208,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     user: UserCreateNestedOneWithoutCommentsInput
     responses?: ResponseCreateNestedManyWithoutCommentInput
   }
@@ -7188,7 +7217,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     userId: string
     responses?: ResponseUncheckedCreateNestedManyWithoutCommentInput
   }
@@ -7249,8 +7278,9 @@ export namespace Prisma {
   export type PostCreateWithoutCommentsInput = {
     title: string
     text: string
+    category: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     published?: boolean
   }
 
@@ -7258,8 +7288,9 @@ export namespace Prisma {
     id?: number
     title: string
     text: string
+    category: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     published?: boolean
   }
 
@@ -7272,7 +7303,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     user: UserCreateNestedOneWithoutResponsesInput
   }
 
@@ -7280,7 +7311,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     userId: string
   }
 
@@ -7341,6 +7372,7 @@ export namespace Prisma {
   export type PostUpdateWithoutCommentsInput = {
     title?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     published_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -7350,6 +7382,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     published_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -7402,7 +7435,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     user: UserCreateNestedOneWithoutCommentsInput
     post: PostCreateNestedOneWithoutCommentsInput
   }
@@ -7411,7 +7444,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     userId: string
     postId: number
   }
@@ -7487,7 +7520,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     postId: number
   }
 
@@ -7495,7 +7528,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     commentId: string
   }
 
@@ -7553,7 +7586,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     userId: string
   }
 
@@ -7587,7 +7620,7 @@ export namespace Prisma {
     id?: string
     text: string
     published_at?: Date | string
-    updated_at: Date | string
+    updated_at?: Date | string
     userId: string
   }
 

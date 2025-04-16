@@ -95,6 +95,7 @@ async function getAllPublishedPosts() {
             title: true,
             published_at: true,
             updated_at: true,
+            category: true,
         },
     });
 }
@@ -142,6 +143,25 @@ async function postComment(text, postId, userId) {
     });
 }
 
+async function getCommentById(id) {
+    return await prisma.comment.findUnique({
+        where: {
+            id,
+        },
+    });
+}
+
+async function updateComment(id, text) {
+    await prisma.comment.update({
+        where: {
+            id: id,
+        },
+        data: {
+            text: text,
+        },
+    });
+}
+
 module.exports = {
     getUserById,
     usernameExists,
@@ -157,4 +177,6 @@ module.exports = {
     getSinglePostById,
     getCommentsByPostId,
     postComment,
+    getCommentById,
+    updateComment,
 };
