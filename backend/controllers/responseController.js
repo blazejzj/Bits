@@ -24,7 +24,7 @@ exports.postResponse = [
     },
 ];
 
-exports.updateResposne = [
+exports.updateResponse = [
     validateResponse,
     async (req, res) => {
         const errors = validationResult(req);
@@ -53,3 +53,19 @@ exports.updateResposne = [
         });
     },
 ];
+
+exports.deleteResponse = async (req, res) => {
+    const user = req.user;
+    const responseToUpdate = await db.getResponseById(req.params.responseId);
+
+    if (responseToUpdate.userId !== user.id) {
+        return res.status(401).json({
+            msg: "Not authorized to edit this comment.",
+        });
+    }
+
+    await db.deleteResponse(req.params.responseId);
+    res.status(200).json({
+        msg: "Response successfully deleted.",
+    });
+};
