@@ -1,35 +1,36 @@
 const { Router } = require("express");
 const postsRouter = Router();
-const postsController = require("../controllers/postsController");
 const {
     authenticateJWT,
     isAuthenticated,
 } = require("../middleware/authMiddleware");
+const postsController = require("../controllers/postsController");
+const commentController = require("../controllers/commentController");
+const responseController = require("../controllers/responseController");
 
 // posts
 postsRouter.get("/", postsController.getAllPosts);
 postsRouter.get("/:id", postsController.getSinglePostById);
 
 // comments
-// TODO : commentsController here + authentication
-postsRouter.get("/:id/comments", postsController.getAllPostsComments);
+postsRouter.get("/:id/comments", commentController.getAllPostsComments);
 postsRouter.post(
     "/:id/comments",
     authenticateJWT,
     isAuthenticated,
-    postsController.postComment
+    commentController.postComment
 );
 postsRouter.patch(
     "/:id/comments/:commentId",
     authenticateJWT,
     isAuthenticated,
-    postsController.updateComment
+    commentController.updateComment
 );
 postsRouter.delete(
     "/:id/comments/:commentId",
     authenticateJWT,
     isAuthenticated,
-    postsController.deleteComment
+    commentController.deleteComment
 );
 
 // responses
