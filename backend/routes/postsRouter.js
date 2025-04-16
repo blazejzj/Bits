@@ -41,7 +41,17 @@ postsRouter.post(
     isAuthenticated,
     responseController.postResponse
 );
-// postsRouter.patch("/:id/comments/:commentId/:responseId") // update response
-// postsRouter.delete("/id/comments/:commentId/:responseId") // delete a resposne
+postsRouter.patch(
+    "/:id/comments/:commentId/:responseId",
+    authenticateJWT,
+    isAuthenticated,
+    responseController.updateResponse
+);
+postsRouter.delete(
+    "/id/comments/:commentId/:responseId",
+    authenticateJWT,
+    isAuthenticated,
+    responseController.deleteResponse
+);
 
 module.exports = postsRouter;

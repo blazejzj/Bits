@@ -195,7 +195,7 @@ async function deleteResponse(responseId) {
     });
 }
 
-async function updateResponse(resposneId, text) {
+async function updateResponse(responseId, text) {
     await prisma.response.update({
         where: {
             id: responseId,
