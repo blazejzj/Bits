@@ -49,6 +49,24 @@ exports.deletePost = async (req, res) => {
     });
 };
 
-exports.publishPost;
+exports.publishPost = async (req, res) => {
+    const postId = req.params.id;
+
+    await db.publishPost(postId);
+
+    res.status(200).json({
+        msg: "Post successfully published.",
+    });
+};
+
+exports.unpublishPost = async (req, res) => {
+    const postId = req.params.id;
+
+    await db.unpublishPost(postId);
+
+    res.status(200).json({
+        msg: "Post successfully unpublished.",
+    });
+};
 
 exports.unpublishPost;

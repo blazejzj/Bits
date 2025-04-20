@@ -307,6 +307,29 @@ async function deletePost(id) {
     });
 }
 
+async function publishPost(id) {
+    await prisma.post.update({
+        where: {
+            id,
+        },
+        data: {
+            published_at: new Date(),
+            published: true,
+        },
+    });
+}
+
+async function unpublishPost(id) {
+    await prisma.post.update({
+        where: {
+            id,
+        },
+        data: {
+            published: false,
+        },
+    });
+}
+
 module.exports = {
     getUserById,
     usernameExists,
@@ -322,6 +345,9 @@ module.exports = {
     getSinglePostById,
     createNewPost,
     updatePost,
+    deletePost,
+    publishPost,
+    unpublishPost,
 
     getCommentsByPostId,
     postComment,
