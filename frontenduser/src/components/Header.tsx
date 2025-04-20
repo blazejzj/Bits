@@ -35,6 +35,23 @@ function Header() {
         getCategories();
     }, []);
 
+    function renderLoggedIn() {
+        return (
+            <>
+                <li>Profile</li>
+                <li>Log out</li>
+            </>
+        );
+    }
+
+    function renderLoggedOut() {
+        return (
+            <>
+                <li>Log in</li>
+            </>
+        );
+    }
+
     return (
         <div>
             <h1>Bits</h1>
@@ -43,7 +60,7 @@ function Header() {
                     {categories.map((category) => {
                         return <li key={category.id}>{category.name}</li>;
                     })}
-                    <li>Log in</li>
+                    {user ? renderLoggedIn() : renderLoggedOut()}
                 </ul>
             </nav>
         </div>
