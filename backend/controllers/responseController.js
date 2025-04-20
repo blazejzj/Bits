@@ -56,9 +56,9 @@ exports.updateResponse = [
 
 exports.deleteResponse = async (req, res) => {
     const user = req.user;
-    const responseToUpdate = await db.getResponseById(req.params.responseId);
+    const responseToDelete = await db.getResponseById(req.params.responseId);
 
-    if (responseToUpdate.userId !== user.id) {
+    if (responseToDelete.userId !== user.id && user.role !== "ADMIN") {
         return res.status(401).json({
             msg: "Not authorized to delete this comment.",
         });
