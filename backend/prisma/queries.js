@@ -261,6 +261,30 @@ async function updateCategoryName(name, newName) {
     });
 }
 
+async function getCategoryIdByName(name) {
+    return await prisma.category.findUnique({
+        where: {
+            name,
+        },
+        include: {
+            id,
+        },
+    });
+}
+
+async function createNewPost(title, text, categoryId, published) {
+    await prisma.post.create({
+        data: {
+            title: title,
+            text: text,
+            categoryId: categoryId,
+            published_at: new Date(),
+            updated_at: new Date(),
+            published: published,
+        },
+    });
+}
+
 module.exports = {
     getUserById,
     usernameExists,
@@ -274,6 +298,8 @@ module.exports = {
 
     getAllPublishedPosts,
     getSinglePostById,
+    createNewPost,
+
     getCommentsByPostId,
     postComment,
     getCommentById,
@@ -289,5 +315,6 @@ module.exports = {
     createNewCategory,
     categoryExists,
     deleteCategoryByName,
-    updateCategory,
+    updateCategoryName,
+    getCategoryIdByName,
 };

@@ -17,8 +17,20 @@ exports.getSinglePostById = async (req, res) => {
     return res.status(200).json({ post });
 };
 
-exports.createNewPost;
+exports.createNewPost = async (req, res) => {
+    const { title, text, categoryName, published } = req.body;
+    const categoryId = await db.getCategoryIdByName(categoryName);
+
+    await db.createNewPost(title, text, categoryId, published);
+    res.status(200).json({
+        msg: "Successfully created a new post!",
+    });
+};
 
 exports.updatePost;
 
 exports.deletePost;
+
+exports.publishPost;
+
+exports.unpublishPost;
