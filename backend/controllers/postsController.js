@@ -16,3 +16,9 @@ exports.getSinglePostById = async (req, res) => {
 
     return res.status(200).json({ post });
 };
+
+exports.createNewPost;
+
+exports.updatePost;
+
+exports.deletePost;

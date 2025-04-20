@@ -214,6 +214,53 @@ async function getResponseById(id) {
     });
 }
 
+async function getAllCategories() {
+    return await prisma.category.findMany({
+        include: {
+            name: true,
+        },
+    });
+}
+
+async function categoryExists(name) {
+    const category = prisma.category
+        .findUnique({
+            where: {
+                name,
+            },
+        })
+        .toLowerCase();
+
+    return !!category;
+}
+
+async function createNewCategory(name) {
+    await prisma.category.create({
+        data: {
+            name,
+        },
+    });
+}
+
+async function deleteCategoryByName(name) {
+    await prisma.category.create({
+        data: {
+            name,
+        },
+    });
+}
+
+async function updateCategoryName(name, newName) {
+    await prisma.category.update({
+        where: {
+            name,
+        },
+        data: {
+            name: newName,
+        },
+    });
+}
+
 module.exports = {
     getUserById,
     usernameExists,
@@ -237,4 +284,10 @@ module.exports = {
     deleteResponse,
     updateResponse,
     getResponseById,
+
+    getAllCategories,
+    createNewCategory,
+    categoryExists,
+    deleteCategoryByName,
+    updateCategory,
 };

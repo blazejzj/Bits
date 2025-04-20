@@ -3,6 +3,7 @@ const postsRouter = Router();
 const {
     authenticateJWT,
     isAuthenticated,
+    isAdmin,
 } = require("../middleware/authMiddleware");
 const postsController = require("../controllers/postsController");
 const commentController = require("../controllers/commentController");
@@ -11,6 +12,94 @@ const responseController = require("../controllers/responseController");
 // posts
 postsRouter.get("/", postsController.getAllPosts);
 postsRouter.get("/:id", postsController.getSinglePostById);
+
+// category
+postsRouter.get("/category", categoryController.getCategories);
+
+// admin
+postsRouter.post(
+    "/category/new",
+    isAuthenticated,
+    isAdmin,
+    authenticateJWT,
+    categoryController.createNewCategory
+);
+postsRouter.patch(
+    "/category/:name/update",
+    isAuthenticated,
+    isAdmin,
+    authenticateJWT,
+    categoryController.updateCategory
+);
+postsRouter.post(
+    "/category/:name/delete",
+    isAuthenticated,
+    isAdmin,
+    authenticateJWT,
+    categoryController.deleteCategory
+);
+
+postsRouter.post(
+    "/create",
+    isAuthenticated,
+    isAdmin,
+    authenticateJWT,
+    postsController.createNewPost
+);
+
+postsRouter.post(
+    "/delete/:id",
+    isAuthenticated,
+    isAdmin,
+    authenticateJWT,
+    postsController.deletePost
+);
+
+postsRouter.put(
+    "/update/:id",
+    isAuthenticated,
+    isAdmin,
+    authenticateJWT,
+    postsController.updatePost
+);
+
+postsRouter.post(
+    "/publish/:id",
+    isAuthenticated,
+    isAdmin,
+    authenticateJWT,
+    postsController.publishPost
+);
+
+postsRouter.post(
+    "/unpublish/:id",
+    isAuthenticated,
+    isAdmin,
+    authenticateJWT,
+    postsController.unpublishPost
+);
+
+postsRouter.post(
+    "/category/create",
+    isAuthenticated,
+    isAdmin,
+    authenticateJWT,
+    postsController.createNewCategory
+);
+postsRouter.post(
+    "category/delete/:id",
+    isAuthenticated,
+    isAdmin,
+    authenticateJWT,
+    postsController.deletePost
+);
+postsRouter.put(
+    "category/update/:id",
+    isAuthenticated,
+    isAdmin,
+    authenticateJWT,
+    postsController.updatePost
+);
 
 // comments
 postsRouter.get("/:id/comments", commentController.getAllPostsComments);
