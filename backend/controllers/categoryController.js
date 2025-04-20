@@ -2,9 +2,7 @@ const db = require("../prisma/queries");
 
 exports.getCategories = async (req, res) => {
     const categories = await db.getAllCategories();
-    return res.status(200).json({
-        categories,
-    });
+    return res.status(200).json(categories);
 };
 
 exports.createNewCategory = async (req, res) => {

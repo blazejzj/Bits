@@ -12,71 +12,71 @@ const categoryController = require("../controllers/categoryController");
 
 // posts
 postsRouter.get("/", postsController.getAllPosts);
+postsRouter.get("/category", categoryController.getCategories);
 postsRouter.get("/:id", postsController.getSinglePostById);
 
 // category
-postsRouter.get("/category", categoryController.getCategories);
 
 // admin
 postsRouter.post(
     "/category/new",
+    authenticateJWT,
     isAuthenticated,
     isAdmin,
-    authenticateJWT,
     categoryController.createNewCategory
 );
 postsRouter.patch(
     "/category/:name/update",
+    authenticateJWT,
     isAuthenticated,
     isAdmin,
-    authenticateJWT,
     categoryController.updateCategory
 );
 postsRouter.post(
     "/category/:name/delete",
+    authenticateJWT,
     isAuthenticated,
     isAdmin,
-    authenticateJWT,
     categoryController.deleteCategory
 );
 
 postsRouter.post(
     "/create",
+    authenticateJWT,
     isAuthenticated,
     isAdmin,
-    authenticateJWT,
     postsController.createNewPost
 );
 
 postsRouter.post(
     "/delete/:id",
+    authenticateJWT,
     isAuthenticated,
     isAdmin,
-    authenticateJWT,
     postsController.deletePost
 );
 
 postsRouter.put(
     "/update/:id",
+    authenticateJWT,
     isAuthenticated,
     isAdmin,
-    authenticateJWT,
     postsController.updatePost
 );
 
 postsRouter.post(
     "/publish/:id",
+    authenticateJWT,
     isAuthenticated,
     isAdmin,
-    authenticateJWT,
     postsController.publishPost
 );
 
 postsRouter.post(
     "/unpublish/:id",
+    authenticateJWT,
     isAuthenticated,
     isAdmin,
-    authenticateJWT,
     postsController.unpublishPost
 );
 

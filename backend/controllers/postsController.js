@@ -1,8 +1,15 @@
 const db = require("../prisma/queries");
 
 exports.getAllPosts = async (req, res) => {
-    const posts = await db.getAllPublishedPosts();
-    res.status(200).json({ posts });
+    try {
+        const { category } = req.query;
+        const posts = await db.getAllPublishedPosts(category);
+
+        return res.status(200).json({ posts });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ msg: "Server error fetching posts." });
+    }
 };
 
 exports.getSinglePostById = async (req, res) => {
