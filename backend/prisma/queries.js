@@ -285,6 +285,20 @@ async function createNewPost(title, text, categoryId, published) {
     });
 }
 
+async function updatePost(id, title, text, categoryId) {
+    await prisma.post.update({
+        where: {
+            id,
+        },
+        data: {
+            title: title,
+            text: text,
+            categoryId: categoryId,
+            updated_at: new Date(),
+        },
+    });
+}
+
 module.exports = {
     getUserById,
     usernameExists,
@@ -299,6 +313,7 @@ module.exports = {
     getAllPublishedPosts,
     getSinglePostById,
     createNewPost,
+    updatePost,
 
     getCommentsByPostId,
     postComment,

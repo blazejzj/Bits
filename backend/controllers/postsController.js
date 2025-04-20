@@ -27,7 +27,17 @@ exports.createNewPost = async (req, res) => {
     });
 };
 
-exports.updatePost;
+exports.updatePost = async (req, res) => {
+    const postId = req.params.id;
+    const { title, text, categoryName } = req.body;
+    const categoryId = await db.getCategoryIdByName(categoryName);
+
+    await db.updatePost(postId, title, text, categoryId);
+
+    res.status(200).json({
+        msg: "Successfully updated the post!",
+    });
+};
 
 exports.deletePost;
 
