@@ -60,7 +60,6 @@ function Header() {
                     {categories.map((category) => {
                         return <li key={category.id}>{category.name}</li>;
                     })}
-                    {user ? renderLoggedIn() : renderLoggedOut()}
                 </ul>
             </nav>
         </div>
