@@ -299,6 +299,14 @@ async function updatePost(id, title, text, categoryId) {
     });
 }
 
+async function deletePost(id) {
+    await prisma.post.delete({
+        where: {
+            id,
+        },
+    });
+}
+
 module.exports = {
     getUserById,
     usernameExists,

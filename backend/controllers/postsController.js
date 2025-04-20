@@ -39,7 +39,15 @@ exports.updatePost = async (req, res) => {
     });
 };
 
-exports.deletePost;
+exports.deletePost = async (req, res) => {
+    const postId = req.params.id;
+
+    await db.deletePost(postId);
+
+    res.status(200).json({
+        msg: "Post successfully deleted.",
+    });
+};
 
 exports.publishPost;
 
