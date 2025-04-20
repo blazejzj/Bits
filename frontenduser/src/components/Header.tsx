@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { NavLink } from "react-router-dom";
 
 interface Category {
     id: number;
@@ -7,6 +9,7 @@ interface Category {
 
 function Header() {
     const [categories, setCategories] = useState<Category[]>([]);
+    const { user, logout } = useAuth();
 
     useEffect(() => {
         async function getCategories() {
@@ -38,8 +41,8 @@ function Header() {
     function renderLoggedIn() {
         return (
             <>
-                <li>Profile</li>
-                <li>Log out</li>
+                <NavLink to="/profile">Profile</NavLink>
+                <button onClick={logout}>Log out</button>
             </>
         );
     }
@@ -47,7 +50,7 @@ function Header() {
     function renderLoggedOut() {
         return (
             <>
-                <li>Log in</li>
+                <NavLink to="/login">Log in</NavLink>
             </>
         );
     }
@@ -61,6 +64,7 @@ function Header() {
                         return <li key={category.id}>{category.name}</li>;
                     })}
                 </ul>
+                {user ? renderLoggedIn() : renderLoggedOut()}
             </nav>
         </div>
     );
