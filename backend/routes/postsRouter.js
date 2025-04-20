@@ -8,6 +8,7 @@ const {
 const postsController = require("../controllers/postsController");
 const commentController = require("../controllers/commentController");
 const responseController = require("../controllers/responseController");
+const categoryController = require("../controllers/categoryController");
 
 // posts
 postsRouter.get("/", postsController.getAllPosts);
@@ -77,28 +78,6 @@ postsRouter.post(
     isAdmin,
     authenticateJWT,
     postsController.unpublishPost
-);
-
-postsRouter.post(
-    "/category/create",
-    isAuthenticated,
-    isAdmin,
-    authenticateJWT,
-    postsController.createNewCategory
-);
-postsRouter.post(
-    "category/delete/:id",
-    isAuthenticated,
-    isAdmin,
-    authenticateJWT,
-    postsController.deletePost
-);
-postsRouter.put(
-    "category/update/:id",
-    isAuthenticated,
-    isAdmin,
-    authenticateJWT,
-    postsController.updatePost
 );
 
 // comments
