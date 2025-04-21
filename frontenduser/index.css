@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+.gradient‑wipe {
+    background: linear-gradient(
+        90deg,
+        #000000 50%,
+        theme("colors.cyan.900") 50%
+    );
+    background-size: 200% 100%;
+    background-clip: text;
+    color: transparent;
+    transition: background-position 0.5s ease;
+}
+.gradient‑wipe:hover {
+    background-position: -100% 0;
+}
