@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { NavLink, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 interface Category {
     id: number;
@@ -11,6 +13,7 @@ function Header() {
     const [categories, setCategories] = useState<Category[]>([]);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     useEffect(() => {
         async function getCategories() {
@@ -40,7 +43,7 @@ function Header() {
     }
 
     const linkBaseClasses =
-        "text-xl font-medium gradient‑wipe transition duration-500 ease-in-out";
+        "text-xl font-medium gradient‑wipe transition duration-500 ease-in-out border-b-2";
 
     function renderLoggedIn() {
         return (
@@ -57,7 +60,7 @@ function Header() {
                 </NavLink>
                 <button
                     onClick={handleLogout}
-                    className="text-xl font-medium text-xl font-medium gradient‑wipe transition duration-500 ease-in-out  hover:cursor-pointer"
+                    className="text-xl font-medium text-xl font-medium gradient‑wipe transition duration-500 ease-in-out hover:cursor-pointer border-b-2"
                 >
                     Log out
                 </button>
@@ -81,31 +84,37 @@ function Header() {
     }
 
     return (
-        <div className="flex flex-row w-full justify-between p-5 sticky shadow">
-            <NavLink to="/">
-                <h1 className="font-bold text-5xl text-cyan-700 ml-5">
-                    Bits <b className="text-xs">by opex</b>
-                </h1>
-            </NavLink>
-            <nav className="flex flex-row w-3/4 items-center">
-                <ul className="flex gap-5 w-full content-center justify-center">
-                    <NavLink
-                        to="/"
-                        className={({ isActive }) =>
-                            `${linkBaseClasses} ${
-                                isActive
-                                    ? "border-cyan-700"
-                                    : "border-transparent"
-                            }`
-                        }
-                    >
-                        Home
-                    </NavLink>
+        <header className="sticky top-0 bg-white shadow z-10">
+            <div className="flex items-center justify-between p-5">
+                <NavLink to="/">
+                    <h1 className="font-bold text-5xl text-cyan-700 ml-5">
+                        Bits <b className="text-xs">by opex</b>
+                    </h1>
+                </NavLink>
 
-                    {categories.map((category) => (
+                <button
+                    className="md:hidden focus:outline-none"
+                    onClick={() => setMobileOpen(!mobileOpen)}
+                >
+                    {mobileOpen ? (
+                        <FontAwesomeIcon
+                            icon={faXmark}
+                            size="2xl"
+                            className="text-cyan-700"
+                        />
+                    ) : (
+                        <FontAwesomeIcon
+                            icon={faBars}
+                            size="2xl"
+                            className="text-cyan-700"
+                        />
+                    )}
+                </button>
+
+                <nav className="hidden md:flex flex-row w-3/4 items-center">
+                    <ul className="flex gap-5 w-full content-center justify-center">
                         <NavLink
-                            key={category.id}
-                            to={`/posts?category=${category.id}`}
+                            to="/"
                             className={({ isActive }) =>
                                 `${linkBaseClasses} ${
                                     isActive
@@ -114,14 +123,68 @@ function Header() {
                                 }`
                             }
                         >
-                            {category.name}
+                            Home
                         </NavLink>
-                    ))}
 
-                    {user ? renderLoggedIn() : renderLoggedOut()}
-                </ul>
-            </nav>
-        </div>
+                        {categories.map((category) => (
+                            <NavLink
+                                key={category.id}
+                                to={`/posts?category=${category.id}`}
+                                className={({ isActive }) =>
+                                    `${linkBaseClasses} ${
+                                        isActive
+                                            ? "border-cyan-700"
+                                            : "border-transparent"
+                                    }`
+                                }
+                            >
+                                {category.name}
+                            </NavLink>
+                        ))}
+
+                        {user ? renderLoggedIn() : renderLoggedOut()}
+                    </ul>
+                </nav>
+            </div>
+            {mobileOpen && (
+                <nav className="md:hidden bg-white border-t border-gray-200">
+                    <ul className="flex flex-col p-4 space-y-4">
+                        <NavLink
+                            to="/"
+                            className={({ isActive }) =>
+                                `${linkBaseClasses} ${
+                                    isActive
+                                        ? "border-cyan-700"
+                                        : "border-transparent"
+                                }`
+                            }
+                            onClick={() => setMobileOpen(false)}
+                        >
+                            Home
+                        </NavLink>
+
+                        {categories.map((category) => (
+                            <NavLink
+                                key={category.id}
+                                to={`/posts?category=${category.id}`}
+                                className={({ isActive }) =>
+                                    `${linkBaseClasses} ${
+                                        isActive
+                                            ? "border-cyan-700"
+                                            : "border-transparent"
+                                    }`
+                                }
+                                onClick={() => setMobileOpen(false)}
+                            >
+                                {category.name}
+                            </NavLink>
+                        ))}
+
+                        {user ? renderLoggedIn() : renderLoggedOut()}
+                    </ul>
+                </nav>
+            )}
+        </header>
     );
 }
 
