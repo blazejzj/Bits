@@ -14,3 +14,15 @@
 .gradient‑wipe:hover {
     background-position: -100% 0;
 }
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    @apply bg-gray-50 text-gray-800;
+}
+
+#root {
+    @apply min-h-screen;
+}

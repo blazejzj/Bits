@@ -43,7 +43,7 @@ function Header() {
     }
 
     const linkBaseClasses =
-        "text-xl font-medium gradient‑wipe transition duration-500 ease-in-out border-b-2";
+        "text-xl font-medium gradient‑wipe transition duration-500 ease-in-out border-b-2 text-nowrap";
 
     function renderLoggedIn() {
         return (
@@ -60,7 +60,7 @@ function Header() {
                 </NavLink>
                 <button
                     onClick={handleLogout}
-                    className="text-xl font-medium text-xl font-medium gradient‑wipe transition duration-500 ease-in-out hover:cursor-pointer border-b-2"
+                    className="text-xl font-medium text-xl font-medium gradient‑wipe transition duration-500 ease-in-out hover:cursor-pointer border-b-2 text-nowrap"
                 >
                     Log out
                 </button>
@@ -84,10 +84,10 @@ function Header() {
     }
 
     return (
-        <header className="sticky top-0 bg-white shadow z-10">
+        <header className="sticky top-0 bg-white border-b border-gray-200 z-10">
             <div className="flex items-center justify-between p-5">
                 <NavLink to="/">
-                    <h1 className="font-bold text-5xl text-cyan-700 ml-5">
+                    <h1 className="font-bold text-5xl text-cyan-700 ml-5 mr-3 flex items-baseline flex-nowrap text-nowrap">
                         Bits <b className="text-xs">by opex</b>
                     </h1>
                 </NavLink>
@@ -112,7 +112,7 @@ function Header() {
                 </button>
 
                 <nav className="hidden md:flex flex-row w-3/4 items-center">
-                    <ul className="flex gap-5 w-full content-center justify-center">
+                    <ul className="flex gap-5 w-full content-center justify-center ml-1">
                         <NavLink
                             to="/"
                             className={({ isActive }) =>
