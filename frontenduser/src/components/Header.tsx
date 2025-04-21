@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 interface Category {
     id: number;
@@ -10,6 +10,7 @@ interface Category {
 function Header() {
     const [categories, setCategories] = useState<Category[]>([]);
     const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function getCategories() {
@@ -38,11 +39,16 @@ function Header() {
         getCategories();
     }, []);
 
+    async function handleLogout() {
+        await logout();
+        navigate("/");
+    }
+
     function renderLoggedIn() {
         return (
             <>
                 <NavLink to="/profile">Profile</NavLink>
-                <button onClick={logout}>Log out</button>
+                <button onClick={handleLogout}>Log out</button>
             </>
         );
     }

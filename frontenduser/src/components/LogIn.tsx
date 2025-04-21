@@ -1,6 +1,10 @@
 import { ChangeEvent, useState, FormEvent } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function LogIn() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: "",
         password: "",
@@ -10,8 +14,10 @@ function LogIn() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
-    function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        await login(formData.username, formData.password);
+        navigate("/");
     }
 
     function renderLogInForm() {

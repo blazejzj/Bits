@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function RegisterUser() {
     const [formData, setFormData] = useState({
@@ -9,8 +10,30 @@ function RegisterUser() {
         confirmPassword: "",
     });
 
-    function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    const navigate = useNavigate();
+
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        try {
+            const response = await fetch(
+                "http://localhost:3000/auth/register",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
+                }
+            );
+            if (!response.ok) {
+                throw new Error("Couldn't register user.");
+            }
+            navigate("/login");
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error("Something went wrong." + error.message);
+            }
+        }
     }
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -65,13 +88,13 @@ function RegisterUser() {
                     <label htmlFor="confirmPassword">Confirm Password: </label>
                     <input
                         type="password"
-                        id="password"
-                        name="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleChange}
                         required
                     />
-                    <button type="submit">Register</button>
+                    <button type="submit">Register now</button>
                 </form>
             </div>
         );

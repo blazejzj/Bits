@@ -5,13 +5,7 @@ import {
     useEffect,
     ReactNode,
 } from "react";
-
-interface User {
-    id: string;
-    name: string;
-    email: string;
-    username: string;
-}
+import { User } from "../types/User";
 
 interface AuthContextType {
     user: User | null;
@@ -59,16 +53,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const login = async (username: string, password: string) => {
         try {
-            const response = await fetch("http://localhost:3000/auth/login", {
+            await fetch("http://localhost:3000/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
                 body: JSON.stringify({ username, password }),
             });
-            if (!response.ok) {
-                throw new Error("Failed logging user in.");
+
+            const profileResponse = await fetch(
+                "http://localhost:3000/profile",
+                {
+                    credentials: "include",
+                }
+            );
+            if (!profileResponse.ok) {
+                throw new Error("Failed to load user profile after login");
             }
-            const user = await response.json();
+            const user = await profileResponse.json();
             setUser(user);
         } catch (error) {
             if (error instanceof Error) {
