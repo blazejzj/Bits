@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useEffect, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -43,7 +43,7 @@ function Header() {
     }
 
     const linkBaseClasses =
-        "text-m font-medium gradient‑wipe transition duration-500 ease-in-out border-b-2 text-nowrap";
+        "text-m font-medium gradient-wipe transition duration-500 ease-in-out border-b-2 text-nowrap";
 
     function renderLoggedIn() {
         return (
@@ -60,7 +60,7 @@ function Header() {
                 </NavLink>
                 <button
                     onClick={handleLogout}
-                    className="text-m font-medium text-m font-medium gradient‑wipe transition duration-500 ease-in-out hover:cursor-pointer border-b-2 text-nowrap"
+                    className="text-m font-medium text-m gradient‑wipe transition duration-500 ease-in-out hover:cursor-pointer border-b-2 text-nowrap"
                 >
                     Log out
                 </button>
