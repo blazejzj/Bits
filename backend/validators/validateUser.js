@@ -45,11 +45,11 @@ exports.validateUserRegister = [
         .notEmpty()
         .withMessage("Username is required")
         .bail()
-        .matches(/^[a-zA-Z0-9-_]{2,100}$/)
-        .withMessage(usernamePatternErr)
-        .bail()
         .isLength({ min: 2, max: 100 })
         .withMessage(usernameLengthErr)
+        .bail()
+        .matches(/^[a-zA-Z0-9-_]{2,100}$/)
+        .withMessage(usernamePatternErr)
         .bail()
         .custom(async (value) => {
             const exists = await db.usernameExists(value);

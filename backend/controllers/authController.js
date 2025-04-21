@@ -44,12 +44,16 @@ exports.loginUser = [
         const user = await db.getUserByUsername(username);
 
         if (!user) {
-            return res.status(401).json({ msg: "Invalid credentials" });
+            return res
+                .status(401)
+                .json({ msg: "Username or password is incorrect" });
         }
 
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
-            return res.status(401).json({ msg: "Invalid credentials" });
+            return res
+                .status(401)
+                .json({ msg: "Username or password is incorrect" });
         }
 
         const payload = {
