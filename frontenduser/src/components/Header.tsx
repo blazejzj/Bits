@@ -3,6 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 interface Category {
     id: number;
@@ -38,12 +39,19 @@ function Header() {
     }, []);
 
     async function handleLogout() {
-        await logout();
-        navigate("/");
+        try {
+            await logout();
+            toast.success("Successfully logged out!");
+            navigate("/");
+        } catch (err) {
+            if (err instanceof Error) {
+                toast.error("Something went wrong...");
+            }
+        }
     }
 
     const linkBaseClasses =
-        "text-m font-medium gradient-wipe transition duration-500 ease-in-out border-b-2 text-nowrap";
+        "text-m font-medium gradient-wipe transition-[background-position,transform] duration-500 ease-in-out border-b-2 whitespace-nowrap";
 
     function renderLoggedIn() {
         return (
@@ -60,7 +68,7 @@ function Header() {
                 </NavLink>
                 <button
                     onClick={handleLogout}
-                    className="text-m font-medium text-m gradient‑wipe transition duration-500 ease-in-out hover:cursor-pointer border-b-2 text-nowrap"
+                    className={`${linkBaseClasses} border-transparent hover:cursor-pointer`}
                 >
                     Log out
                 </button>
