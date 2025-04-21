@@ -40,7 +40,7 @@ function Header() {
     }
 
     const linkBaseClasses =
-        "text-xl font-medium gradient‑wipe transition duration-500 ease-in-out border-b-2";
+        "text-xl font-medium gradient‑wipe transition duration-500 ease-in-out";
 
     function renderLoggedIn() {
         return (
@@ -57,7 +57,7 @@ function Header() {
                 </NavLink>
                 <button
                     onClick={handleLogout}
-                    className="text-xl font-medium ml-5"
+                    className="text-xl font-medium text-xl font-medium gradient‑wipe transition duration-500 ease-in-out  hover:cursor-pointer"
                 >
                     Log out
                 </button>
