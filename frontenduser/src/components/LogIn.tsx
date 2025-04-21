@@ -1,6 +1,6 @@
 import { ChangeEvent, useState, FormEvent } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 
 function LogIn() {
     const { login } = useAuth();
@@ -22,29 +22,53 @@ function LogIn() {
 
     function renderLogInForm() {
         return (
-            <div>
-                <h1>Log in</h1>
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="username">Username: </label>
-                    <input
-                        type="text"
-                        onChange={handleChange}
-                        name="username"
-                        id="username"
-                        value={formData.username}
-                        required
-                    />
-                    <label htmlFor="password">Password: </label>
-                    <input
-                        type="password"
-                        onChange={handleChange}
-                        name="password"
-                        id="password"
-                        value={formData.password}
-                        required
-                    />
-                    <button type="submit">Log in</button>
+            <div className="container bg-white rounded-md p-5 flex flex-col items-center gap-3 justify-center">
+                <h1 className="text-3xl font-bold text-cyan-700">Log in</h1>
+                <form
+                    onSubmit={handleSubmit}
+                    className="flex flex-col items-center gap-3 h-96"
+                >
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor="username">Username </label>
+                        <input
+                            type="text"
+                            onChange={handleChange}
+                            name="username"
+                            id="username"
+                            placeholder="Username"
+                            value={formData.username}
+                            required
+                            className="border-1 border-gray-300 rounded-md p-1"
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor="password">Password </label>
+                        <input
+                            type="password"
+                            onChange={handleChange}
+                            name="password"
+                            id="password"
+                            placeholder="Password"
+                            value={formData.password}
+                            className="border-1 border-gray-300 rounded-md p-1"
+                            required
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full bg-cyan-700 text-white font-bold rounded-md p-2"
+                    >
+                        Log in
+                    </button>
                 </form>
+                <p>
+                    Don't have an account? Register{" "}
+                    <NavLink to="/register" className="text-cyan-700 font-bold">
+                        Here
+                    </NavLink>
+                </p>
             </div>
         );
     }

@@ -84,7 +84,7 @@ function Header() {
     }
 
     return (
-        <header className="sticky top-0 bg-white border-b border-gray-200 z-10">
+        <header className="sticky top-0 bg-white border-b border-gray-200 z-10 mb-3">
             <div className="flex items-center justify-between p-5">
                 <NavLink to="/">
                     <h1 className="font-bold text-5xl text-cyan-700 ml-5 mr-3 flex items-baseline flex-nowrap text-nowrap">

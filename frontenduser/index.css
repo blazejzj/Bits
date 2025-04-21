@@ -20,7 +20,7 @@ body {
     margin: 0;
     padding: 0;
 
-    @apply bg-gray-50 text-gray-800;
+    @apply bg-gray-50;
 }
 
 #root {
