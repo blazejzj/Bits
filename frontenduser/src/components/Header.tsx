@@ -43,7 +43,7 @@ function Header() {
     }
 
     const linkBaseClasses =
-        "text-xl font-medium gradient‑wipe transition duration-500 ease-in-out border-b-2 text-nowrap";
+        "text-m font-medium gradient‑wipe transition duration-500 ease-in-out border-b-2 text-nowrap";
 
     function renderLoggedIn() {
         return (
@@ -60,7 +60,7 @@ function Header() {
                 </NavLink>
                 <button
                     onClick={handleLogout}
-                    className="text-xl font-medium text-xl font-medium gradient‑wipe transition duration-500 ease-in-out hover:cursor-pointer border-b-2 text-nowrap"
+                    className="text-m font-medium text-m font-medium gradient‑wipe transition duration-500 ease-in-out hover:cursor-pointer border-b-2 text-nowrap"
                 >
                     Log out
                 </button>
@@ -85,7 +85,7 @@ function Header() {
 
     return (
         <header className="sticky top-0 bg-white border-b border-gray-200 z-10 mb-3">
-            <div className="flex items-center justify-between p-5">
+            <div className="flex justify-between p-5">
                 <NavLink to="/">
                     <h1 className="font-bold text-5xl text-cyan-700 ml-5 mr-3 flex items-baseline flex-nowrap text-nowrap">
                         Bits <b className="text-xs">by opex</b>
@@ -111,7 +111,7 @@ function Header() {
                     )}
                 </button>
 
-                <nav className="hidden md:flex flex-row w-3/4 items-center">
+                <nav className="hidden md:flex flex-row w-3/4 items-end">
                     <ul className="flex gap-5 w-full content-center justify-center ml-1">
                         <NavLink
                             to="/"

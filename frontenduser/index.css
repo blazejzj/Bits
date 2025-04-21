@@ -19,10 +19,4 @@ html,
 body {
     margin: 0;
     padding: 0;
-
-    @apply bg-gray-50;
-}
-
-#root {
-    @apply min-h-screen;
 }

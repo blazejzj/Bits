@@ -10,7 +10,7 @@ function App() {
             <div className="container mx-auto px-4 flex-1 flex flex-col">
                 <Header />
 
-                <main className="bg-white flex-1 p-6 rounded-lg shadow-sm">
+                <main className="bg-white flex-1 p-6 rounded-lg shadow-sm flex items-center">
                     <Outlet />
                 </main>
 

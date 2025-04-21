@@ -33,73 +33,56 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 const response = await fetch("http://localhost:3000/profile", {
                     credentials: "include",
                 });
-                if (!response.ok) {
-                    throw new Error("Can't sign in user.");
-                }
-                const data: User = await response.json();
-                setUser(data);
-            } catch (error) {
-                if (error instanceof Error) {
-                    console.error(error.message);
+                if (response.ok) {
+                    const data: User = await response.json();
+                    setUser(data);
+                } else {
                     setUser(null);
                 }
+            } catch {
+                setUser(null);
             } finally {
                 setLoading(false);
             }
         }
-
         getUser();
     }, []);
 
     const login = async (username: string, password: string) => {
-        try {
-            await fetch("http://localhost:3000/auth/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({ username, password }),
-            });
+        const response = await fetch("http://localhost:3000/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ username, password }),
+        });
 
-            const profileResponse = await fetch(
-                "http://localhost:3000/profile",
-                {
-                    credentials: "include",
-                }
-            );
-            if (!profileResponse.ok) {
-                throw new Error("Failed to load user profile after login");
-            }
-            const user = await profileResponse.json();
-            setUser(user);
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error(
-                    "Something went wrong with loggin user in.",
-                    error.message
-                );
-                setUser(null);
-            }
+        const body = await response.json();
+
+        if (!response.ok) {
+            const errMsg = body.errors?.[0]?.msg || body.msg || "Login failed";
+
+            throw new Error(errMsg);
         }
+
+        const profileRes = await fetch("http://localhost:3000/profile", {
+            credentials: "include",
+        });
+        if (!profileRes.ok) {
+            throw new Error("Failed to load user profile after login");
+        }
+        const userData: User = await profileRes.json();
+        setUser(userData);
     };
 
     const logout = async () => {
-        try {
-            const response = await fetch("http://localhost:3000/auth/logout", {
-                method: "POST",
-                credentials: "include",
-            });
-            if (!response.ok) {
-                throw new Error("Something went wrong logging user out.");
-            }
-            setUser(null);
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error(
-                    "Something went wrong with loggin user out.",
-                    error.message
-                );
-            }
+        const response = await fetch("http://localhost:3000/auth/logout", {
+            method: "POST",
+            credentials: "include",
+        });
+        if (!response.ok) {
+            throw new Error("Something went wrong logging out.");
         }
+        setUser(null);
     };
 
     return (
