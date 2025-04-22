@@ -2,13 +2,14 @@ import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import UpdateEmail from "./profileUpdates/UpdateEmail";
 
 function Profile() {
     const { user, loading } = useAuth();
     const [errors, setErrors] = useState<string[]>();
     const [updateEmail, setUpdateEmail] = useState<boolean>(false);
-    const [updateName, setUpdateName] = useState<boolean>(false);
-    const [updatePassword, setUpdatePassword] = useState<boolean>(false);
+    // const [updateName, setUpdateName] = useState<boolean>(false);
+    // const [updatePassword, setUpdatePassword] = useState<boolean>(false);
 
     if (loading) {
         return <p>loading...</p>;
@@ -18,9 +19,13 @@ function Profile() {
         return <p>No user logged in. Unauthorized.</p>;
     }
 
+    function handleEmailClick() {
+        setUpdateEmail(!updateEmail);
+    }
+
     return (
         <div className="flex flex-col items-center justify-center w-full">
-            <div className="shadow p-7 flex flex-col gap-3">
+            <div className="shadow p-7 flex flex-col gap-3 rounded-md">
                 <div className="font-bold text-2xl">
                     <h1>
                         Welcome <b className="text-cyan-700">{user.name}</b>,
@@ -29,10 +34,10 @@ function Profile() {
                 </div>
                 <div>
                     <h2 className="text-center">Your information</h2>
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-5">
                         <div>
                             <p className="font-bold">Username</p>
-                            <div className="flex gap-2 items-center">
+                            <div className="flex gap-2">
                                 {user.username}
                                 <button>
                                     <FontAwesomeIcon
@@ -44,19 +49,34 @@ function Profile() {
                         </div>
                         <div>
                             <p className="font-bold">Email</p>
-                            <div className="flex gap-2 items-center">
+                            <div
+                                className={`flex gap-2 ${
+                                    updateEmail ? " flex-col" : ""
+                                }`}
+                            >
                                 {user.email}
-                                <button>
-                                    <FontAwesomeIcon
-                                        icon={faPenToSquare}
-                                        className="text-cyan-700"
+                                {updateEmail ? (
+                                    <UpdateEmail
+                                        errors={errors}
+                                        setErrors={setErrors}
+                                        setUpdateEmail={setUpdateEmail}
                                     />
-                                </button>
+                                ) : (
+                                    <button
+                                        onClick={handleEmailClick}
+                                        className="cursor-pointer"
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faPenToSquare}
+                                            className="text-cyan-700 cursor-pointer"
+                                        />
+                                    </button>
+                                )}
                             </div>
                         </div>
                         <div>
                             <p className="font-bold">Name</p>
-                            <div className="flex gap-2 items-center">
+                            <div className="flex gap-2 ">
                                 {user.name}
                                 <button>
                                     <FontAwesomeIcon
@@ -66,7 +86,7 @@ function Profile() {
                                 </button>
                             </div>
                         </div>
-                        <p>Change password</p>
+                        <button>Change password</button>
                     </div>
                 </div>
             </div>
