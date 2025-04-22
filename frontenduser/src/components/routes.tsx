@@ -4,7 +4,8 @@ import RegisterUser from "./RegisterUser";
 import Profile from "./Profile";
 import ErrorPage from "./ErrorPage";
 import App from "../App";
-import ProtectedRoute from "./AuthenticatedRoute";
+import AuthenticatedRoute from "./AuthenticatedRoute";
+import NotAuthenticatedRoute from "./NotAuthenticatedRoute";
 
 const routes = [
     {
@@ -15,13 +16,27 @@ const routes = [
             {
                 path: "/profile",
                 element: (
-                    <ProtectedRoute>
+                    <AuthenticatedRoute>
                         <Profile />
-                    </ProtectedRoute>
+                    </AuthenticatedRoute>
                 ),
             },
-            { path: "/login", element: <LogIn /> },
-            { path: "/register", element: <RegisterUser /> },
+            {
+                path: "/login",
+                element: (
+                    <NotAuthenticatedRoute>
+                        <LogIn />
+                    </NotAuthenticatedRoute>
+                ),
+            },
+            {
+                path: "/register",
+                element: (
+                    <NotAuthenticatedRoute>
+                        <RegisterUser />
+                    </NotAuthenticatedRoute>
+                ),
+            },
             { path: "*", element: <ErrorPage /> },
         ],
     },
