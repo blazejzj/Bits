@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 type UpdateEmailProps = {
     setUpdateEmail: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,11 +9,11 @@ type UpdateEmailProps = {
 function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
     const [errors, setErrors] = useState<string[]>([]);
     const [messages, setMessages] = useState<string[]>([]);
-
     const [formData, setFormData] = useState({
         email: "",
         authPassword: "",
     });
+    const { setUser } = useAuth();
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         setErrors([]);
@@ -32,7 +33,10 @@ function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
             } else {
                 const body = await response.json();
                 setMessages([...messages, body.msg]);
-                setUser;
+                setUser((prev) => ({
+                    ...prev!,
+                    email: formData.email,
+                }));
             }
         } catch (err) {
             if (err instanceof Error) {
