@@ -87,10 +87,12 @@ function RegisterUser() {
 
             navigate("/login");
         } catch (error) {
-            console.error(
-                "Something went wrong." +
-                    (error instanceof Error ? error.message : "")
-            );
+            if (error instanceof Error) {
+                setErrors([
+                    ...errors,
+                    "Internal server issues. Couldn't register",
+                ]);
+            }
         }
     }
 
