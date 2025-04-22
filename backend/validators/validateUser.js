@@ -129,12 +129,10 @@ exports.validateUpdatedUser = [
 
     body("authPassword")
         .notEmpty()
-        .withMessage(oldPasswordRequiredErr)
         .bail()
         .isLength({ min: 8 })
-        .withMessage(passwordRangeErr)
-        .isLength({ max: 100 })
-        .withMessage(passwordRangeErr),
+        .bail()
+        .isLength({ max: 100 }),
 
     body("username").custom((value, { req }) => {
         if (req.body.username !== undefined) {
