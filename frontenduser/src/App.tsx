@@ -22,7 +22,7 @@ function App() {
                     pauseOnHover
                 />
 
-                <main className="bg-white flex-1 p-6 rounded-lg shadow-sm flex items-center">
+                <main className="bg-white flex-1 p-6 rounded-lg shadow-sm flex h-max w-full">
                     <Outlet />
                 </main>
                 <Footer />
