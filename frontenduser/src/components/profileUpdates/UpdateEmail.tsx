@@ -1,24 +1,53 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-// import { useAuth } from "../../hooks/useAuth";
+import { Navigate } from "react-router-dom";
 
 type UpdateEmailProps = {
-    errors: string[] | undefined;
-    setErrors: React.Dispatch<React.SetStateAction<string[] | undefined>>;
     setUpdateEmail: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function UpdateEmail({ errors, setErrors, setUpdateEmail }: UpdateEmailProps) {
-    // const { user } = useAuth();
-    const hasErrors = errors && errors.length > 0;
+function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
+    const [errors, setErrors] = useState<string[]>([]);
+    const [messages, setMessages] = useState<string[]>([]);
 
     const [formData, setFormData] = useState({
         email: "",
         authPassword: "",
     });
 
-    function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         setErrors([]);
+        setMessages([]);
         e.preventDefault();
+
+        try {
+            const response = await fetch("http://localhost:3000/profile", {
+                method: "PATCH",
+                body: JSON.stringify(formData),
+                credentials: "include",
+                headers: { "Content-type": "application/json" },
+            });
+            if (!response.ok) {
+                const body = await response.json();
+                setErrors([...errors, body.msg]);
+            } else {
+                const body = await response.json();
+                setMessages([...messages, body.msg]);
+                setUser;
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                setErrors([
+                    ...errors,
+                    "Internal server issues. Couldn't update value.",
+                ]);
+            }
+        }
+        setFormData({
+            email: "",
+            authPassword: "",
+        });
+
+        return <Navigate to="/profile" />;
     }
 
     function handleCancelUpdate() {
@@ -27,20 +56,32 @@ function UpdateEmail({ errors, setErrors, setUpdateEmail }: UpdateEmailProps) {
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         setErrors([]);
+        setMessages([]);
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
     return (
-        <div className="shadow flex flex-col p-3 ml-5">
-            {hasErrors &&
-                errors!.map((errMsg, idx) => (
+        <div className="shadow flex flex-col p-5 ml-5">
+            {errors.length > 0 &&
+                errors.map((errMsg, idx) => (
                     <div
                         key={idx}
-                        className="bg-red-100 text-red-700 border border-red-200 rounded-md px-4 py-2"
+                        className="bg-red-100 text-red-700 border border-red-200 rounded-md px-4 py-2 mb-2"
                     >
                         {errMsg}
                     </div>
                 ))}
+
+            {messages.length > 0 &&
+                messages.map((messagesMsg, idx) => (
+                    <div
+                        key={idx}
+                        className="bg-green-100 text-green-700 border border-green-200 rounded-md px-4 py-2 mb-2"
+                    >
+                        {messagesMsg}
+                    </div>
+                ))}
+
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                 <div className="flex flex-col gap-2">
                     <label htmlFor="email" className="font-medium">
@@ -72,16 +113,16 @@ function UpdateEmail({ errors, setErrors, setUpdateEmail }: UpdateEmailProps) {
                         className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-700"
                     />
                 </div>
-                <div className="flex gap-3 mt-3">
+                <div className="flex gap-3 mt-3 ">
                     <button
                         type="submit"
-                        className="font-semibold cursor-pointer gradient-wipe transition-[background-position,transform] duration-500 ease-in-out"
+                        className="font-semibold text-lg cursor-pointer gradient-wipe transition-[background-position,transform] duration-500 ease-in-out"
                     >
                         Update
                     </button>
                     <button
                         onClick={handleCancelUpdate}
-                        className="font-semibold cursor-pointer gradient-wipe transition-[background-position,transform] duration-500 ease-in-out"
+                        className="font-semibold text-lg cursor-pointer gradient-wipe transition-[background-position,transform] duration-500 ease-in-out"
                     >
                         Cancel
                     </button>

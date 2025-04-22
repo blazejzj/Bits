@@ -6,7 +6,6 @@ import UpdateEmail from "./profileUpdates/UpdateEmail";
 
 function Profile() {
     const { user, loading } = useAuth();
-    const [errors, setErrors] = useState<string[]>();
     const [updateEmail, setUpdateEmail] = useState<boolean>(false);
     // const [updateName, setUpdateName] = useState<boolean>(false);
     // const [updatePassword, setUpdatePassword] = useState<boolean>(false);
@@ -43,6 +42,7 @@ function Profile() {
                                     <FontAwesomeIcon
                                         icon={faPenToSquare}
                                         className="text-cyan-700"
+                                        size="lg"
                                     />
                                 </button>
                             </div>
@@ -57,8 +57,6 @@ function Profile() {
                                 {user.email}
                                 {updateEmail ? (
                                     <UpdateEmail
-                                        errors={errors}
-                                        setErrors={setErrors}
                                         setUpdateEmail={setUpdateEmail}
                                     />
                                 ) : (
@@ -69,6 +67,7 @@ function Profile() {
                                         <FontAwesomeIcon
                                             icon={faPenToSquare}
                                             className="text-cyan-700 cursor-pointer"
+                                            size="lg"
                                         />
                                     </button>
                                 )}
@@ -82,6 +81,7 @@ function Profile() {
                                     <FontAwesomeIcon
                                         icon={faPenToSquare}
                                         className="text-cyan-700"
+                                        size="lg"
                                     />
                                 </button>
                             </div>
