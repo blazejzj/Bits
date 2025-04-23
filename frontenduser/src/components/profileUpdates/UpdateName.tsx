@@ -1,44 +1,47 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
 
-type UpdateEmailProps = {
-    setUpdateEmail: React.Dispatch<React.SetStateAction<boolean>>;
+type UpdateNameProps = {
+    setUpdateName: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
+type ErrorType = {
+    msg: string;
+};
+
+function UpdateName({ setUpdateName }: UpdateNameProps) {
     const [errors, setErrors] = useState<string[]>([]);
     const [messages, setMessages] = useState<string[]>([]);
     const [formData, setFormData] = useState({
-        email: "",
+        name: "",
         authPassword: "",
     });
-    const { setUser } = useAuth();
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
         setErrors([]);
         setMessages([]);
-        e.preventDefault();
 
         try {
             const response = await fetch("http://localhost:3000/profile", {
                 method: "PATCH",
                 body: JSON.stringify(formData),
                 credentials: "include",
-                headers: { "Content-type": "application/json" },
+                headers: {
+                    "Content-type": "application/json",
+                },
             });
+
             if (!response.ok) {
                 const body = await response.json();
+                body.msg.map((err: ErrorType) =>
+                    setErrors([...errors, err.msg])
+                );
                 // TODO
                 // FIX ERROR HANDLING, ERRORS ARE NOT DISPALYED CORRECTLY
-                setErrors([...errors, body.msg]);
+                // setErrors([...errors, body.msg]);
             } else {
                 const body = await response.json();
                 setMessages([...messages, body.msg]);
-                setUser((prev) => ({
-                    ...prev!,
-                    email: formData.email,
-                }));
             }
         } catch (err) {
             if (err instanceof Error) {
@@ -48,22 +51,16 @@ function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
                 ]);
             }
         }
-        setFormData({
-            email: "",
-            authPassword: "",
-        });
-
-        return <Navigate to="/profile" />;
-    }
-
-    function handleCancelUpdate() {
-        setUpdateEmail(false);
     }
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         setErrors([]);
         setMessages([]);
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+
+    function handleCancelUpdate() {
+        setUpdateName(false);
     }
 
     return (
@@ -90,23 +87,23 @@ function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                 <div className="flex flex-col gap-2">
-                    <label htmlFor="email" className="font-medium">
-                        New email adress:
+                    <label htmlFor="name" className="font-medium">
+                        New name:
                     </label>
                     <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        value={formData.email}
+                        type="name"
+                        name="name"
+                        id="name"
+                        value={formData.name}
                         onChange={handleChange}
                         required
-                        placeholder="Enter new email adress..."
+                        placeholder="Enter new name..."
                         className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-700"
                     />
                 </div>
                 <div className="flex flex-col gap-2">
                     <label htmlFor="authPassword" className="font-medium">
-                        To update your email you must enter your password
+                        To update your name you must enter your password
                     </label>
                     <input
                         type="password"
@@ -138,4 +135,4 @@ function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
     );
 }
 
-export default UpdateEmail;
+export default UpdateName;

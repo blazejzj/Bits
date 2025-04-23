@@ -3,11 +3,12 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import UpdateEmail from "./profileUpdates/UpdateEmail";
+import UpdateName from "./profileUpdates/UpdateName";
 
 function Profile() {
     const { user, loading } = useAuth();
     const [updateEmail, setUpdateEmail] = useState<boolean>(false);
-    // const [updateName, setUpdateName] = useState<boolean>(false);
+    const [updateName, setUpdateName] = useState<boolean>(false);
     // const [updatePassword, setUpdatePassword] = useState<boolean>(false);
 
     if (loading) {
@@ -20,6 +21,10 @@ function Profile() {
 
     function handleEmailClick() {
         setUpdateEmail(!updateEmail);
+    }
+
+    function handleNameClick() {
+        setUpdateName(!updateName);
     }
 
     return (
@@ -77,13 +82,20 @@ function Profile() {
                             <p className="font-bold">Name</p>
                             <div className="flex gap-2 ">
                                 {user.name}
-                                <button>
-                                    <FontAwesomeIcon
-                                        icon={faPenToSquare}
-                                        className="text-cyan-700"
-                                        size="lg"
-                                    />
-                                </button>
+                                {updateName ? (
+                                    <UpdateName setUpdateName={setUpdateName} />
+                                ) : (
+                                    <button
+                                        onClick={handleNameClick}
+                                        className="cursor-pointer"
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faPenToSquare}
+                                            className="text-cyan-700"
+                                            size="lg"
+                                        />
+                                    </button>
+                                )}
                             </div>
                         </div>
                         <button>Change password</button>
