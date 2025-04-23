@@ -20,7 +20,7 @@ exports.updateUserProfile = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({
-                msg: "Please enter a valid password.",
+                msg: errors.array(),
             });
         }
         const user = await db.getUserByUsername(req.user.username);

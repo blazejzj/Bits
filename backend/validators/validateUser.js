@@ -93,11 +93,11 @@ exports.validateUserLogin = [
 exports.validateUpdatedUser = [
     body("name")
         .optional()
-        .matches(/^[a-zA-ZæøåÆØÅ\s-]{2,100}$/)
-        .withMessage(namePatternErr)
-        .bail()
         .isLength({ min: 2, max: 100 })
-        .withMessage(nameLengthErr),
+        .withMessage(nameLengthErr)
+        .bail()
+        .matches(/^[a-zA-ZæøåÆØÅ\s-]{2,100}$/)
+        .withMessage(namePatternErr),
 
     body("email")
         .optional()
