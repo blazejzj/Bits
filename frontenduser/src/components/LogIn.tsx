@@ -26,9 +26,10 @@ function LogIn() {
         } catch (err) {
             let msg = "Something went wrong";
             if (err instanceof Error) {
-                msg = "Interal server issues. Couldn't log in.";
+                msg = err
+                    ? err.message
+                    : "Internal server issues. Couldn't log in right now.";
             }
-
             setError(msg);
         }
     }
