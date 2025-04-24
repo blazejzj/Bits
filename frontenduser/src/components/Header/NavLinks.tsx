@@ -1,14 +1,6 @@
 import { NavLink, useLocation, useSearchParams } from "react-router-dom";
 import { NavLinksProps } from "../../types/nav";
-import ErrorPage from "../ErrorPage";
-
-function slugify(name: string) {
-    return name
-        .toLowerCase()
-        .replace(/\s+/g, "")
-        .replace(/&/g, "and")
-        .replace(/[^\w-]/g, "");
-}
+import { slugify } from "../../utils/slugify";
 
 function NavLinks({ categories, navLinkStyles }: NavLinksProps) {
     const location = useLocation();

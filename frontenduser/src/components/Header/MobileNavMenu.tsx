@@ -1,8 +1,9 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../hooks/useAuth";
 import { MobileNavMenuProps } from "../../types/nav";
+import { slugify } from "../../utils/slugify";
 
 function MobileNavMenu({
     categories,
@@ -11,6 +12,11 @@ function MobileNavMenu({
     navLinkStyles,
 }: MobileNavMenuProps) {
     const { user } = useAuth();
+    const location = useLocation();
+    const [searchParams] = useSearchParams();
+    const currentCategory = searchParams.get("category");
+
+    const isBrowseActive = location.pathname === "/posts" && !currentCategory;
 
     return (
         <div className="lg:hidden bg-white border-t border-gray-200 shadow-md">
@@ -29,32 +35,47 @@ function MobileNavMenu({
                 >
                     Home
                 </NavLink>
+                <NavLink
+                    to="/posts"
+                    onClick={() => setMobileOpen(false)}
+                    className={[
+                        navLinkStyles.base,
+                        isBrowseActive
+                            ? navLinkStyles.active
+                            : navLinkStyles.inactive,
+                    ].join(" ")}
+                >
+                    Browse
+                </NavLink>
+                {categories.map((cat) => {
+                    const slug = slugify(cat.name);
+                    const isActive =
+                        location.pathname === "/posts" &&
+                        currentCategory === slug;
 
-                {categories.map((cat) => (
-                    <NavLink
-                        key={cat.id}
-                        to={`/posts?category=${cat.id}`}
-                        onClick={() => setMobileOpen(false)}
-                        className={({ isActive }) =>
-                            [
+                    return (
+                        <NavLink
+                            key={cat.id}
+                            to={`/posts?category=${slug}`}
+                            onClick={() => setMobileOpen(false)}
+                            className={[
                                 navLinkStyles.base,
                                 isActive
                                     ? navLinkStyles.active
                                     : navLinkStyles.inactive,
-                            ].join(" ")
-                        }
-                    >
-                        {cat.name}
-                    </NavLink>
-                ))}
-
-                <div className="pt-4 border-t border-gray-100 space-y-2">
+                            ].join(" ")}
+                        >
+                            {cat.name}
+                        </NavLink>
+                    );
+                })}
+                <div className="pt-4 border-t border-gray-100 space-y-2 flex items-center justify-between flex-wrap">
                     {user ? (
                         <>
                             <NavLink
                                 to="/profile"
                                 onClick={() => setMobileOpen(false)}
-                                className={`flex items-center px-3 py-2 rounded-full bg-cyan-600 text-white hover:bg-cyan-700 transition cursor-pointer`}
+                                className="flex items-center px-3 py-2 rounded-full bg-cyan-600 text-white hover:bg-cyan-700 transition cursor-pointer mt-2"
                             >
                                 <FontAwesomeIcon
                                     icon={faUser}
@@ -67,7 +88,7 @@ function MobileNavMenu({
                                     await handleLogout();
                                     setMobileOpen(false);
                                 }}
-                                className={`flex items-center px-3 py-2 rounded-full bg-cyan-600 text-white hover:bg-cyan-700 transition cursor-pointer`}
+                                className="flex items-center px-3 py-2 rounded-full bg-cyan-600 text-white hover:bg-cyan-700 transition cursor-pointer"
                             >
                                 <FontAwesomeIcon
                                     icon={faSignOutAlt}
@@ -80,7 +101,7 @@ function MobileNavMenu({
                         <NavLink
                             to="/login"
                             onClick={() => setMobileOpen(false)}
-                            className={`flex items-center px-3 py-2 rounded-full bg-cyan-600 text-white hover:bg-cyan-700 transition cursor-pointer`}
+                            className="flex items-center px-3 py-2 rounded-full bg-cyan-600 text-white hover:bg-cyan-700 transition cursor-pointer"
                         >
                             <FontAwesomeIcon icon={faUser} className="mr-2" />
                             Log in

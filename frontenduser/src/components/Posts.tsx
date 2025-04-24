@@ -1,16 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Post } from "../types/post";
+import { slugify } from "../utils/slugify";
 
 function Posts() {
-    function slugify(name: string) {
-        return name
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .replace(/&/g, "and")
-            .replace(/[^\w-]/g, "");
-    }
-
     const [posts, setPosts] = useState<Post[]>();
 
     useEffect(() => {});
