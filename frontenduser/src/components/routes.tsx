@@ -40,6 +40,7 @@ const routes = [
             },
             {
                 path: "/posts",
+                index: true,
                 element: <Posts />,
             },
             { path: "*", element: <ErrorPage /> },
