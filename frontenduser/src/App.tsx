@@ -6,7 +6,7 @@ import { ToastContainer } from "react-toastify";
 
 function App() {
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-gray-200 flex flex-col">
             <div className="container mx-auto px-4 flex-1 flex flex-col">
                 <Header />
                 <ToastContainer
@@ -21,7 +21,7 @@ function App() {
                     pauseOnHover
                 />
 
-                <main className="bg-white flex-1 p-6 rounded-lg shadow-sm flex h-max w-full">
+                <main className="bg-white flex-1 p-6 shadow-sm flex h-max w-full">
                     <Outlet />
                 </main>
                 <Footer />

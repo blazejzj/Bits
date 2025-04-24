@@ -5,7 +5,7 @@ import Logo from "./Logo";
 function Footer() {
     function renderFooter() {
         return (
-            <div className="bg-white flex flex-col md:flex-row gap-3 md:gap-0 justify-between mt-3 p-5 items-center ">
+            <div className="bg-white flex flex-col md:flex-row gap-3 md:gap-0 justify-between shadow p-5 items-center ">
                 <div>
                     <Logo />
                 </div>
