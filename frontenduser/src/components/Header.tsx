@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
+import Logo from "./Logo";
 
 interface Category {
     id: number;
@@ -94,11 +95,7 @@ function Header() {
     return (
         <header className="sticky top-0 bg-white border-b border-gray-200 z-10 mb-3">
             <div className="flex justify-between p-5">
-                <NavLink to="/">
-                    <h1 className="font-bold text-5xl text-cyan-700 ml-5 mr-3 flex items-baseline flex-nowrap text-nowrap">
-                        Bits <b className="text-xs">by blazejzj</b>
-                    </h1>
-                </NavLink>
+                <Logo />
 
                 <button
                     className="md:hidden focus:outline-none"

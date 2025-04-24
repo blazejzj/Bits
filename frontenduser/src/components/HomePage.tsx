@@ -3,7 +3,7 @@ import homePageBG from "../assets/homepageBG.svg";
 function HomePage() {
     return (
         <div className="max-w-screen-xl mx-auto p-5 flex flex-col items-center justify-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center from-top">
                 <div className="flex flex-col items-center justify-center gap-3 text-center">
                     <h1 className="text-3xl font-bold">
                         Hey! I am <span className="text-cyan-700">Blazej</span>
@@ -25,7 +25,7 @@ function HomePage() {
                 </div>
             </div>
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                <div className="shadow p-4 rounded-lg shadow-cyan-900">
+                <div className="shadow p-4 rounded-lg shadow-cyan-900 from-left-fourth">
                     <h3 className="font-bold text-cyan-700 mb-2 ">
                         Data Security
                     </h3>
@@ -34,19 +34,19 @@ function HomePage() {
                         code.
                     </p>
                 </div>
-                <div className="shadow shadow-cyan-900 p-4 rounded-lg">
+                <div className="shadow shadow-cyan-900 p-4 rounded-lg from-left-third">
                     <h3 className="font-bold text-cyan-700 mb-2">
                         Programming
                     </h3>
                     <p>Tips, deep dives, and building better architecture.</p>
                 </div>
-                <div className="shadow shadow-cyan-900 p-4 rounded-lg">
+                <div className="shadow shadow-cyan-900 p-4 rounded-lg from-left-second">
                     <h3 className="font-bold text-cyan-700 mb-2">
                         Self-Learning
                     </h3>
                     <p>How to stay sharp and actually retain what you learn.</p>
                 </div>
-                <div className="shadow shadow-cyan-900 p-4 rounded-lg">
+                <div className="shadow shadow-cyan-900 p-4 rounded-lg from-left-first">
                     <h3 className="font-bold text-cyan-700 mb-2">
                         Tech Trends
                     </h3>

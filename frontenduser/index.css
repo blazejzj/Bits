@@ -16,6 +16,46 @@
     .gradient-wipe:hover {
         background-position: -100% 0;
     }
+    .from-top {
+        animation: slide-in-top 1s ease-out forwards;
+    }
+    .from-left {
+        animation: slide-in-left 0.8s ease-out forwards;
+    }
+    .from-left-first {
+        animation: slide-in-left 1s ease-out forwards;
+    }
+    .from-left-second {
+        animation: slide-in-left 1.2s ease-out forwards;
+    }
+    .from-left-third {
+        animation: slide-in-left 1.4s ease-out forwards;
+    }
+    .from-left-fourth {
+        animation: slide-in-left 1.6s ease-out forwards;
+    }
+}
+
+@keyframes slide-in-top {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-left {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 html,
