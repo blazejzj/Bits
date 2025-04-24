@@ -122,6 +122,7 @@ exports.validateUpdatedUser = [
         .if(body("password").exists())
         .custom((value, { req }) => {
             if (value !== req.body.password) {
+                console.log("triggered");
                 throw new Error(passwordMismatchErr);
             }
             return true;

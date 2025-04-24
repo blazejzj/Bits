@@ -29,7 +29,7 @@ exports.updateUserProfile = [
         const match = await bcrypt.compare(authPassword, user.password);
         if (!match) {
             return res.status(401).json({
-                msg: "Authorization failed. Wrong password.",
+                msg: "Password is incorrect. Try again.",
             });
         }
 
@@ -43,7 +43,7 @@ exports.updateUserProfile = [
         }
 
         if (req.body.password) {
-            const hashedPassword = await bcrypt.hash(req.body.password);
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
             await db.updateUserPassword(username, hashedPassword);
         }
 
