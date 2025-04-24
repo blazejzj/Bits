@@ -4,12 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import UpdateEmail from "./profileUpdates/UpdateEmail";
 import UpdateName from "./profileUpdates/UpdateName";
+import UpdatePassword from "./profileUpdates/UpdatePassword";
 
 function Profile() {
     const { user, loading } = useAuth();
     const [updateEmail, setUpdateEmail] = useState<boolean>(false);
     const [updateName, setUpdateName] = useState<boolean>(false);
-    // const [updatePassword, setUpdatePassword] = useState<boolean>(false);
+    const [updatePassword, setUpdatePassword] = useState<boolean>(false);
 
     if (loading) {
         return <p>loading...</p>;
@@ -25,6 +26,10 @@ function Profile() {
 
     function handleNameClick() {
         setUpdateName(!updateName);
+    }
+
+    function handlePasswordClick() {
+        setUpdatePassword(!updatePassword);
     }
 
     return (
@@ -50,7 +55,7 @@ function Profile() {
                                     updateEmail ? " flex-col" : ""
                                 }`}
                             >
-                                {user.email}
+                                <span>{user.email}</span>
                                 {updateEmail ? (
                                     <UpdateEmail
                                         setUpdateEmail={setUpdateEmail}
@@ -76,7 +81,7 @@ function Profile() {
                                     updateName ? "flex-col" : ""
                                 }`}
                             >
-                                {user.name}
+                                <span>{user.name}</span>
                                 {updateName ? (
                                     <UpdateName setUpdateName={setUpdateName} />
                                 ) : (
@@ -93,7 +98,32 @@ function Profile() {
                                 )}
                             </div>
                         </div>
-                        <button>Change password</button>
+                        <div>
+                            <p className="font-bold">Password</p>
+                            <div
+                                className={`flex gap-2 ${
+                                    updatePassword ? "flex-col" : ""
+                                }`}
+                            >
+                                <span>*********</span>
+                                {updatePassword ? (
+                                    <UpdatePassword
+                                        setUpdatePassword={setUpdatePassword}
+                                    />
+                                ) : (
+                                    <button
+                                        className="cursor-pointer"
+                                        onClick={handlePasswordClick}
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faPenToSquare}
+                                            className="text-cyan-700"
+                                            size="lg"
+                                        />
+                                    </button>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

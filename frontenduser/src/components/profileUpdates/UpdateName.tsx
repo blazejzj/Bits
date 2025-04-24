@@ -114,7 +114,7 @@ function UpdateName({ setUpdateName }: UpdateNameProps) {
                 </div>
                 <div className="flex flex-col gap-2">
                     <label htmlFor="authPassword" className="font-medium">
-                        To update your name you must enter your password
+                        Password to confirm change
                     </label>
                     <input
                         type="password"
@@ -122,7 +122,7 @@ function UpdateName({ setUpdateName }: UpdateNameProps) {
                         id="authPassword"
                         value={formData.authPassword}
                         onChange={handleChange}
-                        placeholder="Confirmation password"
+                        placeholder="Old password..."
                         required
                         className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-700"
                     />
