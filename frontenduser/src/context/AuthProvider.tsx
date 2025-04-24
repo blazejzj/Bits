@@ -9,9 +9,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         async function getUser() {
             try {
-                const response = await fetch("http://localhost:3000/profile", {
-                    credentials: "include",
-                });
+                const response = await fetch(
+                    `${import.meta.env.VITE_API_URL}/profile`,
+                    {
+                        credentials: "include",
+                    }
+                );
                 if (response.ok) {
                     const data: User = await response.json();
                     setUser(data);
@@ -29,12 +32,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const login = async (username: string, password: string) => {
-        const response = await fetch("http://localhost:3000/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify({ username, password }),
-        });
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/auth/login`,
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ username, password }),
+            }
+        );
 
         const body = await response.json();
 
@@ -43,9 +49,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             throw new Error(errMsg);
         }
 
-        const profileRes = await fetch("http://localhost:3000/profile", {
-            credentials: "include",
-        });
+        const profileRes = await fetch(
+            `${import.meta.env.VITE_API_URL}/profile`,
+            {
+                credentials: "include",
+            }
+        );
 
         if (!profileRes.ok) {
             throw new Error("Failed to load user profile after login");
@@ -56,10 +65,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const logout = async () => {
-        const response = await fetch("http://localhost:3000/auth/logout", {
-            method: "POST",
-            credentials: "include",
-        });
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/auth/logout`,
+            {
+                method: "POST",
+                credentials: "include",
+            }
+        );
 
         if (!response.ok) {
             throw new Error("Something went wrong logging out.");

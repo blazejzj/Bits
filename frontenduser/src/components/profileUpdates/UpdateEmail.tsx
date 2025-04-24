@@ -25,12 +25,15 @@ function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
         e.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:3000/profile", {
-                method: "PATCH",
-                body: JSON.stringify(formData),
-                credentials: "include",
-                headers: { "Content-type": "application/json" },
-            });
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/profile`,
+                {
+                    method: "PATCH",
+                    body: JSON.stringify(formData),
+                    credentials: "include",
+                    headers: { "Content-type": "application/json" },
+                }
+            );
             if (!response.ok) {
                 const body = await response.json();
                 if (Array.isArray(body.msg)) {

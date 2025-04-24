@@ -2,195 +2,121 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+    faBars,
+    faXmark,
+    faUser,
+    faSignOutAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import Logo from "./Logo";
+import NavLinks from "./Header/NavLinks";
+import MobileNavMenu from "./Header/MobileNavMenu";
+import { Category } from "../types/category";
 
-interface Category {
-    id: number;
-    name: string;
-}
-
-function Header() {
+export default function Header() {
     const [categories, setCategories] = useState<Category[]>([]);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const [mobileOpen, setMobileOpen] = useState(false);
 
+    const navLinkStyles = {
+        base: "text-base font-medium transition-[background-position] duration-500 whitespace-nowrap px-3 py-1 rounded-full cursor-pointer",
+        active: "bg-cyan-600 text-white hover:bg-cyan-700",
+        inactive: "gradient-wipe text-black",
+    };
+
     useEffect(() => {
         async function getCategories() {
             try {
-                const response = await fetch(
-                    "http://localhost:3000/posts/category",
-                    {
-                        method: "GET",
-                    }
+                const res = await fetch(
+                    `${import.meta.env.VITE_API_URL}/posts/category`
                 );
-                if (!response.ok) {
-                    throw new Error("Failed fetching data." + response.status);
-                }
-
-                const data = await response.json();
-                setCategories(data);
-            } catch (error) {
-                console.error(error);
+                if (!res.ok) throw new Error("Fetch error: " + res.status);
+                setCategories(await res.json());
+            } catch (e) {
+                console.error(e);
             }
         }
         getCategories();
     }, []);
 
-    async function handleLogout() {
+    async function handleLogout(): Promise<void> {
         try {
             await logout();
-            toast.success("Successfully logged out!");
+            toast.success("Successfully logged out");
             navigate("/");
-        } catch (err) {
-            if (err instanceof Error) {
-                toast.error("Something went wrong...");
-            }
+        } catch {
+            toast.error("Logout failed");
         }
     }
 
-    const linkBaseClasses =
-        "text-m font-medium gradient-wipe transition-[background-position,transform] duration-500 ease-in-out border-b-2 whitespace-nowrap";
-
-    function renderLoggedIn() {
+    function renderAuthButtons() {
+        const btnBase =
+            "flex items-center px-4 py-1 rounded-full transition cursor-pointer ";
+        const active = "bg-cyan-600 text-white hover:bg-cyan-700";
         return (
-            <>
-                <NavLink
-                    to="/profile"
-                    className={({ isActive }) =>
-                        `${linkBaseClasses} ${
-                            isActive ? "border-cyan-700" : "border-transparent"
-                        }`
-                    }
-                >
-                    Profile
-                </NavLink>
-                <button
-                    onClick={handleLogout}
-                    className={`${linkBaseClasses} border-transparent hover:cursor-pointer`}
-                >
-                    Log out
-                </button>
-            </>
-        );
-    }
-
-    function renderLoggedOut() {
-        return (
-            <NavLink
-                to="/login"
-                className={({ isActive }) =>
-                    `${linkBaseClasses} ${
-                        isActive ? "border-cyan-700" : "border-transparent"
-                    }`
-                }
-            >
-                Log in
-            </NavLink>
+            <div className="hidden lg:flex items-center space-x-3">
+                {user ? (
+                    <>
+                        <NavLink to="/profile" className={btnBase + active}>
+                            <FontAwesomeIcon icon={faUser} className="mr-2" />
+                            Profile
+                        </NavLink>
+                        <button
+                            onClick={handleLogout}
+                            className={btnBase + active}
+                        >
+                            <FontAwesomeIcon
+                                icon={faSignOutAlt}
+                                className="mr-2"
+                            />
+                            Log out
+                        </button>
+                    </>
+                ) : (
+                    <NavLink to="/login" className={btnBase + active}>
+                        <FontAwesomeIcon icon={faUser} className="mr-2" />
+                        Log in
+                    </NavLink>
+                )}
+            </div>
         );
     }
 
     return (
-        <header className="sticky top-0 bg-white border-b border-gray-200 z-10 mb-3">
-            <div className="flex justify-between p-5">
+        <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+            <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
                 <Logo />
 
+                <NavLinks
+                    categories={categories}
+                    navLinkStyles={navLinkStyles}
+                />
+
+                {renderAuthButtons()}
+
                 <button
-                    className="md:hidden focus:outline-none"
-                    onClick={() => setMobileOpen(!mobileOpen)}
+                    onClick={() => setMobileOpen((prev) => !prev)}
+                    className="lg:hidden text-2xl text-cyan-700 focus:outline-none"
+                    aria-label="Toggle menu"
                 >
                     {mobileOpen ? (
-                        <FontAwesomeIcon
-                            icon={faXmark}
-                            size="2xl"
-                            className="text-cyan-700"
-                        />
+                        <FontAwesomeIcon icon={faXmark} />
                     ) : (
-                        <FontAwesomeIcon
-                            icon={faBars}
-                            size="2xl"
-                            className="text-cyan-700"
-                        />
+                        <FontAwesomeIcon icon={faBars} />
                     )}
                 </button>
-
-                <nav className="hidden md:flex flex-row w-3/4 items-end">
-                    <ul className="flex gap-5 w-full content-center justify-center ml-1">
-                        <NavLink
-                            to="/"
-                            className={({ isActive }) =>
-                                `${linkBaseClasses} ${
-                                    isActive
-                                        ? "border-cyan-700"
-                                        : "border-transparent"
-                                }`
-                            }
-                        >
-                            Home
-                        </NavLink>
-
-                        {categories.map((category) => (
-                            <NavLink
-                                key={category.id}
-                                to={`/posts?category=${category.id}`}
-                                className={({ isActive }) =>
-                                    `${linkBaseClasses} ${
-                                        isActive
-                                            ? "border-cyan-700"
-                                            : "border-transparent"
-                                    }`
-                                }
-                            >
-                                {category.name}
-                            </NavLink>
-                        ))}
-
-                        {user ? renderLoggedIn() : renderLoggedOut()}
-                    </ul>
-                </nav>
             </div>
+
             {mobileOpen && (
-                <nav className="md:hidden bg-white border-t border-gray-200">
-                    <ul className="flex flex-col p-4 space-y-4">
-                        <NavLink
-                            to="/"
-                            className={({ isActive }) =>
-                                `${linkBaseClasses} ${
-                                    isActive
-                                        ? "border-cyan-700"
-                                        : "border-transparent"
-                                }`
-                            }
-                            onClick={() => setMobileOpen(false)}
-                        >
-                            Home
-                        </NavLink>
-
-                        {categories.map((category) => (
-                            <NavLink
-                                key={category.id}
-                                to={`/posts?category=${category.id}`}
-                                className={({ isActive }) =>
-                                    `${linkBaseClasses} ${
-                                        isActive
-                                            ? "border-cyan-700"
-                                            : "border-transparent"
-                                    }`
-                                }
-                                onClick={() => setMobileOpen(false)}
-                            >
-                                {category.name}
-                            </NavLink>
-                        ))}
-
-                        {user ? renderLoggedIn() : renderLoggedOut()}
-                    </ul>
-                </nav>
+                <MobileNavMenu
+                    categories={categories}
+                    setMobileOpen={setMobileOpen}
+                    handleLogout={handleLogout}
+                    navLinkStyles={navLinkStyles}
+                />
             )}
         </header>
     );
 }
-
-export default Header;
