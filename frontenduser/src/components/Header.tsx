@@ -96,7 +96,7 @@ function Header() {
             <div className="flex justify-between p-5">
                 <NavLink to="/">
                     <h1 className="font-bold text-5xl text-cyan-700 ml-5 mr-3 flex items-baseline flex-nowrap text-nowrap">
-                        Bits <b className="text-xs">by opex</b>
+                        Bits <b className="text-xs">by blazejzj</b>
                     </h1>
                 </NavLink>
 

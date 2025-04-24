@@ -6,6 +6,7 @@ import ErrorPage from "./ErrorPage";
 import App from "../App";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import NotAuthenticatedRoute from "./NotAuthenticatedRoute";
+import Posts from "./Posts";
 
 const routes = [
     {
@@ -36,6 +37,10 @@ const routes = [
                         <RegisterUser />
                     </NotAuthenticatedRoute>
                 ),
+            },
+            {
+                path: "/posts",
+                element: <Posts />,
             },
             { path: "*", element: <ErrorPage /> },
         ],
