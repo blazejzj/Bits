@@ -41,16 +41,7 @@ function Profile() {
                     <div className="flex flex-col gap-5">
                         <div>
                             <p className="font-bold">Username</p>
-                            <div className="flex gap-2">
-                                {user.username}
-                                <button>
-                                    <FontAwesomeIcon
-                                        icon={faPenToSquare}
-                                        className="text-cyan-700"
-                                        size="lg"
-                                    />
-                                </button>
-                            </div>
+                            <div className="flex gap-2">{user.username}</div>
                         </div>
                         <div>
                             <p className="font-bold">Email</p>
@@ -80,7 +71,11 @@ function Profile() {
                         </div>
                         <div>
                             <p className="font-bold">Name</p>
-                            <div className="flex gap-2 ">
+                            <div
+                                className={`flex gap-2 ${
+                                    updateName ? "flex-col" : ""
+                                }`}
+                            >
                                 {user.name}
                                 {updateName ? (
                                     <UpdateName setUpdateName={setUpdateName} />

@@ -6,6 +6,10 @@ type UpdateEmailProps = {
     setUpdateEmail: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+type ErrorType = {
+    msg: string;
+};
+
 function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
     const [errors, setErrors] = useState<string[]>([]);
     const [messages, setMessages] = useState<string[]>([]);
@@ -29,9 +33,13 @@ function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
             });
             if (!response.ok) {
                 const body = await response.json();
-                // TODO
-                // FIX ERROR HANDLING, ERRORS ARE NOT DISPALYED CORRECTLY
-                setErrors([...errors, body.msg]);
+                if (Array.isArray(body.msg)) {
+                    body.msg.map((err: ErrorType) =>
+                        setErrors([...errors, err.msg])
+                    );
+                } else {
+                    setErrors([...errors, body.msg]);
+                }
             } else {
                 const body = await response.json();
                 setMessages([...messages, body.msg]);
@@ -39,6 +47,10 @@ function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
                     ...prev!,
                     email: formData.email,
                 }));
+                setFormData({
+                    email: "",
+                    authPassword: "",
+                });
             }
         } catch (err) {
             if (err instanceof Error) {
@@ -48,10 +60,6 @@ function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
                 ]);
             }
         }
-        setFormData({
-            email: "",
-            authPassword: "",
-        });
 
         return <Navigate to="/profile" />;
     }

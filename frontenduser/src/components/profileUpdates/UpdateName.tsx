@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 
 type UpdateNameProps = {
     setUpdateName: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,6 +16,7 @@ function UpdateName({ setUpdateName }: UpdateNameProps) {
         name: "",
         authPassword: "",
     });
+    const { setUser } = useAuth();
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -33,15 +35,24 @@ function UpdateName({ setUpdateName }: UpdateNameProps) {
 
             if (!response.ok) {
                 const body = await response.json();
-                body.msg.map((err: ErrorType) =>
-                    setErrors([...errors, err.msg])
-                );
-                // TODO
-                // FIX ERROR HANDLING, ERRORS ARE NOT DISPALYED CORRECTLY
-                // setErrors([...errors, body.msg]);
+                if (Array.isArray(body.msg)) {
+                    body.msg.map((err: ErrorType) =>
+                        setErrors([...errors, err.msg])
+                    );
+                } else {
+                    setErrors([...errors, body.msg]);
+                }
             } else {
                 const body = await response.json();
                 setMessages([...messages, body.msg]);
+                setUser((prev) => ({
+                    ...prev!,
+                    name: formData.name,
+                }));
+                setFormData({
+                    name: "",
+                    authPassword: "",
+                });
             }
         } catch (err) {
             if (err instanceof Error) {
