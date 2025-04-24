@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,10 +9,10 @@ import {
     faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
-import Logo from "./Logo";
-import NavLinks from "./Header/NavLinks";
-import MobileNavMenu from "./Header/MobileNavMenu";
-import { Category } from "../types/category";
+import Logo from "../Logo";
+import NavLinks from "./NavLinks";
+import MobileNavMenu from "./MobileNavMenu";
+import { Category } from "../../types/category";
 
 export default function Header() {
     const [categories, setCategories] = useState<Category[]>([]);
