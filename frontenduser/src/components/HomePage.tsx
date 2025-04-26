@@ -5,7 +5,10 @@ function HomePage() {
         <div className="max-w-screen-xl mx-auto p-5 flex flex-col items-center justify-center">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center from-top">
                 <div className="flex flex-col items-center justify-center gap-3 text-center">
-                    <h1 className="text-3xl font-bold">
+                    <h1
+                        className="text-3xl font-bold"
+                        data-testid="homepage-header"
+                    >
                         Hey! I am <span className="text-cyan-700">Blazej</span>
                     </h1>
                     <p>
@@ -26,7 +29,10 @@ function HomePage() {
             </div>
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 <div className="shadow p-4 rounded-lg shadow-cyan-900 from-left-fourth">
-                    <h3 className="font-bold text-cyan-700 mb-2 ">
+                    <h3
+                        className="font-bold text-cyan-700 mb-2"
+                        data-testid="homepage-card-header"
+                    >
                         Data Security
                     </h3>
                     <p>
@@ -35,19 +41,28 @@ function HomePage() {
                     </p>
                 </div>
                 <div className="shadow shadow-cyan-900 p-4 rounded-lg from-left-third">
-                    <h3 className="font-bold text-cyan-700 mb-2">
+                    <h3
+                        className="font-bold text-cyan-700 mb-2"
+                        data-testid="homepage-card-header"
+                    >
                         Programming
                     </h3>
                     <p>Tips, deep dives, and building better architecture.</p>
                 </div>
                 <div className="shadow shadow-cyan-900 p-4 rounded-lg from-left-second">
-                    <h3 className="font-bold text-cyan-700 mb-2">
+                    <h3
+                        className="font-bold text-cyan-700 mb-2"
+                        data-testid="homepage-card-header"
+                    >
                         Self-Learning
                     </h3>
                     <p>How to stay sharp and actually retain what you learn.</p>
                 </div>
                 <div className="shadow shadow-cyan-900 p-4 rounded-lg from-left-first">
-                    <h3 className="font-bold text-cyan-700 mb-2">
+                    <h3
+                        className="font-bold text-cyan-700 mb-2"
+                        data-testid="homepage-card-header"
+                    >
                         Tech Trends
                     </h3>
                     <p>
