@@ -59,13 +59,18 @@ export default function Header() {
             <div className="hidden lg:flex items-center space-x-3">
                 {user ? (
                     <>
-                        <NavLink to="/profile" className={btnBase + active}>
+                        <NavLink
+                            to="/profile"
+                            className={btnBase + active}
+                            data-testid="profile-button"
+                        >
                             <FontAwesomeIcon icon={faUser} className="mr-2" />
                             Profile
                         </NavLink>
                         <button
                             onClick={handleLogout}
                             className={btnBase + active}
+                            data-testid="logout-button"
                         >
                             <FontAwesomeIcon
                                 icon={faSignOutAlt}
@@ -76,7 +81,11 @@ export default function Header() {
                     </>
                 ) : (
                     <NavLink to="/login" className={btnBase + active}>
-                        <FontAwesomeIcon icon={faUser} className="mr-2" />
+                        <FontAwesomeIcon
+                            icon={faUser}
+                            className="mr-2"
+                            data-testid="login-button"
+                        />
                         Log in
                     </NavLink>
                 )}
