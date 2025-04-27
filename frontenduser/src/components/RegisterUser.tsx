@@ -23,7 +23,7 @@ function RegisterUser() {
             ok: namePattern.test(formData.name),
         });
         reqs.push({
-            label: "Name length: 2–100 chars",
+            label: "Name length: 2-100 chars",
             ok: formData.name.length >= 2 && formData.name.length <= 100,
         });
 
@@ -129,6 +129,7 @@ function RegisterUser() {
                         <div
                             key={idx}
                             className="bg-red-100 text-red-700 border border-red-200 rounded-md px-4 py-2"
+                            data-testid="register-error-div"
                         >
                             {errMsg}
                         </div>
