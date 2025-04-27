@@ -42,7 +42,10 @@ function LogIn() {
                 </h1>
 
                 {error && (
-                    <div className="bg-red-100 text-red-700 border border-red-200 rounded-md px-4 py-2">
+                    <div
+                        className="bg-red-100 text-red-700 border border-red-200 rounded-md px-4 py-2"
+                        data-testid="login-error-div"
+                    >
                         {error}
                     </div>
                 )}
