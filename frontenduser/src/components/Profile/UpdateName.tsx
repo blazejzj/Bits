@@ -18,6 +18,14 @@ function UpdateName({ setUpdateName }: UpdateNameProps) {
     });
     const { setUser } = useAuth();
 
+    function addNewMessage(msg: string) {
+        setMessages((prev) => [...prev, msg]);
+    }
+
+    function addNewError(err: string) {
+        setErrors((prev) => [...prev, err]);
+    }
+
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setErrors([]);
@@ -39,15 +47,14 @@ function UpdateName({ setUpdateName }: UpdateNameProps) {
             if (!response.ok) {
                 const body = await response.json();
                 if (Array.isArray(body.msg)) {
-                    body.msg.map((err: ErrorType) =>
-                        setErrors([...errors, err.msg])
-                    );
+                    body.msg.map((err: ErrorType) => addNewError(err.msg));
                 } else {
-                    setErrors([...errors, body.msg]);
+                    addNewError(body.msg);
                 }
             } else {
                 const body = await response.json();
-                setMessages([...messages, body.msg]);
+                addNewMessage(body.msg);
+
                 setUser((prev) => ({
                     ...prev!,
                     name: formData.name,
@@ -59,10 +66,7 @@ function UpdateName({ setUpdateName }: UpdateNameProps) {
             }
         } catch (err) {
             if (err instanceof Error) {
-                setErrors([
-                    ...errors,
-                    "Internal server issues. Couldn't update value.",
-                ]);
+                addNewError("Internal server issues. Couldn't update value.");
             }
         }
     }

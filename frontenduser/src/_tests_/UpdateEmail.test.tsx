@@ -206,7 +206,6 @@ describe("UpdateEmail component", () => {
 
         // Assert
         await waitFor(() => {
-            screen.debug();
             expect(screen.getByText("Wrong password!")).toBeInTheDocument();
             expect(screen.getByText("Wrong password!")).toHaveClass(
                 "bg-red-100"
