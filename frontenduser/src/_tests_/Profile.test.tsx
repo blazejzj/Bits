@@ -142,4 +142,124 @@ describe("Profile component", () => {
             expect(newNameLabelAfter).toBeInTheDocument();
         });
     });
+
+    it("should render email change form when wanting to update email", async () => {
+        // Arrange
+
+        const user = userEvent.setup();
+
+        const mockUser = {
+            user: {
+                id: "123321",
+                name: "testname",
+                username: "testusername",
+                email: "email@test.no",
+            },
+            loading: false,
+            setUser: vi.fn(),
+            login: vi.fn(),
+            logout: vi.fn(),
+        };
+
+        render(
+            <MemoryRouter>
+                <AuthContext value={mockUser}>
+                    <Profile />
+                </AuthContext>
+            </MemoryRouter>
+        );
+
+        const emailEditBtnBefore = screen.getByTestId("profile-editemailbtn");
+        expect(emailEditBtnBefore).toBeInTheDocument();
+
+        const emailUpdateLabel = screen.queryByLabelText(/New email adress:/i);
+        expect(emailUpdateLabel).not.toBeInTheDocument();
+
+        // Act
+        await user.click(emailEditBtnBefore);
+
+        // Assert
+
+        const emailEditBtnAfter = await screen.queryByTestId(
+            "profile-editemailbtn"
+        );
+        expect(emailEditBtnAfter).not.toBeInTheDocument();
+
+        const emailUpdateLabelAfter = await screen.queryByLabelText(
+            /New email adress:/i
+        );
+        expect(emailUpdateLabelAfter).toBeInTheDocument();
+    });
+
+    it("should render password change form when wanting to change password", async () => {
+        // Arrange
+        const user = userEvent.setup();
+
+        const mockUser = {
+            user: {
+                id: "123",
+                name: "name",
+                username: "username",
+                email: "email@test.no",
+            },
+            loading: false,
+            login: vi.fn(),
+            logout: vi.fn(),
+            setUser: vi.fn(),
+        };
+
+        render(
+            <MemoryRouter>
+                <AuthContext value={mockUser}>
+                    <Profile />
+                </AuthContext>
+            </MemoryRouter>
+        );
+
+        const editPasswordBtnBefore = screen.getByTestId(
+            "profile-editpasswordbtn"
+        );
+        expect(editPasswordBtnBefore).toBeInTheDocument();
+
+        const editPasswordFormLabelBefore =
+            screen.queryByLabelText(/New password/i);
+        expect(editPasswordFormLabelBefore).not.toBeInTheDocument();
+
+        // Act
+        await user.click(editPasswordBtnBefore);
+
+        // Assert
+        const editPasswordBtnAfter = await screen.queryByTestId(
+            "profile-editpasswordbtn"
+        );
+        expect(editPasswordBtnAfter).not.toBeInTheDocument();
+
+        const editPasswordFormLabelAfter = await screen.queryByLabelText(
+            "New password"
+        );
+        expect(editPasswordFormLabelAfter).toBeInTheDocument();
+    });
+
+    it("Should render loading when user is not loaded", () => {
+        // Arrange
+        const mockUser = {
+            user: null,
+            loading: true,
+            setUser: vi.fn(),
+            logout: vi.fn(),
+            login: vi.fn(),
+        };
+
+        render(
+            <MemoryRouter>
+                <AuthContext value={mockUser}>
+                    <Profile />
+                </AuthContext>
+            </MemoryRouter>
+        );
+
+        // Act & Assert
+        const loadingText = screen.getByText("loading...");
+        expect(loadingText).toBeInTheDocument();
+    });
 });

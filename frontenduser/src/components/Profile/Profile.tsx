@@ -124,6 +124,7 @@ function Profile() {
                                     <button
                                         className="cursor-pointer"
                                         onClick={handlePasswordClick}
+                                        data-testid="profile-editpasswordbtn"
                                     >
                                         <FontAwesomeIcon
                                             icon={faPenToSquare}
