@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Navigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
 type UpdateEmailProps = {
@@ -19,6 +18,14 @@ function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
     });
     const { setUser } = useAuth();
 
+    function addNewError(err: string) {
+        setErrors((prev) => [...prev, err]);
+    }
+
+    function addNewMessage(msg: string) {
+        setMessages((prev) => [...prev, msg]);
+    }
+
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         setErrors([]);
         setMessages([]);
@@ -37,15 +44,13 @@ function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
             if (!response.ok) {
                 const body = await response.json();
                 if (Array.isArray(body.msg)) {
-                    body.msg.map((err: ErrorType) =>
-                        setErrors([...errors, err.msg])
-                    );
+                    body.msg.map((err: ErrorType) => addNewError(err.msg));
                 } else {
-                    setErrors([...errors, body.msg]);
+                    addNewError(body.msg);
                 }
             } else {
                 const body = await response.json();
-                setMessages([...messages, body.msg]);
+                addNewMessage(body.msg);
                 setUser((prev) => ({
                     ...prev!,
                     email: formData.email,
@@ -57,14 +62,9 @@ function UpdateEmail({ setUpdateEmail }: UpdateEmailProps) {
             }
         } catch (err) {
             if (err instanceof Error) {
-                setErrors([
-                    ...errors,
-                    "Internal server issues. Couldn't update value.",
-                ]);
+                addNewError("Internal server issues. Couldn't update value.");
             }
         }
-
-        return <Navigate to="/profile" />;
     }
 
     function handleCancelUpdate() {

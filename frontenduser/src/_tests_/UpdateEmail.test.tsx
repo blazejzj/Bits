@@ -169,7 +169,7 @@ describe("UpdateEmail component", () => {
         global.fetch = vi.fn().mockResolvedValue({
             ok: false,
             json: async () => ({
-                msg: ["Wrong password!"],
+                msg: [{ msg: "Wrong password!" }],
             }),
         });
 
@@ -205,15 +205,66 @@ describe("UpdateEmail component", () => {
         await user.click(submitBtn);
 
         // Assert
-
         await waitFor(() => {
+            screen.debug();
             expect(screen.getByText("Wrong password!")).toBeInTheDocument();
             expect(screen.getByText("Wrong password!")).toHaveClass(
                 "bg-red-100"
             );
-            expect(screen.getByText("Wrong password!")).not.ToHaveClass(
+            expect(screen.getByText("Wrong password!")).not.toHaveClass(
                 "bg-green-100"
             );
+        });
+    });
+
+    it("should render server error when api is unavailable", async () => {
+        global.fetch = vi
+            .fn()
+            .mockRejectedValue(new Error("Internal server issue!"));
+
+        const user = userEvent.setup();
+
+        const mocksetUpdateEmail = vi.fn();
+        render(
+            <MemoryRouter>
+                <UpdateEmail setUpdateEmail={mocksetUpdateEmail} />
+            </MemoryRouter>
+        );
+
+        const emailLabel = screen.getByLabelText("New email adress:");
+        const authPasswordLabel = screen.getByLabelText(
+            "Password to confirm change"
+        );
+
+        fireEvent.change(emailLabel, {
+            target: {
+                value: "test@email.no",
+            },
+        });
+
+        fireEvent.change(authPasswordLabel, {
+            target: {
+                value: "testpassword123",
+            },
+        });
+
+        const submitBtn = screen.getByText("Update");
+
+        // Act
+        await user.click(submitBtn);
+
+        // Assert
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    "Internal server issues. Couldn't update value."
+                )
+            ).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    "Internal server issues. Couldn't update value."
+                )
+            ).toHaveClass("bg-red-100");
         });
     });
 });
