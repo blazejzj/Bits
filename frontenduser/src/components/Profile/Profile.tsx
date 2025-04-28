@@ -1,10 +1,10 @@
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import UpdateEmail from "./profileUpdates/UpdateEmail";
-import UpdateName from "./profileUpdates/UpdateName";
-import UpdatePassword from "./profileUpdates/UpdatePassword";
+import UpdateEmail from "./UpdateEmail";
+import UpdateName from "./UpdateName";
+import UpdatePassword from "./UpdatePassword";
 
 function Profile() {
     const { user, loading } = useAuth();
@@ -46,7 +46,11 @@ function Profile() {
                     <div className="flex flex-col gap-5">
                         <div>
                             <p className="font-bold">Username</p>
-                            <div className="flex gap-2">{user.username}</div>
+                            <div className="flex gap-2">
+                                <span data-testid="profile-usernamefield">
+                                    {user.username}
+                                </span>
+                            </div>
                         </div>
                         <div>
                             <p className="font-bold">Email</p>
@@ -55,7 +59,9 @@ function Profile() {
                                     updateEmail ? " flex-col" : ""
                                 }`}
                             >
-                                <span>{user.email}</span>
+                                <span data-testid="profile-emailfield">
+                                    {user.email}
+                                </span>
                                 {updateEmail ? (
                                     <UpdateEmail
                                         setUpdateEmail={setUpdateEmail}
@@ -64,6 +70,7 @@ function Profile() {
                                     <button
                                         onClick={handleEmailClick}
                                         className="cursor-pointer"
+                                        data-testid="profile-editemailbtn"
                                     >
                                         <FontAwesomeIcon
                                             icon={faPenToSquare}
@@ -81,13 +88,16 @@ function Profile() {
                                     updateName ? "flex-col" : ""
                                 }`}
                             >
-                                <span>{user.name}</span>
+                                <span data-testid="profile-namefield">
+                                    {user.name}
+                                </span>
                                 {updateName ? (
                                     <UpdateName setUpdateName={setUpdateName} />
                                 ) : (
                                     <button
                                         onClick={handleNameClick}
                                         className="cursor-pointer"
+                                        data-testid="profile-editnamebtn"
                                     >
                                         <FontAwesomeIcon
                                             icon={faPenToSquare}
