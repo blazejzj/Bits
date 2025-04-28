@@ -1,8 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
-import { screen, render } from "@testing-library/react";
+import { screen, render, waitFor } from "@testing-library/react";
 import Profile from "../components/Profile/Profile";
 import { MemoryRouter } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import userEvent from "@testing-library/user-event";
 
 describe("Profile component", () => {
     it("should render unauthorized message when user not logged in", () => {
@@ -95,41 +96,50 @@ describe("Profile component", () => {
         expect(usernameField).toBeInTheDocument();
     });
 
-    // it("should render name change form when wanting to update name", () => {
-    //     // Arrange
-    //     const user = userEvent.setup();
+    it("should render name change form when wanting to update name", async () => {
+        // Arrange
+        const user = userEvent.setup();
 
-    //     const mockUser = {
-    //         user: {
-    //             id: "123321",
-    //             name: "testname",
-    //             username: "testusername",
-    //             email: "email@test.no",
-    //         },
-    //         loading: false,
-    //         setUser: vi.fn(),
-    //         login: vi.fn(),
-    //         logout: vi.fn(),
-    //     };
+        const mockUser = {
+            user: {
+                id: "123321",
+                name: "testname",
+                username: "testusername",
+                email: "email@test.no",
+            },
+            loading: false,
+            setUser: vi.fn(),
+            login: vi.fn(),
+            logout: vi.fn(),
+        };
 
-    //     render(
-    //         <MemoryRouter>
-    //             <AuthContext value={mockUser}>
-    //                 <Profile />
-    //             </AuthContext>
-    //         </MemoryRouter>
-    //     );
+        render(
+            <MemoryRouter>
+                <AuthContext value={mockUser}>
+                    <Profile />
+                </AuthContext>
+            </MemoryRouter>
+        );
 
-    //     // Act
-    //     const updateUserBtn = screen.getByTestId("profile-editnamebtn");
-    //     expect(updateUserBtn).toBeInTheDocument();
+        // Act
+        const updateUserBtnBefore = screen.getByTestId("profile-editnamebtn");
+        expect(updateUserBtnBefore).toBeInTheDocument();
 
-    //     const newNameLabel = screen.queryByLabelText("New Name:");
-    //     expect(newNameLabel).not.toBeInTheDocument();
+        const newNameLabelBefore = screen.queryByLabelText("New name:");
+        expect(newNameLabelBefore).not.toBeInTheDocument();
 
-    //     user.click(updateUserBtn);
+        await user.click(updateUserBtnBefore);
 
-    //     expect(newNameLabel).toBeInTheDocument();
-    //     // Assert
-    // });
+        const updateUserBtnAfter = screen.queryByTestId("profile-editnamebtn");
+        expect(updateUserBtnAfter).not.toBeInTheDocument();
+
+        const newNameLabelAfter = screen.queryByLabelText("New name:");
+        expect(newNameLabelAfter).toBeInTheDocument();
+
+        // Assert
+        await waitFor(() => {
+            expect(updateUserBtnAfter).not.toBeInTheDocument();
+            expect(newNameLabelAfter).toBeInTheDocument();
+        });
+    });
 });
