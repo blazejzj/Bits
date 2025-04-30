@@ -6,11 +6,11 @@ exports.getCategories = async (req, res) => {
 };
 
 exports.createNewCategory = async (req, res) => {
-    const name = req.params.name.toLowerCase();
+    const { name, slugname } = req.body;
 
-    const categoryExists = await db.categoryExists(name);
+    const categoryExists = await db.categoryExists(slugname);
     if (!categoryExists) {
-        await db.createNewCategory(name);
+        await db.createNewCategory(name, slugname);
 
         return res.status(200).json({
             msg: "Successfully created a new category " + name,
@@ -23,14 +23,14 @@ exports.createNewCategory = async (req, res) => {
 };
 
 exports.deleteCategory = async (req, res) => {
-    const name = req.params.name.toLowerCase();
+    const slugname = req.params.slugname.toLowerCase();
 
-    const categoryExists = await db.categoryExists(name);
+    const categoryExists = await db.categoryExists(slugname);
     if (!categoryExists) {
-        await db.deleteCategoryByName(name);
+        await db.deleteCategoryBySlugname(slugname);
 
         return res.status(200).json({
-            msg: "Successfully deleted category " + name,
+            msg: "Successfully deleted category " + slugname,
         });
     }
 
@@ -39,20 +39,38 @@ exports.deleteCategory = async (req, res) => {
     });
 };
 
-exports.updateCategory = async (req, res) => {
-    const name = req.params.name.toLowerCase();
-    const newName = req.body.newName.toLowerCase();
+exports.updateCategoryName = async (req, res) => {
+    const { name, newName } = req.body;
 
     const categoryExists = await db.categoryExists(name);
-    if (!categoryExists || name !== newName) {
-        await db.updateCategoryName(name, newName);
-
-        return res.status(200).json({
-            msg: "Successfully changed category name.",
-        });
+    if (!categoryExists) {
+        return res.status(400).json({ msg: "Category doesn't exist." });
+    }
+    if (name === newName) {
+        return res
+            .status(400)
+            .json({ msg: "New name is the same as current." });
     }
 
-    return res.status(400).json({
-        msg: "Category doesn't exists or you're trying to update a category name with the same name.",
-    });
+    await db.updateCategoryName(name, newName);
+    return res.status(200).json({ msg: "Successfully changed category name." });
+};
+
+exports.updateCategorySlugname = async (req, res) => {
+    const { slugname, newSlugname } = req.body;
+
+    const categoryExists = await db.categoryExists(slugname);
+    if (!categoryExists) {
+        return res.status(400).json({ msg: "Category doesn't exist." });
+    }
+    if (slugname === newSlugname) {
+        return res
+            .status(400)
+            .json({ msg: "New name is the same as current." });
+    }
+
+    await db.updateCategorySlugname(slugname, newSlugname);
+    return res
+        .status(200)
+        .json({ msg: "Successfully changed category slugname." });
 };

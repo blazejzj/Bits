@@ -88,7 +88,7 @@ async function deleteUser(username) {
 async function getAllPublishedPosts(categoryName) {
     const where = {
         published: true,
-        ...(categoryName ? { category: { name: categoryName } } : {}),
+        ...(categoryName ? { category: { slugname: categoryName } } : {}),
     };
 
     return await prisma.post.findMany({
@@ -222,34 +222,31 @@ async function getAllCategories() {
     return await prisma.category.findMany({
         select: {
             name: true,
+            slugname: true,
         },
     });
 }
 
-async function categoryExists(name) {
-    const category = prisma.category
-        .findUnique({
-            where: {
-                name,
-            },
-        })
-        .toLowerCase();
-
+async function categoryExists(slugname) {
+    const category = await prisma.category.findUnique({
+        where: { slugname },
+    });
     return !!category;
 }
 
-async function createNewCategory(name) {
+async function createNewCategory(name, slugname) {
     await prisma.category.create({
         data: {
             name,
+            slugname,
         },
     });
 }
 
-async function deleteCategoryByName(name) {
-    await prisma.category.create({
-        data: {
-            name,
+async function deleteCategoryBySlugname(slugname) {
+    await prisma.category.delete({
+        where: {
+            slugname,
         },
     });
 }
@@ -265,10 +262,21 @@ async function updateCategoryName(name, newName) {
     });
 }
 
-async function getCategoryIdByName(name) {
+async function updateCategorySlugname(slugname, newSlugname) {
+    await prisma.category.update({
+        where: {
+            slugname,
+        },
+        data: {
+            slugname: newSlugname,
+        },
+    });
+}
+
+async function getCategoryIdBySlugname(slugname) {
     return await prisma.category.findUnique({
         where: {
-            name,
+            slugname,
         },
         include: {
             id,
@@ -367,7 +375,8 @@ module.exports = {
     getAllCategories,
     createNewCategory,
     categoryExists,
-    deleteCategoryByName,
+    deleteCategoryBySlugname,
     updateCategoryName,
-    getCategoryIdByName,
+    getCategoryIdBySlugname,
+    updateCategorySlugname,
 };

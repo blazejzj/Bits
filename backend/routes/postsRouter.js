@@ -13,7 +13,6 @@ const categoryController = require("../controllers/categoryController");
 // posts
 postsRouter.get("/", postsController.getAllPosts);
 postsRouter.get("/category", categoryController.getCategories);
-postsRouter.get("/:id", postsController.getSinglePostById);
 
 // category
 
@@ -26,14 +25,21 @@ postsRouter.post(
     categoryController.createNewCategory
 );
 postsRouter.patch(
-    "/category/:name/update",
+    "/category/:name/updatename",
     authenticateJWT,
     isAuthenticated,
     isAdmin,
-    categoryController.updateCategory
+    categoryController.updateCategoryName
+);
+postsRouter.patch(
+    "/category/:slugname/updateslugname",
+    authenticateJWT,
+    isAuthenticated,
+    isAdmin,
+    categoryController.updateCategorySlugname
 );
 postsRouter.post(
-    "/category/:name/delete",
+    "/category/:slugname/delete",
     authenticateJWT,
     isAuthenticated,
     isAdmin,
@@ -121,4 +127,5 @@ postsRouter.delete(
     responseController.deleteResponse
 );
 
+postsRouter.get("/:id", postsController.getSinglePostById);
 module.exports = postsRouter;

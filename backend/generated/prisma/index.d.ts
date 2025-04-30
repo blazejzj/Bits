@@ -5903,16 +5903,19 @@ export namespace Prisma {
   export type CategoryMinAggregateOutputType = {
     id: number | null
     name: string | null
+    slugname: string | null
   }
 
   export type CategoryMaxAggregateOutputType = {
     id: number | null
     name: string | null
+    slugname: string | null
   }
 
   export type CategoryCountAggregateOutputType = {
     id: number
     name: number
+    slugname: number
     _all: number
   }
 
@@ -5928,16 +5931,19 @@ export namespace Prisma {
   export type CategoryMinAggregateInputType = {
     id?: true
     name?: true
+    slugname?: true
   }
 
   export type CategoryMaxAggregateInputType = {
     id?: true
     name?: true
+    slugname?: true
   }
 
   export type CategoryCountAggregateInputType = {
     id?: true
     name?: true
+    slugname?: true
     _all?: true
   }
 
@@ -6030,6 +6036,7 @@ export namespace Prisma {
   export type CategoryGroupByOutputType = {
     id: number
     name: string
+    slugname: string
     _count: CategoryCountAggregateOutputType | null
     _avg: CategoryAvgAggregateOutputType | null
     _sum: CategorySumAggregateOutputType | null
@@ -6054,6 +6061,7 @@ export namespace Prisma {
   export type CategorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    slugname?: boolean
     posts?: boolean | Category$postsArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["category"]>
@@ -6061,19 +6069,22 @@ export namespace Prisma {
   export type CategorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    slugname?: boolean
   }, ExtArgs["result"]["category"]>
 
   export type CategorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    slugname?: boolean
   }, ExtArgs["result"]["category"]>
 
   export type CategorySelectScalar = {
     id?: boolean
     name?: boolean
+    slugname?: boolean
   }
 
-  export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["category"]>
+  export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slugname", ExtArgs["result"]["category"]>
   export type CategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     posts?: boolean | Category$postsArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
@@ -6089,6 +6100,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
+      slugname: string
     }, ExtArgs["result"]["category"]>
     composites: {}
   }
@@ -6515,6 +6527,7 @@ export namespace Prisma {
   interface CategoryFieldRefs {
     readonly id: FieldRef<"Category", 'Int'>
     readonly name: FieldRef<"Category", 'String'>
+    readonly slugname: FieldRef<"Category", 'String'>
   }
     
 
@@ -7011,7 +7024,8 @@ export namespace Prisma {
 
   export const CategoryScalarFieldEnum: {
     id: 'id',
-    name: 'name'
+    name: 'name',
+    slugname: 'slugname'
   };
 
   export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
@@ -7393,12 +7407,14 @@ export namespace Prisma {
     NOT?: CategoryWhereInput | CategoryWhereInput[]
     id?: IntFilter<"Category"> | number
     name?: StringFilter<"Category"> | string
+    slugname?: StringFilter<"Category"> | string
     posts?: PostListRelationFilter
   }
 
   export type CategoryOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    slugname?: SortOrder
     posts?: PostOrderByRelationAggregateInput
   }
 
@@ -7408,12 +7424,14 @@ export namespace Prisma {
     AND?: CategoryWhereInput | CategoryWhereInput[]
     OR?: CategoryWhereInput[]
     NOT?: CategoryWhereInput | CategoryWhereInput[]
+    slugname?: StringFilter<"Category"> | string
     posts?: PostListRelationFilter
   }, "id" | "name">
 
   export type CategoryOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    slugname?: SortOrder
     _count?: CategoryCountOrderByAggregateInput
     _avg?: CategoryAvgOrderByAggregateInput
     _max?: CategoryMaxOrderByAggregateInput
@@ -7427,6 +7445,7 @@ export namespace Prisma {
     NOT?: CategoryScalarWhereWithAggregatesInput | CategoryScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Category"> | number
     name?: StringWithAggregatesFilter<"Category"> | string
+    slugname?: StringWithAggregatesFilter<"Category"> | string
   }
 
   export type UserCreateInput = {
@@ -7705,38 +7724,45 @@ export namespace Prisma {
 
   export type CategoryCreateInput = {
     name: string
+    slugname?: string
     posts?: PostCreateNestedManyWithoutCategoryInput
   }
 
   export type CategoryUncheckedCreateInput = {
     id?: number
     name: string
+    slugname?: string
     posts?: PostUncheckedCreateNestedManyWithoutCategoryInput
   }
 
   export type CategoryUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slugname?: StringFieldUpdateOperationsInput | string
     posts?: PostUpdateManyWithoutCategoryNestedInput
   }
 
   export type CategoryUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slugname?: StringFieldUpdateOperationsInput | string
     posts?: PostUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
   export type CategoryCreateManyInput = {
     id?: number
     name: string
+    slugname?: string
   }
 
   export type CategoryUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slugname?: StringFieldUpdateOperationsInput | string
   }
 
   export type CategoryUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slugname?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -8039,6 +8065,7 @@ export namespace Prisma {
   export type CategoryCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    slugname?: SortOrder
   }
 
   export type CategoryAvgOrderByAggregateInput = {
@@ -8048,11 +8075,13 @@ export namespace Prisma {
   export type CategoryMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    slugname?: SortOrder
   }
 
   export type CategoryMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    slugname?: SortOrder
   }
 
   export type CategorySumOrderByAggregateInput = {
@@ -8599,11 +8628,13 @@ export namespace Prisma {
 
   export type CategoryCreateWithoutPostsInput = {
     name: string
+    slugname?: string
   }
 
   export type CategoryUncheckedCreateWithoutPostsInput = {
     id?: number
     name: string
+    slugname?: string
   }
 
   export type CategoryCreateOrConnectWithoutPostsInput = {
@@ -8652,11 +8683,13 @@ export namespace Prisma {
 
   export type CategoryUpdateWithoutPostsInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slugname?: StringFieldUpdateOperationsInput | string
   }
 
   export type CategoryUncheckedUpdateWithoutPostsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slugname?: StringFieldUpdateOperationsInput | string
   }
 
   export type CommentUpsertWithWhereUniqueWithoutPostInput = {

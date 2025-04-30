@@ -69,5 +69,6 @@ model Response {
 model Category {
   id Int @id @default(autoincrement())
   name String @unique
+  slugname String @default("")
   posts Post[]
 }

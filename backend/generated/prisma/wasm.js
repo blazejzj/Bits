@@ -157,7 +157,8 @@ exports.Prisma.ResponseScalarFieldEnum = {
 
 exports.Prisma.CategoryScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  slugname: 'slugname'
 };
 
 exports.Prisma.SortOrder = {
