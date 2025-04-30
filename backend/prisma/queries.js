@@ -275,12 +275,8 @@ async function updateCategorySlugname(slugname, newSlugname) {
 
 async function getCategoryIdBySlugname(slugname) {
     return await prisma.category.findUnique({
-        where: {
-            slugname,
-        },
-        include: {
-            id,
-        },
+        where: { slugname },
+        select: { id: true },
     });
 }
 
@@ -342,6 +338,19 @@ async function unpublishPost(id) {
     });
 }
 
+async function getPostsByCategorySlugname(slugname) {
+    let categoryId = await getCategoryIdBySlugname(slugname);
+    categoryId = categoryId.id;
+    return await prisma.post.findMany({
+        where: {
+            categoryId,
+        },
+        include: {
+            category: true,
+        },
+    });
+}
+
 module.exports = {
     getUserById,
     usernameExists,
@@ -379,4 +388,5 @@ module.exports = {
     updateCategoryName,
     getCategoryIdBySlugname,
     updateCategorySlugname,
+    getPostsByCategorySlugname,
 };

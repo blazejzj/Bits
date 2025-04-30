@@ -7421,12 +7421,12 @@ export namespace Prisma {
   export type CategoryWhereUniqueInput = Prisma.AtLeast<{
     id?: number
     name?: string
+    slugname?: string
     AND?: CategoryWhereInput | CategoryWhereInput[]
     OR?: CategoryWhereInput[]
     NOT?: CategoryWhereInput | CategoryWhereInput[]
-    slugname?: StringFilter<"Category"> | string
     posts?: PostListRelationFilter
-  }, "id" | "name">
+  }, "id" | "name" | "slugname">
 
   export type CategoryOrderByWithAggregationInput = {
     id?: SortOrder
@@ -7724,14 +7724,14 @@ export namespace Prisma {
 
   export type CategoryCreateInput = {
     name: string
-    slugname?: string
+    slugname: string
     posts?: PostCreateNestedManyWithoutCategoryInput
   }
 
   export type CategoryUncheckedCreateInput = {
     id?: number
     name: string
-    slugname?: string
+    slugname: string
     posts?: PostUncheckedCreateNestedManyWithoutCategoryInput
   }
 
@@ -7751,7 +7751,7 @@ export namespace Prisma {
   export type CategoryCreateManyInput = {
     id?: number
     name: string
-    slugname?: string
+    slugname: string
   }
 
   export type CategoryUpdateManyMutationInput = {
@@ -8628,13 +8628,13 @@ export namespace Prisma {
 
   export type CategoryCreateWithoutPostsInput = {
     name: string
-    slugname?: string
+    slugname: string
   }
 
   export type CategoryUncheckedCreateWithoutPostsInput = {
     id?: number
     name: string
-    slugname?: string
+    slugname: string
   }
 
   export type CategoryCreateOrConnectWithoutPostsInput = {

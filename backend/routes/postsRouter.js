@@ -12,6 +12,10 @@ const categoryController = require("../controllers/categoryController");
 
 // posts
 postsRouter.get("/", postsController.getAllPosts);
+postsRouter.get(
+    "/category/:slugname",
+    postsController.getPostsByCategorySlugname
+);
 postsRouter.get("/category", categoryController.getCategories);
 
 // category
