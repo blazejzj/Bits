@@ -85,20 +85,13 @@ async function deleteUser(username) {
     });
 }
 
-async function getAllPublishedPosts(categoryName) {
-    const where = {
-        published: true,
-        ...(categoryName ? { category: { slugname: categoryName } } : {}),
-    };
-
+async function getAllPublishedPosts() {
     return await prisma.post.findMany({
-        where,
         select: {
             id: true,
             title: true,
             published_at: true,
             updated_at: true,
-            category: true,
         },
         orderBy: { published_at: "desc" },
     });
