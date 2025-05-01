@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Post } from "../types/post";
 import { Link } from "react-router-dom";
-// import { slugify } from "../utils/slugify";
+import { Category } from "../types/category";
+import { slugify } from "../utils/slugify";
 
 function Posts() {
     const [posts, setPosts] = useState<Post[]>([]);
     const [searchParams] = useSearchParams();
     const [errors, setErrors] = useState<string[]>([]);
+    const [categories, setCategories] = useState<Category[]>();
 
     const addNewError = (err: string) => {
         setErrors((prev) => [...prev, err]);
@@ -15,12 +17,30 @@ function Posts() {
 
     const getCategoryName = () => {
         const category = searchParams.get("category");
-        if (category) {
-            return category?.charAt(0).toUpperCase() + category?.slice(1);
-        } else {
-            return "All Posts";
-        }
+        let categoryName = "All Posts";
+
+        categories?.forEach((cat) => {
+            if (slugify(cat.name) == category) {
+                categoryName = cat.name;
+            }
+        });
+        return categoryName;
     };
+
+    useEffect(() => {
+        async function getCategories() {
+            try {
+                const res = await fetch(
+                    `${import.meta.env.VITE_API_URL}/posts/category`
+                );
+                if (!res.ok) throw new Error("Fetch error: " + res.status);
+                setCategories(await res.json());
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        getCategories();
+    }, []);
 
     const getFormattedDate = (date: Date) => {
         // Apr 14, 2025
