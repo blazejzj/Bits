@@ -1,46 +1,31 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Post } from "../types/post";
 import { Link } from "react-router-dom";
-import { Category } from "../types/category";
 import { slugify } from "../utils/slugify";
+import useCategories from "../hooks/useCategories";
+import usePosts from "../hooks/usePosts";
+import { Category } from "../types/category";
 
 function Posts() {
-    const [posts, setPosts] = useState<Post[]>([]);
+    const addNewError = useCallback((err: string) => {
+        setErrors((prev) => [...prev, err]);
+    }, []);
     const [searchParams] = useSearchParams();
     const [errors, setErrors] = useState<string[]>([]);
-    const [categories, setCategories] = useState<Category[]>();
-
-    const addNewError = (err: string) => {
-        setErrors((prev) => [...prev, err]);
-    };
+    const categories = useCategories({ addNewError });
+    const posts = usePosts({ addNewError, searchParams });
 
     const getCategoryName = () => {
         const category = searchParams.get("category");
         let categoryName = "All Posts";
 
-        categories?.forEach((cat) => {
+        categories?.forEach((cat: Category) => {
             if (slugify(cat.name) == category) {
                 categoryName = cat.name;
             }
         });
         return categoryName;
     };
-
-    useEffect(() => {
-        async function getCategories() {
-            try {
-                const res = await fetch(
-                    `${import.meta.env.VITE_API_URL}/posts/category`
-                );
-                if (!res.ok) throw new Error("Fetch error: " + res.status);
-                setCategories(await res.json());
-            } catch (e) {
-                console.error(e);
-            }
-        }
-        getCategories();
-    }, []);
 
     const getFormattedDate = (date: Date) => {
         // Apr 14, 2025
@@ -58,34 +43,6 @@ function Posts() {
         return words.slice(0, length).join(" ") + "...";
     };
 
-    useEffect(() => {
-        async function getPosts() {
-            const category = searchParams.get("category");
-            try {
-                const response =
-                    searchParams.size > 0
-                        ? await fetch(
-                              `${
-                                  import.meta.env.VITE_API_URL
-                              }/posts/category/${category}`
-                          )
-                        : await fetch(`${import.meta.env.VITE_API_URL}/posts/`);
-                if (!response.ok) {
-                    const data = await response.json();
-                    addNewError(data.message);
-                } else {
-                    const data = await response.json();
-                    setPosts(data);
-                }
-            } catch (err) {
-                if (err instanceof Error) {
-                    addNewError(err.message);
-                }
-            }
-        }
-        getPosts();
-    }, [searchParams]);
-
     return (
         <div className="w-full px-4 md:px-8 lg:px-16">
             <h1 className="text-cyan-700 font-bold text-center text-3xl mb-8">
@@ -94,9 +51,7 @@ function Posts() {
 
             {errors.length > 0 && (
                 <div className="mb-6 text-red-600">
-                    {errors.map((err, idx) => (
-                        <p key={idx}>{err}</p>
-                    ))}
+                    <p>{errors[0]}</p>
                 </div>
             )}
 
