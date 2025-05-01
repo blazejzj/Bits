@@ -111,9 +111,15 @@ export default function Header() {
                     aria-label="Toggle menu"
                 >
                     {mobileOpen ? (
-                        <FontAwesomeIcon icon={faXmark} />
+                        <FontAwesomeIcon
+                            icon={faXmark}
+                            className="cursor-pointer"
+                        />
                     ) : (
-                        <FontAwesomeIcon icon={faBars} />
+                        <FontAwesomeIcon
+                            icon={faBars}
+                            className="cursor-pointer"
+                        />
                     )}
                 </button>
             </div>
