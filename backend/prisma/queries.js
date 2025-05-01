@@ -87,9 +87,13 @@ async function deleteUser(username) {
 
 async function getAllPublishedPosts() {
     return await prisma.post.findMany({
+        where: {
+            published: true,
+        },
         select: {
             id: true,
             title: true,
+            text: true,
             published_at: true,
             updated_at: true,
         },
@@ -337,10 +341,16 @@ async function getPostsByCategorySlugname(slugname) {
     return await prisma.post.findMany({
         where: {
             categoryId,
+            published: true,
         },
-        include: {
-            category: true,
+        select: {
+            id: true,
+            title: true,
+            text: true,
+            published_at: true,
+            updated_at: true,
         },
+        orderBy: { published_at: "desc" },
     });
 }
 
