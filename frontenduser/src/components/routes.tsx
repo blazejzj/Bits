@@ -7,6 +7,7 @@ import App from "../App";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import NotAuthenticatedRoute from "./NotAuthenticatedRoute";
 import Posts from "./Posts";
+import Post from "./Post";
 
 const routes = [
     {
@@ -42,6 +43,11 @@ const routes = [
                 path: "/posts",
                 index: true,
                 element: <Posts />,
+            },
+            {
+                path: "/posts/:postid",
+                index: true,
+                element: <Post />,
             },
             { path: "*", element: <ErrorPage /> },
         ],
