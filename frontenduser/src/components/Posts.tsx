@@ -12,6 +12,14 @@ function Posts() {
         setErrors((prev) => [...prev, err]);
     };
 
+    const getCategoryName = () => {
+        const category = searchParams.get("category");
+        if (category) {
+            return category?.charAt(0).toUpperCase() + category?.slice(1);
+        } else {
+            return "All Posts";
+        }
+    };
     useEffect(() => {
         async function getPosts() {
             const category = searchParams.get("category");
@@ -42,12 +50,13 @@ function Posts() {
 
     return (
         <div>
-            <h1>Here are your posts</h1>
-            <p>Category chosen {searchParams.get("category")}</p>
+            <h1>{getCategoryName()}</h1>
             {posts.map((post) => {
                 return (
                     <div key={post.id}>
-                        <p>{post.title}</p>
+                        <h2 className="text-green-700">{post.title}</h2>
+                        <p className="text-blue-700">{post.text}</p>
+                        <p>{post.published}</p>
                     </div>
                 );
             })}
