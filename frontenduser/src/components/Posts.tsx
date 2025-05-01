@@ -5,49 +5,35 @@ import { Post } from "../types/post";
 
 function Posts() {
     const [posts, setPosts] = useState<Post[]>([]);
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
+    const [errors, setErrors] = useState<string[]>([]);
 
-    // postsRouter.get(
-    //     "/category/:slugname",
-    //     postsController.getPostsByCategorySlugname
-    // );
+    const addNewError = (err: string) => {
+        setErrors((prev) => [...prev, err]);
+    };
 
     useEffect(() => {
         async function getPosts() {
-            if (searchParams.size > 0) {
-                const category = searchParams.get("category");
-                try {
-                    const response = await fetch(
-                        `${
-                            import.meta.env.VITE_API_URL
-                        }/posts/category/${category}`
-                    );
-                    if (!response.ok) {
-                        console.log(await response.json());
-                    } else {
-                        const data = await response.json();
-                        setPosts(data);
-                    }
-                } catch (err) {
-                    if (err instanceof Error) {
-                        console.log(err.message);
-                    }
+            const category = searchParams.get("category");
+            try {
+                const response =
+                    searchParams.size > 0
+                        ? await fetch(
+                              `${
+                                  import.meta.env.VITE_API_URL
+                              }/posts/category/${category}`
+                          )
+                        : await fetch(`${import.meta.env.VITE_API_URL}/posts/`);
+                if (!response.ok) {
+                    const data = await response.json();
+                    addNewError(data.message);
+                } else {
+                    const data = await response.json();
+                    setPosts(data);
                 }
-            } else {
-                try {
-                    const response = await fetch(
-                        `${import.meta.env.VITE_API_URL}/posts`
-                    );
-                    if (!response.ok) {
-                        console.log(await response.json());
-                    } else {
-                        const data = await response.json();
-                        setPosts(data);
-                    }
-                } catch (err) {
-                    if (err instanceof Error) {
-                        console.log(err.message);
-                    }
+            } catch (err) {
+                if (err instanceof Error) {
+                    addNewError(err.message);
                 }
             }
         }
