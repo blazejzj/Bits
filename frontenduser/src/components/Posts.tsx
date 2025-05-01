@@ -20,6 +20,16 @@ function Posts() {
             return "All Posts";
         }
     };
+
+    const getFormattedDate = (date: Date) => {
+        // Apr 14, 2025
+        const startDate = new Date(date);
+        const parts = startDate.toDateString().slice(4).split(" ");
+
+        const formattedDate = `${parts[0]} ${parts[1]}, ${parts[2]}`;
+        return formattedDate;
+    };
+
     useEffect(() => {
         async function getPosts() {
             const category = searchParams.get("category");
@@ -56,7 +66,7 @@ function Posts() {
                     <div key={post.id}>
                         <h2 className="text-green-700">{post.title}</h2>
                         <p className="text-blue-700">{post.text}</p>
-                        <p>{post.published}</p>
+                        <span>{getFormattedDate(post.published_at)}</span>
                     </div>
                 );
             })}
