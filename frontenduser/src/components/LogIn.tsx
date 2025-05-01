@@ -31,6 +31,10 @@ function LogIn() {
                     : "Internal server issues. Couldn't log in right now.";
             }
             setError(msg);
+            setFormData({
+                username: "",
+                password: "",
+            });
         }
     }
 
