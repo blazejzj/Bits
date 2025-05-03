@@ -7,7 +7,7 @@ import App from "../App";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import NotAuthenticatedRoute from "./NotAuthenticatedRoute";
 import Posts from "./Posts";
-import Post from "./Post";
+import BlogPost from "./BlogPost";
 
 const routes = [
     {
@@ -47,7 +47,7 @@ const routes = [
             {
                 path: "/posts/:postid",
                 index: true,
-                element: <Post />,
+                element: <BlogPost />,
             },
             { path: "*", element: <ErrorPage /> },
         ],

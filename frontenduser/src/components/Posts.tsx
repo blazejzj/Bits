@@ -27,13 +27,10 @@ function Posts() {
         return categoryName;
     };
 
-    const getFormattedDate = (date: Date) => {
-        // Apr 14, 2025
-        const startDate = new Date(date);
-        const parts = startDate.toDateString().slice(4).split(" ");
-
-        const formattedDate = `${parts[0]} ${parts[1]}, ${parts[2]}`;
-        return formattedDate;
+    const getFormattedDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const parts = date.toDateString().slice(4).split(" ");
+        return `${parts[0]} ${parts[1]}, ${parts[2]}`;
     };
 
     const getExcerpt = (text: string) => {
