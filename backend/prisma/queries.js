@@ -103,21 +103,19 @@ async function getAllPublishedPosts() {
 
 async function getSinglePostById(id) {
     return await prisma.post.findUnique({
-        where: {
-            id,
-        },
+        where: { id },
         include: {
             comments: {
                 include: {
+                    user: true,
                     responses: {
-                        orderBy: {
-                            published_at: "desc",
+                        include: {
+                            user: true,
                         },
+                        orderBy: { published_at: "desc" },
                     },
                 },
-                orderBy: {
-                    published_at: "desc",
-                },
+                orderBy: { published_at: "desc" },
             },
         },
     });
