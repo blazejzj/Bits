@@ -3,7 +3,7 @@ import CommentResponses from "./CommentResponses";
 import Comment from "../types/comment";
 import { useAuth } from "../hooks/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 
 type Props = {
@@ -15,10 +15,13 @@ type Props = {
 function CommentList({ comments, getFormattedDate, getPost }: Props) {
     const { user } = useAuth();
     const { postid } = useParams();
-
     const [responseInputs, setResponseInputs] = useState<
         Record<string, string>
     >({});
+    const [editingCommentId, setEditingCommentId] = useState<string | null>(
+        null
+    );
+    const [editigCommentText, setEditingCommentText] = useState<string>();
 
     function handleResponseChange(commentId: string, text: string) {
         setResponseInputs(function (prev) {
@@ -62,10 +65,30 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
             <button onClick={() => handleDeleteComment(commentId)}>
                 <FontAwesomeIcon
                     icon={faTrash}
-                    className="text-cyan-700 text-xl hover:cursor-pointer"
+                    className="text-cyan-700 text-xl transition-colors duration-300 hover:text-cyan-500 hover:cursor-pointer"
                 />
             </button>
         );
+    }
+
+    function handleEditComment(commentId: string, commentText: string) {
+        setEditingCommentId(commentId);
+        setEditingCommentText(commentText);
+    }
+
+    function renderEditComment(comment: Comment) {
+        return (
+            <button onClick={() => handleEditComment(comment.id, comment.text)}>
+                <FontAwesomeIcon
+                    icon={faPenToSquare}
+                    className="text-cyan-700 text-xl transition-colors duration-300 hover:text-cyan-500 hover:cursor-pointer"
+                />
+            </button>
+        );
+    }
+
+    function handleSaveEdit(commentId: string) {
+        console.log(commentId);
     }
 
     if (!comments || comments.length === 0) {
@@ -82,7 +105,7 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
                     return (
                         <div
                             key={comment.id}
-                            className="bg-white rounded-2xl shadow p-4"
+                            className="bg-white rounded-2xl shadow p-4 transition-all duration-300"
                         >
                             <div className="flex items-center justify-between mb-2">
                                 <span className="font-medium text-cyan-700">
@@ -90,12 +113,47 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
                                 </span>
                                 <span className="text-sm text-gray-500 flex items-center gap-3">
                                     {getFormattedDate(comment.published_at)}
-                                    {user?.id === comment.userId
-                                        ? renderDeleteComment(comment.id)
-                                        : ""}
+                                    {user?.id === comment.userId &&
+                                        renderDeleteComment(comment.id)}
+                                    {user?.id === comment.userId &&
+                                        renderEditComment(comment)}
                                 </span>
                             </div>
-                            <p className="text-gray-800 mb-4">{comment.text}</p>
+                            {editingCommentId === comment.id ? (
+                                <div className="mb-4">
+                                    <textarea
+                                        className="w-full border border-gray-300 rounded-2xl p-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-600 transition-all duration-300"
+                                        value={editigCommentText}
+                                        onChange={(e) =>
+                                            setEditingCommentText(
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                    <div className="mt-2 flex gap-2">
+                                        <button
+                                            className="bg-cyan-600 text-white px-5 py-2 rounded-full shadow-sm hover:bg-cyan-700 transition duration-300 text-sm hover:cursor-pointer"
+                                            onClick={() =>
+                                                handleSaveEdit(comment.id)
+                                            }
+                                        >
+                                            Save
+                                        </button>
+                                        <button
+                                            className="text-sm text-gray-500 hover:text-gray-700 transition hover:cursor-pointer"
+                                            onClick={() =>
+                                                setEditingCommentId(null)
+                                            }
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <p className="text-gray-800 mb-4">
+                                    {comment.text}
+                                </p>
+                            )}
 
                             <CommentResponses
                                 comment={comment}

@@ -22,14 +22,14 @@ function CommentResponses({
         return (
             <div className="mt-4 pl-4 border-l border-gray-200">
                 <textarea
-                    className="w-full border border-gray-300 rounded p-2 mb-2"
+                    className="w-full border border-gray-300 rounded-2xl p-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-600 transition-all duration-300 mb-3"
                     rows={2}
                     placeholder="Write a response..."
                     value={responseText}
                     onChange={(e) => onChange(e.target.value)}
                 />
                 <button
-                    className="bg-cyan-600 text-white px-4 py-1 rounded hover:bg-cyan-500"
+                    className="bg-cyan-600 text-white px-5 py-2 rounded-full shadow-sm hover:bg-cyan-700 transition duration-300 hover:cursor-pointer"
                     onClick={onReply}
                 >
                     Reply
