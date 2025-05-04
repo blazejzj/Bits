@@ -4,14 +4,17 @@ import Comment from "../types/comment";
 import { useAuth } from "../hooks/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useParams } from "react-router-dom";
 
 type Props = {
     comments: Comment[];
     getFormattedDate: (dateString: string) => string;
+    getPost: () => void;
 };
 
-function CommentList({ comments, getFormattedDate }: Props) {
+function CommentList({ comments, getFormattedDate, getPost }: Props) {
     const { user } = useAuth();
+    const { postid } = useParams();
 
     const [responseInputs, setResponseInputs] = useState<
         Record<string, string>
@@ -31,11 +34,32 @@ function CommentList({ comments, getFormattedDate }: Props) {
         });
     }
 
-    function handleDeleteComment() {}
+    async function handleDeleteComment(commentId: string) {
+        console.log("deleteing" + commentId);
+        try {
+            const response = await fetch(
+                `${
+                    import.meta.env.VITE_API_URL
+                }/posts/${postid}/comments/${commentId}`,
+                {
+                    method: "DELETE",
+                    credentials: "include",
+                }
+            );
+            if (!response.ok) {
+                console.log(await response.json());
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                console.log(err);
+            }
+        }
+        getPost();
+    }
 
-    function deleteComment() {
+    function renderDeleteComment(commentId: string) {
         return (
-            <button onClick={handleDeleteComment}>
+            <button onClick={() => handleDeleteComment(commentId)}>
                 <FontAwesomeIcon
                     icon={faTrash}
                     className="text-cyan-700 text-xl hover:cursor-pointer"
@@ -67,7 +91,7 @@ function CommentList({ comments, getFormattedDate }: Props) {
                                 <span className="text-sm text-gray-500 flex items-center gap-3">
                                     {getFormattedDate(comment.published_at)}
                                     {user?.id === comment.userId
-                                        ? deleteComment()
+                                        ? renderDeleteComment(comment.id)
                                         : ""}
                                 </span>
                             </div>

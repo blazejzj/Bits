@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Post } from "../types/post";
-import CommentList from "./CommandList";
+import CommentList from "./CommentList";
 import { useAuth } from "../hooks/useAuth";
 
 function BlogPost() {
@@ -30,57 +30,6 @@ function BlogPost() {
         setErrors([]);
         setMessages([]);
         setNewComment(e.target.value);
-    }
-
-    const getPost = useCallback(async () => {
-        try {
-            const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/posts/${postid}`,
-                { method: "GET" }
-            );
-            if (response.ok) {
-                const data = await response.json();
-                setPost(data.post);
-            }
-        } catch (err) {
-            if (err instanceof Error) console.error(err.message);
-        }
-    }, [postid]);
-
-    useEffect(() => {
-        getPost();
-    }, [getPost]);
-
-    async function handleAddComment() {
-        try {
-            console.log(JSON.stringify(newComment));
-            const jsonComment = {
-                text: newComment,
-            };
-            const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/posts/${postid}/comments`,
-                {
-                    method: "POST",
-                    headers: { "Content-type": "application/json" },
-                    body: JSON.stringify(jsonComment),
-                    credentials: "include",
-                }
-            );
-            if (!response.ok) {
-                const body = await response.json();
-                addNewError(body.errors[0].msg);
-            } else {
-                const body = await response.json();
-                addNewMessage(body.msg);
-                setNewComment("");
-                window.scrollTo(0, 0);
-            }
-        } catch (err) {
-            if (err instanceof Error) {
-                addNewError(err.message);
-            }
-        }
-        getPost();
     }
 
     function renderAddNewComment() {
@@ -120,6 +69,56 @@ function BlogPost() {
         );
     }
 
+    async function handleAddComment() {
+        try {
+            const jsonComment = {
+                text: newComment,
+            };
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/posts/${postid}/comments`,
+                {
+                    method: "POST",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify(jsonComment),
+                    credentials: "include",
+                }
+            );
+            if (!response.ok) {
+                const body = await response.json();
+                addNewError(body.errors[0].msg);
+            } else {
+                const body = await response.json();
+                addNewMessage(body.msg);
+                setNewComment("");
+                window.scrollTo(0, 0);
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                addNewError(err.message);
+            }
+        }
+        getPost();
+    }
+
+    const getPost = useCallback(async () => {
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/posts/${postid}`,
+                { method: "GET" }
+            );
+            if (response.ok) {
+                const data = await response.json();
+                setPost(data.post);
+            }
+        } catch (err) {
+            if (err instanceof Error) console.error(err.message);
+        }
+    }, [postid]);
+
+    useEffect(() => {
+        getPost();
+    }, [getPost]);
+
     if (!post) return <div>Loading...</div>;
 
     return (
@@ -150,6 +149,7 @@ function BlogPost() {
             <CommentList
                 comments={post.comments}
                 getFormattedDate={getFormattedDate}
+                getPost={getPost}
             />
 
             {user ? (
