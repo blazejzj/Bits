@@ -37,10 +37,35 @@ function BlogPost() {
         return `${parts[0]} ${parts[1]}, ${parts[2]}`;
     }
 
-    function handleAddComment() {
-        // send comment
+    async function handleAddComment() {
         console.log("Add comment:", newComment);
-        setNewComment("");
+        try {
+            console.log(JSON.stringify(newComment));
+            const jsonComment = {
+                text: newComment,
+            };
+            // /posts/id/comments
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/posts/${postid}/comments`,
+                {
+                    method: "POST",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify(jsonComment),
+                    credentials: "include",
+                }
+            );
+            if (!response.ok) {
+                const body = await response.json();
+                console.log(body);
+            } else {
+                const body = await response.json();
+                console.log(body);
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                console.log(err);
+            }
+        }
     }
 
     function renderAddNewComment() {
