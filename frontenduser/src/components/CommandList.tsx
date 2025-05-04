@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CommentResponses from "./CommentResponses";
 import Comment from "../types/comment";
+import { useAuth } from "../hooks/useAuth";
 
 type Props = {
     comments: Comment[];
@@ -8,6 +9,8 @@ type Props = {
 };
 
 function CommentList({ comments, getFormattedDate }: Props) {
+    const { user } = useAuth();
+
     const [responseInputs, setResponseInputs] = useState<
         Record<string, string>
     >({});
@@ -21,10 +24,14 @@ function CommentList({ comments, getFormattedDate }: Props) {
     function handleAddResponse(commentId: string) {
         const text = responseInputs[commentId] || "";
         console.log("Add response to", commentId, text);
-
         setResponseInputs(function (prev) {
             return { ...prev, [commentId]: "" };
         });
+    }
+
+    function deleteComment() {
+        console.log(user);
+        return <button>Delete</button>;
     }
 
     if (!comments || comments.length === 0) {
@@ -49,6 +56,10 @@ function CommentList({ comments, getFormattedDate }: Props) {
                                 </span>
                                 <span className="text-sm text-gray-500">
                                     {getFormattedDate(comment.published_at)}
+                                    {user?.id === comment.userId
+                                        ? deleteComment()
+                                        : ""}
+                                    {deleteComment()}
                                 </span>
                             </div>
                             <p className="text-gray-800 mb-4">{comment.text}</p>

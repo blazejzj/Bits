@@ -94,19 +94,21 @@ function BlogPost() {
     return (
         <div className="w-full px-4 md:px-8 lg:px-16">
             <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
-                <header className="mb-4">
+                <section className="mb-4">
                     <h1 className="font-bold text-3xl text-cyan-800 mb-2">
                         {post.title}
                     </h1>
                     <div className="text-sm text-gray-500">
                         Published: {getFormattedDate(post.published_at)}
                         {post.published_at !== post.updated_at && (
-                            <span className="ml-4">
-                                Updated: {getFormattedDate(post.updated_at)}
-                            </span>
+                            <>
+                                <span className="ml-4">
+                                    Updated: {getFormattedDate(post.updated_at)}
+                                </span>
+                            </>
                         )}
                     </div>
-                </header>
+                </section>
                 <div className="prose max-w-none text-gray-700">
                     {post.text.split("\n").map((para, i) => (
                         <p key={i}>{para}</p>
