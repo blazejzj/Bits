@@ -8,7 +8,7 @@ function BlogPost() {
     const { postid } = useParams();
     const [post, setPost] = useState<Post | null>(null);
     const [newComment, setNewComment] = useState("");
-    const { user } = useAuth()
+    const { user } = useAuth();
 
     useEffect(() => {
         async function getPost() {
@@ -61,7 +61,7 @@ function BlogPost() {
                     Submit Comment
                 </button>
             </div>
-        )
+        );
     }
 
     if (!post) return <div>Loading...</div>;
@@ -94,7 +94,13 @@ function BlogPost() {
                 getFormattedDate={getFormattedDate}
             />
 
-            {user ? renderAddNewComment() : <h3 className="text-xl font-semibold mb-2">Log in to post a comment.</h3>}
+            {user ? (
+                renderAddNewComment()
+            ) : (
+                <h3 className="text-xl font-semibold mb-2">
+                    Log in to post a comment.
+                </h3>
+            )}
         </div>
     );
 }
