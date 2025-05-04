@@ -2,6 +2,8 @@ import { useState } from "react";
 import CommentResponses from "./CommentResponses";
 import Comment from "../types/comment";
 import { useAuth } from "../hooks/useAuth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
     comments: Comment[];
@@ -29,9 +31,17 @@ function CommentList({ comments, getFormattedDate }: Props) {
         });
     }
 
+    function handleDeleteComment() {}
+
     function deleteComment() {
-        console.log(user);
-        return <button>Delete</button>;
+        return (
+            <button onClick={handleDeleteComment}>
+                <FontAwesomeIcon
+                    icon={faTrash}
+                    className="text-cyan-700 text-xl hover:cursor-pointer"
+                />
+            </button>
+        );
     }
 
     if (!comments || comments.length === 0) {
@@ -54,12 +64,11 @@ function CommentList({ comments, getFormattedDate }: Props) {
                                 <span className="font-medium text-cyan-700">
                                     {comment.user.name}
                                 </span>
-                                <span className="text-sm text-gray-500">
+                                <span className="text-sm text-gray-500 flex items-center gap-3">
                                     {getFormattedDate(comment.published_at)}
                                     {user?.id === comment.userId
                                         ? deleteComment()
                                         : ""}
-                                    {deleteComment()}
                                 </span>
                             </div>
                             <p className="text-gray-800 mb-4">{comment.text}</p>
