@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Post } from "../types/post";
 import CommentList from "./CommandList";
+import { useAuth } from "../hooks/useAuth";
 
 function BlogPost() {
     const { postid } = useParams();
     const [post, setPost] = useState<Post | null>(null);
     const [newComment, setNewComment] = useState("");
+    const { user } = useAuth()
 
     useEffect(() => {
         async function getPost() {
@@ -41,6 +43,27 @@ function BlogPost() {
         setNewComment("");
     }
 
+    function renderAddNewComment() {
+        return (
+            <div className="mb-16">
+                <h3 className="text-xl font-semibold mb-2">Add a Comment</h3>
+                <textarea
+                    className="w-full border border-gray-300 rounded p-3 mb-2"
+                    rows={4}
+                    placeholder="Write your comment here..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                />
+                <button
+                    className="bg-cyan-700 text-white px-5 py-2 rounded hover:bg-cyan-600"
+                    onClick={handleAddComment}
+                >
+                    Submit Comment
+                </button>
+            </div>
+        )
+    }
+
     if (!post) return <div>Loading...</div>;
 
     return (
@@ -71,22 +94,7 @@ function BlogPost() {
                 getFormattedDate={getFormattedDate}
             />
 
-            <div className="mb-16">
-                <h3 className="text-xl font-semibold mb-2">Add a Comment</h3>
-                <textarea
-                    className="w-full border border-gray-300 rounded p-3 mb-2"
-                    rows={4}
-                    placeholder="Write your comment here..."
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                />
-                <button
-                    className="bg-cyan-700 text-white px-5 py-2 rounded hover:bg-cyan-600"
-                    onClick={handleAddComment}
-                >
-                    Submit Comment
-                </button>
-            </div>
+            {user ? renderAddNewComment() : <h3 className="text-xl font-semibold mb-2">Log in to post a comment.</h3>}
         </div>
     );
 }
