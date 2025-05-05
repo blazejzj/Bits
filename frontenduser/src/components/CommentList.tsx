@@ -111,6 +111,15 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
         getPost();
     }
 
+    function handleEditComment(commentId: string, commentText: string) {
+        setEditedCommentId(commentId);
+        setEditedCommentText(commentText);
+        clearResponseMessagesAndErrors();
+    }
+
+    function handleDeleteResponse(commentId: string) {}
+    function handleEditResponse(commentId: string, newResponse: string) {}
+
     function renderDeleteComment(commentId: string) {
         return (
             <button onClick={() => handleDeleteComment(commentId)}>
@@ -122,15 +131,33 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
         );
     }
 
-    function handleEditComment(commentId: string, commentText: string) {
-        setEditedCommentId(commentId);
-        setEditedCommentText(commentText);
-        clearResponseMessagesAndErrors();
-    }
-
     function renderEditComment(comment: Comment) {
         return (
             <button onClick={() => handleEditComment(comment.id, comment.text)}>
+                <FontAwesomeIcon
+                    icon={faPenToSquare}
+                    className="text-cyan-700 text-xl transition-colors duration-300 hover:text-cyan-500 hover:cursor-pointer"
+                />
+            </button>
+        );
+    }
+
+    function renderDeleteResponse(commentId: string) {
+        return (
+            <button onClick={() => handleDeleteResponse(commentId)}>
+                <FontAwesomeIcon
+                    icon={faTrash}
+                    className="text-cyan-700 text-xl transition-colors duration-300 hover:text-cyan-500 hover:cursor-pointer"
+                />
+            </button>
+        );
+    }
+
+    function renderEditResponse(comment: Comment) {
+        return (
+            <button
+                onClick={() => handleEditResponse(comment.id, comment.text)}
+            >
                 <FontAwesomeIcon
                     icon={faPenToSquare}
                     className="text-cyan-700 text-xl transition-colors duration-300 hover:text-cyan-500 hover:cursor-pointer"
