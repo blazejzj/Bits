@@ -33,6 +33,7 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
         });
     }
 
+    // TODO add messages and erros upon failures/success
     async function handleAddResponse(commentId: string) {
         const text = responseInputs[commentId] || "";
         const newResponse = {
