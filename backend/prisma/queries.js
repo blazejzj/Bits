@@ -158,12 +158,14 @@ async function getCommentById(id) {
 }
 
 async function updateComment(id, text) {
+    const newDate = new Date();
     await prisma.comment.update({
         where: {
             id: id,
         },
         data: {
             text: text,
+            updated_at: newDate,
         },
     });
 }
