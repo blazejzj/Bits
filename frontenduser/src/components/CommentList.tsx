@@ -18,10 +18,14 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
     const [responseInputs, setResponseInputs] = useState<
         Record<string, string>
     >({});
-    const [editingCommentId, setEditingCommentId] = useState<string | null>(
-        null
-    );
-    const [editigCommentText, setEditingCommentText] = useState<string>();
+    const [editedCommentId, setEditedCommentId] = useState<string | null>(null);
+    const [editedCommentText, setEditedCommentText] = useState<string>();
+    const [editedCommentErrors, setEditedCommentErrors] = useState<
+        Record<string, string>
+    >({});
+    const [editedCommentMessages, setEditedCommentMessages] = useState<
+        Record<string, string>
+    >({});
 
     function handleResponseChange(commentId: string, text: string) {
         setResponseInputs(function (prev) {
@@ -72,8 +76,10 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
     }
 
     function handleEditComment(commentId: string, commentText: string) {
-        setEditingCommentId(commentId);
-        setEditingCommentText(commentText);
+        setEditedCommentId(commentId);
+        setEditedCommentText(commentText);
+        setEditedCommentMessages({});
+        setEditedCommentErrors({});
     }
 
     function renderEditComment(comment: Comment) {
@@ -87,8 +93,46 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
         );
     }
 
-    function handleSaveEdit(commentId: string) {
-        console.log(commentId);
+    function addNewEditedCommentError(commentId: string, error: string) {
+        setEditedCommentErrors((prev) => ({ ...prev, [commentId]: error }));
+    }
+
+    function addNewEditedCommentMessage(commentId: string, msg: string) {
+        setEditedCommentMessages((prev) => ({ ...prev, [commentId]: msg }));
+    }
+
+    async function handleSaveEdit(commentId: string) {
+        try {
+            const newComment = {
+                text: editedCommentText,
+            };
+            console.log(newComment);
+            const response = await fetch(
+                `${
+                    import.meta.env.VITE_API_URL
+                }/posts/${postid}/comments/${commentId}`,
+                {
+                    method: "PATCH",
+                    credentials: "include",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify(newComment),
+                }
+            );
+            if (!response.ok) {
+                const body = await response.json();
+                addNewEditedCommentError(commentId, body.errors[0].msg);
+            } else {
+                const body = await response.json();
+                addNewEditedCommentMessage(commentId, body.msg);
+                setEditedCommentId(null);
+                setEditedCommentText("");
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                addNewEditedCommentError(commentId, err.message);
+            }
+        }
+        getPost();
     }
 
     if (!comments || comments.length === 0) {
@@ -107,27 +151,57 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
                             key={comment.id}
                             className="bg-white rounded-2xl shadow p-4 transition-all duration-300"
                         >
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="font-medium text-cyan-700">
-                                    {comment.user.name}
-                                </span>
-                                <span className="text-sm text-gray-500 flex items-center gap-3">
-                                    {getFormattedDate(comment.published_at)}
-                                    {user?.id === comment.userId &&
-                                        renderDeleteComment(comment.id)}
-                                    {user?.id === comment.userId &&
-                                        renderEditComment(comment)}
-                                </span>
+                            <div className="flex flex-col mb-2">
+                                <div className="flex gap-3">
+                                    <span className="text-sm text-gray-500 mb-5">
+                                        Published:{" "}
+                                        {getFormattedDate(comment.published_at)}
+                                    </span>
+                                    {comment.published_at !==
+                                        comment.updated_at && (
+                                        <>
+                                            <span className="text-sm text-gray-500">
+                                                (Edited)
+                                            </span>
+                                        </>
+                                    )}
+                                </div>
+                                <div className="flex flex-col">
+                                    {editedCommentErrors[comment.id] && (
+                                        <p className="bg-red-100 text-red-700 border border-red-200 rounded-md px-4 py-2 mb-2">
+                                            {editedCommentErrors[comment.id]}
+                                        </p>
+                                    )}
+                                    {editedCommentMessages[comment.id] && (
+                                        <p className="bg-green-100 text-green-700 border border-green-200 rounded-md px-4 py-2 mb-2">
+                                            {editedCommentMessages[comment.id]}
+                                        </p>
+                                    )}
+
+                                    <div className="flex flex-row justify-between">
+                                        <span className="font-medium text-cyan-700">
+                                            {comment.user.name}
+                                        </span>
+                                        <span className="text-sm text-gray-500 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2 sm:gap-3 text-left sm:text-right">
+                                            <div className="flex gap-2 items-center justify-end">
+                                                {user?.id === comment.userId &&
+                                                    renderEditComment(comment)}
+                                                {user?.id === comment.userId &&
+                                                    renderDeleteComment(
+                                                        comment.id
+                                                    )}
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                            {editingCommentId === comment.id ? (
+                            {editedCommentId === comment.id ? (
                                 <div className="mb-4">
                                     <textarea
                                         className="w-full border border-gray-300 rounded-2xl p-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-600 transition-all duration-300"
-                                        value={editigCommentText}
+                                        value={editedCommentText}
                                         onChange={(e) =>
-                                            setEditingCommentText(
-                                                e.target.value
-                                            )
+                                            setEditedCommentText(e.target.value)
                                         }
                                     />
                                     <div className="mt-2 flex gap-2">
@@ -141,9 +215,11 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
                                         </button>
                                         <button
                                             className="text-sm text-gray-500 hover:text-gray-700 transition hover:cursor-pointer"
-                                            onClick={() =>
-                                                setEditingCommentId(null)
-                                            }
+                                            onClick={() => (
+                                                setEditedCommentId(null),
+                                                setEditedCommentErrors({}),
+                                                setEditedCommentMessages({})
+                                            )}
                                         >
                                             Cancel
                                         </button>

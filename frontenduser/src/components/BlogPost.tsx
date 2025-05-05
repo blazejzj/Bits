@@ -34,7 +34,7 @@ function BlogPost() {
 
     function renderAddNewComment() {
         return (
-            <div className="mb-16">
+            <div className="mb-16 flex flex-col items-center md:block">
                 <>
                     <h3 className="text-xl font-semibold mb-2">
                         Add a Comment
