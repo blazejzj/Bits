@@ -33,9 +33,34 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
         });
     }
 
-    function handleAddResponse(commentId: string) {
+    async function handleAddResponse(commentId: string) {
         const text = responseInputs[commentId] || "";
-        console.log("Add response to", commentId, text);
+        const newResponse = {
+            text: text,
+        };
+        try {
+            const response = await fetch(
+                `${
+                    import.meta.env.VITE_API_URL
+                }/posts/${postid}/comments/${commentId}`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify(newResponse),
+                }
+            );
+            if (!response.ok) {
+                console.log(await response.json());
+            } else {
+                console.log(await response.json());
+                getPost();
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                console.log(err);
+            }
+        }
         setResponseInputs(function (prev) {
             return { ...prev, [commentId]: "" };
         });

@@ -33,7 +33,10 @@ function CommentResponses({
                 <div className="flex gap-3">
                     <button
                         className="bg-cyan-600 text-white px-5 py-2 rounded-full shadow-sm hover:bg-cyan-700 transition duration-300 hover:cursor-pointer"
-                        onClick={onReply}
+                        onClick={() => {
+                            onReply();
+                            setIsAddingResponse(false);
+                        }}
                     >
                         Reply
                     </button>
@@ -55,12 +58,14 @@ function CommentResponses({
     function renderAddNewReplyToggleButton() {
         return (
             <div>
-                <button
-                    className="bg-cyan-600 text-s text-white px-3 py-0.5 rounded-full shadow-sm hover:bg-cyan-700 transition duration-300 hover:cursor-pointer mt-6"
-                    onClick={handleAddNewReplyButtonToggle}
-                >
-                    Reply
-                </button>
+                {user && (
+                    <button
+                        className="bg-cyan-600 text-s text-white px-3 py-0.5 rounded-full shadow-sm hover:bg-cyan-700 transition duration-300 hover:cursor-pointer mt-6"
+                        onClick={handleAddNewReplyButtonToggle}
+                    >
+                        Reply
+                    </button>
+                )}
             </div>
         );
     }
