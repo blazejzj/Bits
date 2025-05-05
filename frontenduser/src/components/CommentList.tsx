@@ -26,6 +26,12 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
     const [editedCommentMessages, setEditedCommentMessages] = useState<
         Record<string, string>
     >({});
+    const [newResponseError, setNewResponseError] = useState<
+        Record<string, string>
+    >({});
+    const [newResponseMessage, setNewResponseMessage] = useState<
+        Record<string, string>
+    >({});
 
     function handleResponseChange(commentId: string, text: string) {
         setResponseInputs(function (prev) {
@@ -33,8 +39,21 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
         });
     }
 
-    // TODO add messages and erros upon failures/success
+    function addNewResponseError(commentId: string, error: string) {
+        setNewResponseError((prev) => ({ ...prev, [commentId]: error }));
+    }
+
+    function addNewResponseMessage(commentId: string, msg: string) {
+        setNewResponseMessage((prev) => ({ ...prev, [commentId]: msg }));
+    }
+
+    function clearResponseMessagesAndErrors() {
+        setNewResponseMessage({});
+        setNewResponseError({});
+    }
+
     async function handleAddResponse(commentId: string) {
+        clearResponseMessagesAndErrors();
         const text = responseInputs[commentId] || "";
         const newResponse = {
             text: text,
@@ -52,14 +71,16 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
                 }
             );
             if (!response.ok) {
-                console.log(await response.json());
+                const body = await response.json();
+                addNewResponseError(commentId, body.errors[0].msg);
             } else {
-                console.log(await response.json());
+                const body = await response.json();
+                addNewResponseMessage(commentId, body.msg);
                 getPost();
             }
         } catch (err) {
             if (err instanceof Error) {
-                console.log(err);
+                addNewResponseError(commentId, err.message);
             }
         }
         setResponseInputs(function (prev) {
@@ -104,8 +125,7 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
     function handleEditComment(commentId: string, commentText: string) {
         setEditedCommentId(commentId);
         setEditedCommentText(commentText);
-        setEditedCommentMessages({});
-        setEditedCommentErrors({});
+        clearResponseMessagesAndErrors();
     }
 
     function renderEditComment(comment: Comment) {
@@ -132,7 +152,6 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
             const newComment = {
                 text: editedCommentText,
             };
-            console.log(newComment);
             const response = await fetch(
                 `${
                     import.meta.env.VITE_API_URL
@@ -266,7 +285,20 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
                                     handleAddResponse(comment.id);
                                 }}
                                 getFormattedDate={getFormattedDate}
+                                clearResponseMessagesAndErrors={
+                                    clearResponseMessagesAndErrors
+                                }
                             />
+                            {newResponseError[comment.id] && (
+                                <p className="bg-red-100 text-red-700 border border-red-200 rounded-md px-4 py-2 mt-2">
+                                    {newResponseError[comment.id]}
+                                </p>
+                            )}
+                            {newResponseMessage[comment.id] && (
+                                <p className="bg-green-100 text-green-700 border border-green-200 rounded-md px-4 py-2 mt-2">
+                                    {newResponseMessage[comment.id]}
+                                </p>
+                            )}
                         </div>
                     );
                 })}

@@ -8,6 +8,7 @@ type Props = {
     onChange: (text: string) => void;
     onReply: () => void;
     getFormattedDate: (dateString: string) => string;
+    clearResponseMessagesAndErrors: () => void;
 };
 
 function CommentResponses({
@@ -16,6 +17,7 @@ function CommentResponses({
     onChange,
     onReply,
     getFormattedDate,
+    clearResponseMessagesAndErrors,
 }: Props) {
     const { user } = useAuth();
     const [isAddingResponse, setIsAddingResponse] = useState<boolean>(false);
@@ -52,6 +54,7 @@ function CommentResponses({
     }
 
     function handleAddNewReplyButtonToggle() {
+        clearResponseMessagesAndErrors();
         setIsAddingResponse(!isAddingResponse);
     }
 
