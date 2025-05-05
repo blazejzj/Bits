@@ -129,7 +129,9 @@ function BlogPost() {
                         {post.title}
                     </h1>
                     <div className="text-sm text-gray-500">
-                        Published: {getFormattedDate(post.published_at)}
+                        <span>
+                            Published: {getFormattedDate(post.published_at)}
+                        </span>
                         {post.published_at !== post.updated_at && (
                             <>
                                 <span className="ml-4">

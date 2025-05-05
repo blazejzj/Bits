@@ -152,9 +152,8 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
                             className="bg-white rounded-2xl shadow p-4 transition-all duration-300"
                         >
                             <div className="flex flex-col mb-2">
-                                <div className="flex gap-3">
-                                    <span className="text-sm text-gray-500 mb-5">
-                                        Published:{" "}
+                                <div className="flex gap-2">
+                                    <span className="text-sm text-gray-500 mb-1 ml-auto">
                                         {getFormattedDate(comment.published_at)}
                                     </span>
                                     {comment.published_at !==
