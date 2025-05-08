@@ -52,6 +52,11 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
         setNewResponseError({});
     }
 
+    function clearCommentMessagesAndErrors() {
+        setEditedCommentMessages({});
+        setEditedCommentErrors({});
+    }
+
     async function handleAddResponse(commentId: string) {
         clearResponseMessagesAndErrors();
         const text = responseInputs[commentId] || "";
@@ -89,7 +94,6 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
     }
 
     async function handleDeleteComment(commentId: string) {
-        console.log("deleteing" + commentId);
         try {
             const response = await fetch(
                 `${
@@ -101,11 +105,15 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
                 }
             );
             if (!response.ok) {
-                console.log(await response.json());
+                const body = await response.json();
+                addNewEditedCommentError(commentId, body.msg);
+            } else {
+                const body = await response.json();
+                addNewEditedCommentMessage(commentId, body.msg);
             }
         } catch (err) {
             if (err instanceof Error) {
-                console.log(err);
+                addNewEditedCommentError(commentId, err.message);
             }
         }
         getPost();
@@ -115,10 +123,34 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
         setEditedCommentId(commentId);
         setEditedCommentText(commentText);
         clearResponseMessagesAndErrors();
+        clearCommentMessagesAndErrors();
     }
 
-    function handleDeleteResponse(commentId: string) {}
-    function handleEditResponse(commentId: string, newResponse: string) {}
+    async function handleDeleteResponse(commentId: string, responseId: string) {
+        try {
+            const response = await fetch(
+                `${
+                    import.meta.env.VITE_API_URL
+                }/posts/${postid}/comments/${commentId}/${responseId}`,
+                {
+                    method: "DELETE",
+                    credentials: "include",
+                }
+            );
+            if (!response.ok) {
+                const body = await response.json();
+                addNewResponseError(commentId, body.msg);
+            } else {
+                const body = await response.json();
+                addNewResponseMessage(commentId, body.msg);
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                addNewResponseError(commentId, err.message);
+            }
+        }
+        getPost();
+    }
 
     function renderDeleteComment(commentId: string) {
         return (
@@ -142,30 +174,6 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
         );
     }
 
-    function renderDeleteResponse(commentId: string) {
-        return (
-            <button onClick={() => handleDeleteResponse(commentId)}>
-                <FontAwesomeIcon
-                    icon={faTrash}
-                    className="text-cyan-700 text-xl transition-colors duration-300 hover:text-cyan-500 hover:cursor-pointer"
-                />
-            </button>
-        );
-    }
-
-    function renderEditResponse(comment: Comment) {
-        return (
-            <button
-                onClick={() => handleEditResponse(comment.id, comment.text)}
-            >
-                <FontAwesomeIcon
-                    icon={faPenToSquare}
-                    className="text-cyan-700 text-xl transition-colors duration-300 hover:text-cyan-500 hover:cursor-pointer"
-                />
-            </button>
-        );
-    }
-
     function addNewEditedCommentError(commentId: string, error: string) {
         setEditedCommentErrors((prev) => ({ ...prev, [commentId]: error }));
     }
@@ -174,7 +182,7 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
         setEditedCommentMessages((prev) => ({ ...prev, [commentId]: msg }));
     }
 
-    async function handleSaveEdit(commentId: string) {
+    async function handleSaveEditComment(commentId: string) {
         try {
             const newComment = {
                 text: editedCommentText,
@@ -230,11 +238,9 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
                                     </span>
                                     {comment.published_at !==
                                         comment.updated_at && (
-                                        <>
-                                            <span className="text-sm text-gray-500">
-                                                (Edited)
-                                            </span>
-                                        </>
+                                        <span className="text-sm text-gray-500">
+                                            (Edited)
+                                        </span>
                                     )}
                                 </div>
                                 <div className="flex flex-col">
@@ -271,15 +277,20 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
                                     <textarea
                                         className="w-full border border-gray-300 rounded-2xl p-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-600 transition-all duration-300"
                                         value={editedCommentText}
-                                        onChange={(e) =>
-                                            setEditedCommentText(e.target.value)
-                                        }
+                                        onChange={(e) => (
+                                            setEditedCommentText(
+                                                e.target.value
+                                            ),
+                                            clearCommentMessagesAndErrors()
+                                        )}
                                     />
                                     <div className="mt-2 flex gap-2">
                                         <button
                                             className="bg-cyan-600 text-white px-5 py-2 rounded-full shadow-sm hover:bg-cyan-700 transition duration-300 text-sm hover:cursor-pointer"
                                             onClick={() =>
-                                                handleSaveEdit(comment.id)
+                                                handleSaveEditComment(
+                                                    comment.id
+                                                )
                                             }
                                         >
                                             Save
@@ -315,6 +326,10 @@ function CommentList({ comments, getFormattedDate, getPost }: Props) {
                                 clearResponseMessagesAndErrors={
                                     clearResponseMessagesAndErrors
                                 }
+                                handleDeleteResponse={handleDeleteResponse}
+                                getPost={getPost}
+                                addNewResponseError={addNewResponseError}
+                                addNewResponseMessage={addNewResponseMessage}
                             />
                             {newResponseError[comment.id] && (
                                 <p className="bg-red-100 text-red-700 border border-red-200 rounded-md px-4 py-2 mt-2">
