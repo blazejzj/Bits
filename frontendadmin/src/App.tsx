@@ -5,7 +5,7 @@ import LogIn from "./components/LogIn";
 import { Outlet } from "react-router";
 
 function App() {
-    const [loggedIn, setLoggedIn] = useState<boolean>(false); // temporary
+    const [loggedIn, setLoggedIn] = useState<boolean>(true); // temporary
 
     return (
         <div>
