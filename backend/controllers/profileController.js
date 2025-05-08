@@ -68,8 +68,18 @@ exports.deleteUser = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(401).json({
-                msg: "Incorrect password, account not deleted.",
-                errors: errors.array(),
+                msg: "Incorrect password.",
+            });
+        }
+
+        const userPasswordHash = await db.getUserPasswordHash(req.user.id);
+        const matches = await bcrypt.compare(
+            req.body.authPassword,
+            userPasswordHash
+        );
+        if (!matches) {
+            return res.status(401).json({
+                msg: "Incorrect password.",
             });
         }
 

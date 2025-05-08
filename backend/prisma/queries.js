@@ -7,6 +7,19 @@ async function getUserById(id) {
     return user;
 }
 
+async function getUserPasswordHash(id) {
+    const user = await prisma.user.findUnique({
+        where: {
+            id,
+        },
+        select: {
+            password: true,
+        },
+    });
+
+    return user.password ?? null;
+}
+
 async function getUserByUsername(username) {
     return await prisma.user.findUnique({
         where: {
@@ -364,6 +377,7 @@ module.exports = {
     updateUserName,
     updateUserPassword,
     deleteUser,
+    getUserPasswordHash,
 
     getAllPublishedPosts,
     getSinglePostById,
