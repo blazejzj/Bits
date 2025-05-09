@@ -8,6 +8,7 @@ const {
     isAuthenticated,
 } = require("../middleware/authMiddleware");
 
+authRouter.post("/login/admin", isGuest, authController.loginAdmin);
 authRouter.post("/register", isGuest, authController.registerNewUser);
 authRouter.post("/login", isGuest, authController.loginUser);
 authRouter.post(
