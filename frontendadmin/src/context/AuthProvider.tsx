@@ -47,7 +47,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         };
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/auth/login`,
+                `${import.meta.env.VITE_API_URL}/auth/login/admin`,
                 {
                     method: "POST",
                     body: JSON.stringify(req),

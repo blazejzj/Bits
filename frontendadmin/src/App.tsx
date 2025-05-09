@@ -9,7 +9,7 @@ function App() {
 
     return (
         <div>
-            {user ? (
+            {user && user.role == "ADMIN" ? (
                 <div>
                     <p>{user.name} hehe</p>
                     <Header />
