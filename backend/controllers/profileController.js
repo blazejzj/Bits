@@ -4,7 +4,7 @@ const db = require("../prisma/queries");
 const bcrypt = require("bcryptjs");
 
 exports.getOwnProfile = async (req, res) => {
-    const { id, name, username, email, created_at } = req.user;
+    const { id, name, username, email, created_at, role } = req.user;
 
     res.status(200).json({
         id,
@@ -12,6 +12,7 @@ exports.getOwnProfile = async (req, res) => {
         username,
         email,
         created_at,
+        role,
     });
 };
 

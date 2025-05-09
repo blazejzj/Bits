@@ -1,22 +1,23 @@
-import { useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import LogIn from "./components/LogIn";
+import LogInPage from "./components/LogInPage";
 import { Outlet } from "react-router";
+import useAuth from "./hooks/useAuth";
 
 function App() {
-    const [loggedIn, setLoggedIn] = useState<boolean>(true); // temporary
+    const { user } = useAuth();
 
     return (
         <div>
-            {loggedIn ? (
+            {user ? (
                 <div>
+                    <p>{user.name} hehe</p>
                     <Header />
                     <Outlet />
                     <Footer />
                 </div>
             ) : (
-                <LogIn />
+                <LogInPage />
             )}
         </div>
     );
