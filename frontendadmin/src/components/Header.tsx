@@ -18,14 +18,27 @@ function Header() {
     const active = "bg-gray-700 text-white hover:bg-gray-600";
     const navLinkStyles = {
         base: "text-base font-medium transition-[background-position] duration-500 whitespace-nowrap px-3 py-1 rounded-full cursor-pointer",
-        active: "bg-cyan-600 text-white hover:bg-cyan-700",
+        active: "bg-gray-700 text-white hover:bg-gray-600",
         inactive: "gradient-wipe text-black",
     };
     function renderMenu() {
         return (
-            <nav>
-                <ul className="flex gap-16">
+            <nav className="">
+                <ul className="flex gap-16 items-center">
                     <li>
+                        <NavLink
+                            to={`/`}
+                            className={({ isActive }) =>
+                                [
+                                    navLinkStyles.base,
+                                    isActive
+                                        ? navLinkStyles.active
+                                        : navLinkStyles.inactive,
+                                ].join(" ")
+                            }
+                        >
+                            Home
+                        </NavLink>
                         <NavLink
                             to={`/manage`}
                             className={({ isActive }) =>
@@ -66,10 +79,10 @@ function Header() {
         );
     }
     return (
-        <div className="flex justify-between items-center p-6">
+        <header className="flex justify-between items-center p-6 sticky top-0 bg-white shadow-sm">
             <Logo />
             {renderMenu()}
-        </div>
+        </header>
     );
 }
 
