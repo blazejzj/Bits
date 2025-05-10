@@ -47,7 +47,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         };
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/auth/login/admin`,
+                `${import.meta.env.VITE_API_URL}/auth/login`,
                 {
                     method: "POST",
                     body: JSON.stringify(req),
@@ -57,10 +57,13 @@ function AuthProvider({ children }: AuthProviderProps) {
             );
             if (!response.ok) {
                 setLoading(false);
+                setUser(null);
+                throw new Error();
             }
         } catch (err) {
             if (err instanceof Error) {
                 setUser(null);
+                throw new Error();
             }
         }
 

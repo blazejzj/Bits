@@ -61,7 +61,7 @@ export default function LogInForm({ handleLogIn, clearError }: LogInFormProps) {
 
             <button
                 onClick={(e) => handleSubmit(e)}
-                className="w-full bg-gray-700 text-white font-semibold rounded-md py-2 hover:bg-gray-800 transition"
+                className="w-full bg-gray-700 text-white font-semibold rounded-md py-2 hover:bg-gray-800 transition cursor-pointer"
             >
                 Log in
             </button>
