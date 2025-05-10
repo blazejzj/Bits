@@ -23,7 +23,7 @@ function Header() {
     };
     function renderMenu() {
         return (
-            <nav className="">
+            <nav>
                 <ul className="flex gap-16 items-center">
                     <li>
                         <NavLink
