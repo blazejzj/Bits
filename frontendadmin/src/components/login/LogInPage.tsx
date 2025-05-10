@@ -1,6 +1,6 @@
 import { useState } from "react";
 import LogInForm from "./LogInForm";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 function LogInPage() {
     const [error, setError] = useState<string>("");

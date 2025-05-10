@@ -1,6 +1,6 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import LogInPage from "./components/LogInPage";
+import LogInPage from "./components/login/LogInPage";
 import { Outlet } from "react-router";
 import useAuth from "./hooks/useAuth";
 

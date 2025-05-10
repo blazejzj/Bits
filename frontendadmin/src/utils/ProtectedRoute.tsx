@@ -1,10 +1,17 @@
 import type { ReactNode } from "react";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 type ProtectedRouteProps = {
     children: ReactNode;
 };
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-    // check here if user is logged in, if yes, go to children, else navigate to login (root)
+    const { user } = useAuth();
+    const navigate = useNavigate();
+
+    if (!user) {
+        navigate("/");
+    }
 
     return <>{children}</>;
 }
