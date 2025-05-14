@@ -2,22 +2,13 @@ import { Outlet } from "react-router";
 import ProfileNavigation from "./ProfileNavigation";
 
 export default function Profile() {
-    function displayGreeting() {
-        return (
-            <div>
-                <p className="font-bold text-2xl">
-                    Hello <span className="text-gray-600">{user!.name}</span>!
-                    How are you today?
-                </p>
-            </div>
-        );
-    }
-
     return (
-        <div className="flex items-center justify-center w-full">
-            <div className="flex flex-row">
+        <div className="flex items-center justify-center w-full h-screen">
+            <div className="flex flex-row w-[600px] h-[600px]">
                 <ProfileNavigation />
-                <Outlet />
+                <div className="flex-1 overflow-auto ml-3">
+                    <Outlet />
+                </div>
             </div>
         </div>
     );
