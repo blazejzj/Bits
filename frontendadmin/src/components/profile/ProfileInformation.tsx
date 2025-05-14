@@ -1,9 +1,17 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useAuth from "../../hooks/useAuth";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import ProfileNameForm from "./ProfileNameForm";
 
 function ProfileInformation() {
     const { user } = useAuth();
+    const [updatingName, setUpdatingName] = useState<boolean>(false);
+    const [updatingEmail, setUpdatingEmail] = useState<boolean>();
+
+    function toggleNameChange() {
+        setUpdatingName(!updatingName);
+    }
 
     function displayGreeting() {
         return (
@@ -23,31 +31,41 @@ function ProfileInformation() {
                     <p className="font-bold text-l">Username:</p>
                     <div className="flex flex-row gap-2">
                         <span>{user!.username}</span>
-                        <button className="cursor-pointer">
-                            <FontAwesomeIcon
-                                icon={faPenToSquare}
-                                className="text-gray-700"
-                                size="lg"
-                            />
-                        </button>
                     </div>
                 </div>
                 <div>
                     <p className="font-bold text-l">Name:</p>
-                    <div className="flex flex-row gap-2">
+                    <div
+                        className={`flex gap-2 ${
+                            updatingName ? "flex-col" : "flex-row"
+                        }`}
+                    >
                         <span>{user!.name}</span>
-                        <button className="cursor-pointer">
-                            <FontAwesomeIcon
-                                icon={faPenToSquare}
-                                className="text-gray-700"
-                                size="lg"
+                        {updatingName ? (
+                            <ProfileNameForm
+                                toggleNameChange={toggleNameChange}
                             />
-                        </button>
+                        ) : (
+                            <button
+                                className="cursor-pointer"
+                                onClick={toggleNameChange}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faPenToSquare}
+                                    className="text-gray-700"
+                                    size="lg"
+                                />
+                            </button>
+                        )}
                     </div>
                 </div>
                 <div>
                     <p className="font-bold text-l">Email:</p>
-                    <div className="flex flex-row gap-2">
+                    <div
+                        className={`flex gap-2 ${
+                            updatingEmail ? "flex-col" : "flex-row"
+                        }`}
+                    >
                         <span>{user!.email}</span>
                         <button className="cursor-pointer">
                             <FontAwesomeIcon
