@@ -1,11 +1,58 @@
-import { useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 
 function ProfilePassword() {
     const [passwordFormData, setPasswordFormData] = useState({
-        newPassword: "",
+        password: "",
         confirmPassword: "",
         authPassword: "",
     });
+    const [message, setMessage] = useState<string>("");
+    const [error, setError] = useState<string>("");
+
+    function resetPasswordFormData() {
+        setPasswordFormData({
+            password: "",
+            confirmPassword: "",
+            authPassword: "",
+        });
+    }
+
+    function resetErrorAndMessage() {
+        setMessage("");
+        setError("");
+    }
+
+    async function handlePasswordChangeSubmit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/profile`,
+                {
+                    method: "PATCH",
+                    credentials: "include",
+                    body: JSON.stringify(passwordFormData),
+                    headers: { "Content-type": "application/json" },
+                }
+            );
+            if (!response.ok) {
+                const body = await response.json();
+
+                if (Array.isArray(body.msg)) {
+                    setError(body.msg[0].msg);
+                } else {
+                    setError(body.msg);
+                }
+            } else {
+                const body = await response.json();
+                setMessage(body.msg);
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message);
+            }
+        }
+        resetPasswordFormData();
+    }
 
     function displayTitle() {
         return (
@@ -22,22 +69,42 @@ function ProfilePassword() {
             ...prev,
             [e.target.name]: e.target.value,
         }));
+        resetErrorAndMessage();
+    }
+
+    function displayFormSubmitResponse() {
+        if (error)
+            return (
+                <p className="bg-red-100 text-red-700 border border-red-200 rounded-md px-4 py-2 mb-2">
+                    {error}
+                </p>
+            );
+        if (message)
+            return (
+                <p className="bg-green-100 text-green-700 border border-green-200 rounded-md px-4 py-2 mb-2">
+                    {message}
+                </p>
+            );
     }
 
     function displayPasswordForm() {
         return (
-            <form className="flex flex-col gap-5 shadow p-7 rounded-md">
+            <form
+                className="flex flex-col gap-5 shadow p-7 rounded-md"
+                onSubmit={handlePasswordChangeSubmit}
+            >
+                {displayFormSubmitResponse()}
                 <div className="flex flex-col gap-2">
-                    <label htmlFor="newPassword" className="font-bold text-l">
+                    <label htmlFor="password" className="font-bold text-l">
                         New Password
                     </label>
                     <input
                         type="password"
-                        name="newPassword"
-                        id="newPassword"
+                        name="password"
+                        id="password"
                         required
                         onChange={changeFormElement}
-                        value={passwordFormData.newPassword}
+                        value={passwordFormData.password}
                         className="border-gray-200 border px-3 py-2 rounded-md focus:border-gray-600 focus:outline-none focus:ring-2"
                     />
                 </div>
