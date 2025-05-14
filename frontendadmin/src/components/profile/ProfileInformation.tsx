@@ -7,7 +7,7 @@ function ProfileInformation() {
 
     function displayGreeting() {
         return (
-            <div>
+            <div className="text-center">
                 <p className="font-bold text-2xl">
                     Hello <span className="text-gray-600">{user!.name}</span>!
                     How are you today?
@@ -18,7 +18,7 @@ function ProfileInformation() {
 
     function displayProfileInformation() {
         return (
-            <div className="flex flex-col gap-5 shadow p-7 rounded-md">
+            <div className="flex flex-col gap-8 shadow p-7 rounded-md">
                 <div>
                     <p className="font-bold text-l">Username:</p>
                     <div className="flex flex-row gap-2">
