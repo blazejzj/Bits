@@ -77,7 +77,6 @@ function AuthProvider({ children }: AuthProviderProps) {
             );
             if (response.ok) {
                 const userData = await response.json();
-                console.log(userData);
                 if (userData.role === "ADMIN") {
                     setUser(userData);
                 } else {
