@@ -1,5 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import useAuth from "../../hooks/useAuth";
+import ErrorMessage from "../../utils/ErrorMessage";
+import ConfirmationMessage from "../../utils/ConfirmationMessage";
 
 interface ProfileNameFormProps {
     toggleNameChange: () => void;
@@ -67,16 +69,9 @@ function ProfileNameForm({ toggleNameChange }: ProfileNameFormProps) {
                 onSubmit={handleFormSubmit}
                 className="ml-3 flex flex-col gap-3"
             >
-                {error && (
-                    <p className="bg-red-100 text-red-700 border border-red-200 rounded-md px-4 py-2">
-                        {error}
-                    </p>
-                )}
-                {message && (
-                    <p className="bg-green-100 text-green-700 border border-green-200 rounded-md px-4 py-2">
-                        {message}
-                    </p>
-                )}
+                {error && <ErrorMessage errorMsg={error} />}
+                {message && <ConfirmationMessage confirmMsg={message} />}
+
                 <div className="flex flex-col gap-2">
                     <label htmlFor="name" className="font-bold text-l">
                         New Name

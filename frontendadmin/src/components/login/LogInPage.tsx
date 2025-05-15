@@ -1,6 +1,7 @@
 import { useState } from "react";
 import LogInForm from "./LogInForm";
 import useAuth from "../../hooks/useAuth";
+import ErrorMessage from "../../utils/ErrorMessage";
 
 function LogInPage() {
     const [error, setError] = useState<string>("");
@@ -31,15 +32,7 @@ function LogInPage() {
                     <h1 className="text-3xl font-bold text-gray-700 text-center">
                         Log in
                     </h1>
-
-                    {error && (
-                        <div
-                            className="bg-red-100 text-red-700 border border-red-200 rounded-md px-4 py-2"
-                            data-testid="login-error-div"
-                        >
-                            {error}
-                        </div>
-                    )}
+                    {error && <ErrorMessage errorMsg={error} />}
                     <LogInForm
                         handleLogIn={handleLogIn}
                         clearError={clearError}

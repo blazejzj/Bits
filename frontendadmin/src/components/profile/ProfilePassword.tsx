@@ -1,4 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import ErrorMessage from "../../utils/ErrorMessage";
+import ConfirmationMessage from "../../utils/ConfirmationMessage";
 
 function ProfilePassword() {
     const [passwordFormData, setPasswordFormData] = useState({
@@ -72,28 +74,14 @@ function ProfilePassword() {
         resetErrorAndMessage();
     }
 
-    function displayFormSubmitResponse() {
-        if (error)
-            return (
-                <p className="bg-red-100 text-red-700 border border-red-200 rounded-md px-4 py-2 mb-2">
-                    {error}
-                </p>
-            );
-        if (message)
-            return (
-                <p className="bg-green-100 text-green-700 border border-green-200 rounded-md px-4 py-2 mb-2">
-                    {message}
-                </p>
-            );
-    }
-
     function displayPasswordForm() {
         return (
             <form
                 className="flex flex-col gap-5 shadow p-7 rounded-md"
                 onSubmit={handlePasswordChangeSubmit}
             >
-                {displayFormSubmitResponse()}
+                {error && <ErrorMessage errorMsg={error} />}
+                {message && <ConfirmationMessage confirmMsg={message} />}
                 <div className="flex flex-col gap-2">
                     <label htmlFor="password" className="font-bold text-l">
                         New Password

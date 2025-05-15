@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import ProfileNameForm from "./ProfileNameForm";
+import ProfileEmailForm from "./ProfileEmailForm";
 
 function ProfileInformation() {
     const { user } = useAuth();
@@ -11,6 +12,10 @@ function ProfileInformation() {
 
     function toggleNameChange() {
         setUpdatingName(!updatingName);
+    }
+
+    function toggleEmailChange() {
+        setUpdatingEmail(!updatingEmail);
     }
 
     function displayGreeting() {
@@ -67,13 +72,22 @@ function ProfileInformation() {
                         }`}
                     >
                         <span>{user!.email}</span>
-                        <button className="cursor-pointer">
-                            <FontAwesomeIcon
-                                icon={faPenToSquare}
-                                className="text-gray-700"
-                                size="lg"
+                        {updatingEmail ? (
+                            <ProfileEmailForm
+                                toggleEmailChange={toggleEmailChange}
                             />
-                        </button>
+                        ) : (
+                            <button
+                                className="cursor-pointer"
+                                onClick={toggleEmailChange}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faPenToSquare}
+                                    className="text-gray-700"
+                                    size="lg"
+                                />
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
