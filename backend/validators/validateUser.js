@@ -122,7 +122,6 @@ exports.validateUpdatedUser = [
         .if(body("password").exists())
         .custom((value, { req }) => {
             if (value !== req.body.password) {
-                console.log("triggered");
                 throw new Error(passwordMismatchErr);
             }
             return true;
@@ -130,10 +129,10 @@ exports.validateUpdatedUser = [
 
     body("authPassword")
         .notEmpty()
+        .withMessage(oldPasswordRequiredErr)
         .bail()
-        .isLength({ min: 8 })
-        .bail()
-        .isLength({ max: 100 }),
+        .isLength({ min: 8, max: 100 })
+        .withMessage(passwordRangeErr),
 
     body("username").custom((value, { req }) => {
         if (req.body.username !== undefined) {
