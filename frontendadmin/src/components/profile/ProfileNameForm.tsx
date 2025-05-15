@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import useAuth from "../../hooks/useAuth";
 
 interface ProfileNameFormProps {
     toggleNameChange: () => void;
@@ -11,6 +12,7 @@ function ProfileNameForm({ toggleNameChange }: ProfileNameFormProps) {
     });
     const [error, setError] = useState<string>("");
     const [message, setMessage] = useState<string>("");
+    const { setUser } = useAuth();
 
     function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
         setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -47,10 +49,9 @@ function ProfileNameForm({ toggleNameChange }: ProfileNameFormProps) {
                     setError(body.msg);
                 }
             } else {
-                console.log("else2");
                 const body = await response.json();
-                console.log(body.msg);
                 setMessage(body.msg);
+                setUser((prev) => ({ ...prev!, name: formData.name }));
             }
         } catch (err) {
             if (err instanceof Error) {
