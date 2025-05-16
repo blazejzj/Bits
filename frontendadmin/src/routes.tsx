@@ -1,6 +1,8 @@
 import App from "./App";
 import Dashboard from "./components/Dashboard";
-import ManagingPanel from "./components/ManagingPanel";
+import ManagePosts from "./components/managing/ManagePosts";
+import ManagingPanel from "./components/managing/ManagingPanel";
+import NewPost from "./components/managing/NewPost";
 import Profile from "./components/profile/Profile";
 import ProfileDelete from "./components/profile/ProfileDelete";
 import ProfileInformation from "./components/profile/ProfileInformation";
@@ -27,6 +29,16 @@ const routes = [
                         <ManagingPanel />
                     </ProtectedRoute>
                 ),
+                children: [
+                    {
+                        index: true,
+                        element: <NewPost />,
+                    },
+                    {
+                        path: "/manage/posts",
+                        element: <ManagePosts />,
+                    },
+                ],
             },
             {
                 path: "/profile",
