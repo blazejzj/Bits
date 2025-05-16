@@ -1,5 +1,5 @@
 function ManagingPanel() {
-    return <p>Hello from managing panel</p>;
+    return <div className="min-h-full">Hello from managing panel</div>;
 }
 
 export default ManagingPanel;

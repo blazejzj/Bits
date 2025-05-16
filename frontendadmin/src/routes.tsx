@@ -16,7 +16,7 @@ const routes = [
                 index: true,
                 element: (
                     <ProtectedRoute>
-                        <Dashboard />,
+                        <Dashboard />
                     </ProtectedRoute>
                 ),
             },

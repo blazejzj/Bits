@@ -1,5 +1,4 @@
 @import "tailwindcss";
-
 @layer utilities {
     .from-left {
         animation: slide-in-left 0.8s ease-out forwards;

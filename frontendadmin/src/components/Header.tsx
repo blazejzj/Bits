@@ -79,7 +79,7 @@ function Header() {
         );
     }
     return (
-        <header className="flex justify-between items-center p-6 sticky top-0 bg-white shadow-sm">
+        <header className="flex justify-between items-center p-6 sticky top-0 bg-white shadow-sm z-10">
             <Logo />
             {renderMenu()}
         </header>

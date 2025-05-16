@@ -14,9 +14,9 @@ function Dashboard() {
     }
 
     return (
-        <div className="flex flex-col gap-7 items-center justify-center w-full from-left">
+        <div className="flex flex-col gap-7 items-center justify-center w-full h-full from-left">
             {renderGreeting()}
-            <img src={developer} alt="Dev" />
+            <img src={developer} alt="Dev" className="size-150" />
         </div>
     );
 }
