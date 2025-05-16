@@ -109,6 +109,7 @@ async function getAllPublishedPosts() {
             text: true,
             published_at: true,
             updated_at: true,
+            categoryId: true,
         },
         orderBy: { published_at: "desc" },
     });
@@ -122,6 +123,8 @@ async function getAllPostsAdmin() {
             text: true,
             published_at: true,
             updated_at: true,
+            categoryId: true,
+            published: true,
         },
         orderBy: { published_at: "desc" },
     });
@@ -244,6 +247,7 @@ async function getResponseById(id) {
 async function getAllCategories() {
     return await prisma.category.findMany({
         select: {
+            id: true,
             name: true,
             slugname: true,
         },

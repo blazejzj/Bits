@@ -33,36 +33,102 @@ function ManagePosts() {
         fetchAllCategories();
     }, []);
 
+    useEffect(() => {
+        fetchPosts();
+    }, []);
+
+    async function fetchPosts() {
+        setLoading(true);
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/posts`,
+                {
+                    method: "GET",
+                    credentials: "include",
+                }
+            );
+            if (!response.ok) {
+                const body = await response.json();
+                setError(body.msg);
+            } else {
+                const body = await response.json();
+                setPosts(body);
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                console.error(err);
+            }
+        }
+        setLoading(false);
+    }
+
+    async function publishPost(postId: number) {
+        updatePostPublishedStatus(postId, true);
+        const data = {
+            id: postId,
+        };
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/posts/publish/${postId}`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                    body: JSON.stringify(data),
+                }
+            );
+            if (!response.ok) {
+                console.error(await response.json());
+                updatePostPublishedStatus(postId, false);
+            }
+        } catch (err) {
+            console.error(err);
+            updatePostPublishedStatus(postId, false);
+        }
+    }
+
+    async function unpublishPost(postId: number) {
+        updatePostPublishedStatus(postId, false);
+        const data = {
+            id: postId,
+        };
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/posts/unpublish/${postId}`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                    body: JSON.stringify(data),
+                }
+            );
+            if (!response.ok) {
+                console.error(await response.json());
+                updatePostPublishedStatus(postId, true);
+            }
+        } catch (err) {
+            console.error(err);
+            updatePostPublishedStatus(postId, true);
+        }
+    }
+
+    function updatePostPublishedStatus(postId: number, published: boolean) {
+        setPosts((prevPosts) =>
+            prevPosts.map((post) =>
+                post.id === postId ? { ...post, published } : post
+            )
+        );
+    }
+
+    function togglePublished(postId: number, published: boolean) {
+        if (published) {
+            unpublishPost(postId);
+        } else {
+            publishPost(postId);
+        }
+    }
+
     function getCategoryByCategoryId(id: number) {
         return categories.find((category) => category.id === id);
     }
-
-    useEffect(() => {
-        async function fetchPosts() {
-            try {
-                const response = await fetch(
-                    `${import.meta.env.VITE_API_URL}/posts`,
-                    {
-                        method: "GET",
-                        credentials: "include",
-                    }
-                );
-                if (!response.ok) {
-                    const body = await response.json();
-                    setError(body.msg);
-                } else {
-                    const body = await response.json();
-                    setPosts(body);
-                }
-            } catch (err) {
-                if (err instanceof Error) {
-                    console.error(err);
-                }
-            }
-            setLoading(false);
-        }
-        fetchPosts();
-    }, []);
 
     return (
         <div>
@@ -89,7 +155,14 @@ function ManagePosts() {
                                 <label className="relative inline-block w-[40px] h-[20px]">
                                     <input
                                         type="checkbox"
+                                        checked={post.published}
                                         className="opacity-0 w-0 h-0 peer"
+                                        onChange={() =>
+                                            togglePublished(
+                                                post.id,
+                                                post.published
+                                            )
+                                        }
                                     />
                                     <span
                                         className={`

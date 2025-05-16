@@ -61,7 +61,7 @@ exports.deletePost = async (req, res) => {
 exports.publishPost = async (req, res) => {
     const postId = req.params.id;
 
-    await db.publishPost(postId);
+    await db.publishPost(Number(postId));
 
     res.status(200).json({
         msg: "Post successfully published.",
@@ -71,7 +71,7 @@ exports.publishPost = async (req, res) => {
 exports.unpublishPost = async (req, res) => {
     const postId = req.params.id;
 
-    await db.unpublishPost(postId);
+    await db.unpublishPost(Number(postId));
 
     res.status(200).json({
         msg: "Post successfully unpublished.",
@@ -90,5 +90,3 @@ exports.getPostsByCategorySlugname = async (req, res) => {
     const posts = await db.getPostsByCategorySlugname(slugname);
     return res.status(200).json(posts);
 };
-
-exports.unpublishPost;
