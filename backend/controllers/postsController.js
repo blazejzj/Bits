@@ -2,8 +2,13 @@ const db = require("../prisma/queries");
 
 exports.getAllPosts = async (req, res) => {
     try {
-        const posts = await db.getAllPublishedPosts();
-        return res.status(200).json(posts);
+        if (req.user.role === "ADMIN") {
+            const posts = await db.getAllPostsAdmin();
+            return res.status(200).json(posts);
+        } else {
+            const posts = await db.getAllPublishedPosts();
+            return res.status(200).json(posts);
+        }
     } catch (err) {
         return res.status(500).json({ msg: "Server error fetching posts." });
     }

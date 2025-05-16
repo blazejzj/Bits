@@ -114,6 +114,19 @@ async function getAllPublishedPosts() {
     });
 }
 
+async function getAllPostsAdmin() {
+    return await prisma.post.findMany({
+        select: {
+            id: true,
+            title: true,
+            text: true,
+            published_at: true,
+            updated_at: true,
+        },
+        orderBy: { published_at: "desc" },
+    });
+}
+
 async function getSinglePostById(id) {
     return await prisma.post.findUnique({
         where: { id },
@@ -378,6 +391,7 @@ module.exports = {
     updateUserPassword,
     deleteUser,
     getUserPasswordHash,
+    getAllPostsAdmin,
 
     getAllPublishedPosts,
     getSinglePostById,

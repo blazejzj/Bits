@@ -11,7 +11,7 @@ const responseController = require("../controllers/responseController");
 const categoryController = require("../controllers/categoryController");
 
 // posts
-postsRouter.get("/", postsController.getAllPosts);
+postsRouter.get("/", authenticateJWT, postsController.getAllPosts);
 postsRouter.get(
     "/category/:slugname",
     postsController.getPostsByCategorySlugname
