@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import type { Post } from "../../types/post";
 import ErrorMessage from "../../utils/ErrorMessage";
 import type { Category } from "../../types/category";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 function ManagePosts() {
     const [posts, setPosts] = useState<Post[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
+    const [editedPostCategoryId, setEditedPostCategoryId] = useState<
+        number | null
+    >(null);
 
     useEffect(() => {
         async function fetchAllCategories() {
@@ -34,33 +39,32 @@ function ManagePosts() {
     }, []);
 
     useEffect(() => {
+        async function fetchPosts() {
+            setLoading(true);
+            try {
+                const response = await fetch(
+                    `${import.meta.env.VITE_API_URL}/posts`,
+                    {
+                        method: "GET",
+                        credentials: "include",
+                    }
+                );
+                if (!response.ok) {
+                    const body = await response.json();
+                    setError(body.msg);
+                } else {
+                    const body = await response.json();
+                    setPosts(body);
+                }
+            } catch (err) {
+                if (err instanceof Error) {
+                    console.error(err);
+                }
+            }
+            setLoading(false);
+        }
         fetchPosts();
     }, []);
-
-    async function fetchPosts() {
-        setLoading(true);
-        try {
-            const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/posts`,
-                {
-                    method: "GET",
-                    credentials: "include",
-                }
-            );
-            if (!response.ok) {
-                const body = await response.json();
-                setError(body.msg);
-            } else {
-                const body = await response.json();
-                setPosts(body);
-            }
-        } catch (err) {
-            if (err instanceof Error) {
-                console.error(err);
-            }
-        }
-        setLoading(false);
-    }
 
     async function publishPost(postId: number) {
         updatePostPublishedStatus(postId, true);
@@ -130,6 +134,55 @@ function ManagePosts() {
         return categories.find((category) => category.id === id);
     }
 
+    function toggleCategoryMenu(postId: number) {
+        if (!editedPostCategoryId) {
+            setEditedPostCategoryId(postId);
+        } else {
+            if (postId === editedPostCategoryId) {
+                setEditedPostCategoryId(null);
+            } else {
+                setEditedPostCategoryId(postId);
+            }
+        }
+    }
+
+    function displayCategoryMenu(post: Post) {
+        return (
+            <div>
+                <button
+                    className="cursor-pointer"
+                    onClick={() => toggleCategoryMenu(post.id)}
+                >
+                    <FontAwesomeIcon
+                        icon={faXmark}
+                        size="lg"
+                        className="text-gray-700"
+                    />
+                </button>
+                <div>
+                    {categories
+                        .filter((category) => category.id !== post.categoryId)
+                        .map((category) => (
+                            <button
+                                key={category.id}
+                                onClick={() =>
+                                    handleCategoryChange(post.id, category.id)
+                                }
+                                className="cursor-pointer"
+                            >
+                                {category.name}
+                            </button>
+                        ))}
+                </div>
+            </div>
+        );
+    }
+
+    function handleCategoryChange(postId: number, categoryId: number) {
+        console.log(`changing to categoryId ${categoryId}`);
+        console.log(`changing postid: ${postId}`);
+    }
+
     return (
         <div>
             {loading ? <ErrorMessage errorMsg={"Loading..."} /> : ""}
@@ -141,12 +194,31 @@ function ManagePosts() {
                         className="p-5 border-1 border-gray-300 shadow-md flex flex-row items-center justify-between"
                     >
                         <div className="flex flex-col gap-2">
-                            <p className="text-gray-500">
-                                {
-                                    getCategoryByCategoryId(post.categoryId!)
-                                        ?.name
-                                }
-                            </p>
+                            <div className="flex gap-2 items-center">
+                                <p className="text-gray-500">
+                                    {
+                                        getCategoryByCategoryId(
+                                            post.categoryId!
+                                        )?.name
+                                    }
+                                </p>
+                                {editedPostCategoryId === post.id ? (
+                                    displayCategoryMenu(post)
+                                ) : (
+                                    <button
+                                        className="cursor-pointer"
+                                        onClick={() =>
+                                            toggleCategoryMenu(post.id)
+                                        }
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faPenToSquare}
+                                            size="lg"
+                                            className="text-gray-700"
+                                        />
+                                    </button>
+                                )}
+                            </div>
                             <p>{post.title}</p>
                         </div>
                         <div className="flex flex-row gap-3 items-center self-center justify-center">
