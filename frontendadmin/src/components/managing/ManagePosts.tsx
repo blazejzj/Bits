@@ -166,7 +166,7 @@ function ManagePosts() {
                             <button
                                 key={category.id}
                                 onClick={() =>
-                                    handleCategoryChange(post.id, category.id)
+                                    handleCategoryChange(post, category.name)
                                 }
                                 className="cursor-pointer"
                             >
@@ -178,9 +178,45 @@ function ManagePosts() {
         );
     }
 
-    function handleCategoryChange(postId: number, categoryId: number) {
-        console.log(`changing to categoryId ${categoryId}`);
-        console.log(`changing postid: ${postId}`);
+    async function handleCategoryChange(post: Post, categoryName: string) {
+        const newCategory = categories.find((cat) => cat.name === categoryName);
+        if (!newCategory) return;
+
+        setPosts((prevPosts) =>
+            prevPosts.map((p) =>
+                p.id === post.id ? { ...p, categoryId: newCategory.id } : p
+            )
+        );
+
+        const data = {
+            id: post.id,
+            title: post.title,
+            text: post.text,
+            categoryName,
+        };
+
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/posts/update/${post.id}`,
+                {
+                    method: "PUT",
+                    credentials: "include",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify(data),
+                }
+            );
+            if (!response.ok) {
+                setPosts((prevPosts) =>
+                    prevPosts.map((p) =>
+                        p.id === post.id
+                            ? { ...p, categoryId: post.categoryId }
+                            : p
+                    )
+                );
+            }
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (
