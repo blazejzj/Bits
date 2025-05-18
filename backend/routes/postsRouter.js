@@ -64,7 +64,7 @@ postsRouter.post(
     postsController.createNewPost
 );
 
-postsRouter.post(
+postsRouter.delete(
     "/delete/:id",
     authenticateJWT,
     isAuthenticated,
