@@ -3,7 +3,11 @@ import type { Post } from "../../types/post";
 import ErrorMessage from "../../utils/ErrorMessage";
 import type { Category } from "../../types/category";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+    faPenToSquare,
+    faTrash,
+    faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 function ManagePosts() {
     const [posts, setPosts] = useState<Post[]>([]);
@@ -13,6 +17,7 @@ function ManagePosts() {
     const [editedPostCategoryId, setEditedPostCategoryId] = useState<
         number | null
     >(null);
+    const [deletingPostId, setDeletingPostId] = useState<number | null>(null);
 
     useEffect(() => {
         async function fetchAllCategories() {
@@ -148,7 +153,7 @@ function ManagePosts() {
 
     function displayCategoryMenu(post: Post) {
         return (
-            <div className="absolute top-0 left-30 min-w-[150px] bg-white border border-gray-200 shadow-lg rounded-lg z-30 animate-fade-in flex flex-col p-3">
+            <div className="absolute top-0 left-27 min-w-[150px] bg-white border border-gray-200 shadow-lg rounded-lg z-30 animate-fade-in flex flex-col p-3">
                 <button
                     className="absolute right-4 top-3 p-1 text-gray-400 hover:text-red-500 cursor-pointer "
                     onClick={() => toggleCategoryMenu(post.id)}
@@ -217,6 +222,42 @@ function ManagePosts() {
         }
     }
 
+    function toggleDeleting(postId: number) {
+        if (!deletingPostId) {
+            setDeletingPostId(postId);
+        } else {
+            if (postId === deletingPostId) {
+                setDeletingPostId(null);
+            } else {
+                setDeletingPostId(postId);
+            }
+        }
+    }
+
+    async function deletePost(postId: number) {
+        let prevPosts: typeof posts = [];
+        setPosts((current) => {
+            prevPosts = current;
+            return current.filter((p) => p.id !== postId);
+        });
+
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/posts/delete/${postId}`,
+                {
+                    method: "DELETE",
+                    credentials: "include",
+                }
+            );
+            if (!response.ok) {
+                setPosts(prevPosts);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+        setDeletingPostId(null);
+    }
+
     return (
         <div>
             {loading ? <ErrorMessage errorMsg={"Loading..."} /> : ""}
@@ -248,10 +289,53 @@ function ManagePosts() {
                                         <FontAwesomeIcon
                                             icon={faPenToSquare}
                                             size="lg"
-                                            className="text-gray-700"
+                                            className="text-gray-700 hover:text-gray-500"
                                         />
                                     </button>
                                 )}
+                                <div className="flex items-center gap-3">
+                                    <button
+                                        className="cursor-pointer"
+                                        onClick={() => toggleDeleting(post.id)}
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faTrash}
+                                            size="lg"
+                                            className="text-gray-700 hover:text-gray-500"
+                                        />
+                                    </button>
+                                    {deletingPostId === post.id && (
+                                        <div className="p-3 absolute left-45 flex flex-col text-nowrap z-50 bg-white rounded-md gap-3 shadow-md border-1 border-gray-300">
+                                            <div className="flex">
+                                                <span className="font-bold text-gray-500 mt-3">
+                                                    Are you sure?
+                                                </span>
+                                                <button
+                                                    className="absolute right-1 -top-1 p-1 text-gray-400 hover:text-red-500 cursor-pointer "
+                                                    onClick={() =>
+                                                        toggleDeleting(post.id)
+                                                    }
+                                                    aria-label="Close category menu"
+                                                    tabIndex={0}
+                                                >
+                                                    <FontAwesomeIcon
+                                                        icon={faXmark}
+                                                        size="lg"
+                                                    />
+                                                </button>
+                                            </div>
+
+                                            <button
+                                                className="cursor-pointer hover:text-red-700 hover:font-bold"
+                                                onClick={() =>
+                                                    deletePost(post.id)
+                                                }
+                                            >
+                                                Yes
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
 
                             <p>{post.title}</p>
