@@ -148,18 +148,16 @@ function ManagePosts() {
 
     function displayCategoryMenu(post: Post) {
         return (
-            <div>
+            <div className="absolute top-8 left-0 min-w-[150px] bg-white border border-gray-200 shadow-lg rounded-lg z-30 animate-fade-in flex flex-col p-3">
                 <button
-                    className="cursor-pointer"
+                    className="absolute top-2 left-2 p-1 text-gray-400 hover:text-red-500 cursor-pointer transition"
                     onClick={() => toggleCategoryMenu(post.id)}
+                    aria-label="Close category menu"
+                    tabIndex={0}
                 >
-                    <FontAwesomeIcon
-                        icon={faXmark}
-                        size="lg"
-                        className="text-gray-700"
-                    />
+                    <FontAwesomeIcon icon={faXmark} size="lg" />
                 </button>
-                <div>
+                <div className="flex flex-col gap-1 mt-7">
                     {categories
                         .filter((category) => category.id !== post.categoryId)
                         .map((category) => (
@@ -168,7 +166,7 @@ function ManagePosts() {
                                 onClick={() =>
                                     handleCategoryChange(post, category.name)
                                 }
-                                className="cursor-pointer"
+                                className="text-left px-2 py-2 rounded-md cursor-pointer hover:bg-gray-50 hover:underline focus:bg-gray-100 focus:underline transition"
                             >
                                 {category.name}
                             </button>
@@ -230,7 +228,7 @@ function ManagePosts() {
                         className="p-5 border-1 border-gray-300 shadow-md flex flex-row items-center justify-between"
                     >
                         <div className="flex flex-col gap-2">
-                            <div className="flex gap-2 items-center">
+                            <div className={`flex gap-2 items-center relative`}>
                                 <p className="text-gray-500">
                                     {
                                         getCategoryByCategoryId(
@@ -255,6 +253,7 @@ function ManagePosts() {
                                     </button>
                                 )}
                             </div>
+
                             <p>{post.title}</p>
                         </div>
                         <div className="flex flex-row gap-3 items-center self-center justify-center">
