@@ -234,6 +234,33 @@ function ManagePosts() {
         }
     }
 
+    function renderDeletingPostConfirmation(postId: number) {
+        return (
+            <div className="p-3 absolute left-35 top-0 flex flex-col text-nowrap z-50 bg-white rounded-md gap-3 shadow-md border-1 border-gray-300">
+                <div className="flex">
+                    <span className="font-bold text-gray-500 mt-3">
+                        Are you sure?
+                    </span>
+                    <button
+                        className="absolute right-1 -top-1 p-1 text-gray-400 hover:text-red-500 cursor-pointer "
+                        onClick={() => toggleDeleting(postId)}
+                        aria-label="Close category menu"
+                        tabIndex={0}
+                    >
+                        <FontAwesomeIcon icon={faXmark} size="lg" />
+                    </button>
+                </div>
+
+                <button
+                    className="cursor-pointer hover:text-red-700 hover:font-bold"
+                    onClick={() => deletePost(postId)}
+                >
+                    Yes
+                </button>
+            </div>
+        );
+    }
+
     async function deletePost(postId: number) {
         let prevPosts: typeof posts = [];
         setPosts((current) => {
@@ -304,37 +331,8 @@ function ManagePosts() {
                                             className="text-gray-700 hover:text-gray-500"
                                         />
                                     </button>
-                                    {deletingPostId === post.id && (
-                                        <div className="p-3 absolute left-45 flex flex-col text-nowrap z-50 bg-white rounded-md gap-3 shadow-md border-1 border-gray-300">
-                                            <div className="flex">
-                                                <span className="font-bold text-gray-500 mt-3">
-                                                    Are you sure?
-                                                </span>
-                                                <button
-                                                    className="absolute right-1 -top-1 p-1 text-gray-400 hover:text-red-500 cursor-pointer "
-                                                    onClick={() =>
-                                                        toggleDeleting(post.id)
-                                                    }
-                                                    aria-label="Close category menu"
-                                                    tabIndex={0}
-                                                >
-                                                    <FontAwesomeIcon
-                                                        icon={faXmark}
-                                                        size="lg"
-                                                    />
-                                                </button>
-                                            </div>
-
-                                            <button
-                                                className="cursor-pointer hover:text-red-700 hover:font-bold"
-                                                onClick={() =>
-                                                    deletePost(post.id)
-                                                }
-                                            >
-                                                Yes
-                                            </button>
-                                        </div>
-                                    )}
+                                    {deletingPostId === post.id &&
+                                        renderDeletingPostConfirmation(post.id)}
                                 </div>
                             </div>
 
