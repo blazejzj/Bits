@@ -43,7 +43,7 @@ function ManagePosts() {
             setLoading(true);
             try {
                 const response = await fetch(
-                    `${import.meta.env.VITE_API_URL}/posts`,
+                    `${import.meta.env.VITE_API_URL}/posts/admin`,
                     {
                         method: "GET",
                         credentials: "include",

@@ -1,17 +1,17 @@
 const db = require("../prisma/queries");
 
+exports.getAllPostsAdmin = async (req, res) => {
+    const user = req.user;
+    if (user.role !== "ADMIN")
+        return res.status(401).json({ msg: "Unauthorized." });
+
+    const posts = await db.getAllPostsAdmin();
+    return res.status(200).json(posts);
+};
+
 exports.getAllPosts = async (req, res) => {
-    try {
-        if (req.user.role === "ADMIN") {
-            const posts = await db.getAllPostsAdmin();
-            return res.status(200).json(posts);
-        } else {
-            const posts = await db.getAllPublishedPosts();
-            return res.status(200).json(posts);
-        }
-    } catch (err) {
-        return res.status(500).json({ msg: "Server error fetching posts." });
-    }
+    const posts = await db.getAllPublishedPosts();
+    return res.status(200).json(posts);
 };
 
 exports.getSinglePostById = async (req, res) => {
@@ -41,7 +41,7 @@ exports.updatePost = async (req, res) => {
     const { title, text, categoryName } = req.body;
     const categoryId = await db.getCategoryIdByName(categoryName);
 
-    await db.updatePost(postId, title, text, categoryId);
+    await db.updatePost(Number(postId), title, text, Number(categoryId.id));
 
     res.status(200).json({
         msg: "Successfully updated the post!",

@@ -21,16 +21,11 @@ export default function usePosts({ addNewError, searchParams }: usePostsProps) {
                               }/posts/category/${category}`,
                               {
                                   method: "GET",
-                                  credentials: "include",
                               }
                           )
-                        : await fetch(
-                              `${import.meta.env.VITE_API_URL}/posts/`,
-                              {
-                                  method: "GET",
-                                  credentials: "include",
-                              }
-                          );
+                        : await fetch(`${import.meta.env.VITE_API_URL}/posts`, {
+                              method: "GET",
+                          });
                 if (!response.ok) {
                     const data = await response.json();
                     addNewError(data.message);

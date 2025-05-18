@@ -307,6 +307,13 @@ async function getCategoryIdBySlugname(slugname) {
     });
 }
 
+async function getCategoryIdByName(categoryName) {
+    return await prisma.category.findUnique({
+        where: { name: categoryName },
+        select: { id: true },
+    });
+}
+
 async function createNewPost(title, text, categoryId, published) {
     await prisma.post.create({
         data: {
@@ -396,6 +403,7 @@ module.exports = {
     deleteUser,
     getUserPasswordHash,
     getAllPostsAdmin,
+    getCategoryIdByName,
 
     getAllPublishedPosts,
     getSinglePostById,
