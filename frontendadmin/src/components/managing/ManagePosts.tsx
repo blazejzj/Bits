@@ -148,16 +148,16 @@ function ManagePosts() {
 
     function displayCategoryMenu(post: Post) {
         return (
-            <div className="absolute top-8 left-0 min-w-[150px] bg-white border border-gray-200 shadow-lg rounded-lg z-30 animate-fade-in flex flex-col p-3">
+            <div className="absolute top-0 left-30 min-w-[150px] bg-white border border-gray-200 shadow-lg rounded-lg z-30 animate-fade-in flex flex-col p-3">
                 <button
-                    className="absolute top-2 left-2 p-1 text-gray-400 hover:text-red-500 cursor-pointer transition"
+                    className="absolute right-4 top-3 p-1 text-gray-400 hover:text-red-500 cursor-pointer "
                     onClick={() => toggleCategoryMenu(post.id)}
                     aria-label="Close category menu"
                     tabIndex={0}
                 >
                     <FontAwesomeIcon icon={faXmark} size="lg" />
                 </button>
-                <div className="flex flex-col gap-1 mt-7">
+                <div className="flex flex-col gap-1 mt-8 items-start">
                     {categories
                         .filter((category) => category.id !== post.categoryId)
                         .map((category) => (
@@ -166,7 +166,7 @@ function ManagePosts() {
                                 onClick={() =>
                                     handleCategoryChange(post, category.name)
                                 }
-                                className="text-left px-2 py-2 rounded-md cursor-pointer hover:bg-gray-50 hover:underline focus:bg-gray-100 focus:underline transition"
+                                className="text-left px-2 py-2 rounded-md cursor-pointer hover:underline"
                             >
                                 {category.name}
                             </button>
