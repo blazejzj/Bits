@@ -141,11 +141,10 @@ function BlogPost() {
                         )}
                     </div>
                 </section>
-                <div className="prose max-w-none text-gray-700">
-                    {post.text.split("\n").map((para, i) => (
-                        <p key={i}>{para}</p>
-                    ))}
-                </div>
+                <div
+                    className="prose max-w-none text-gray-700"
+                    dangerouslySetInnerHTML={{ __html: post.text }}
+                />
             </div>
 
             <CommentList

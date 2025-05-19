@@ -27,10 +27,9 @@ exports.getSinglePostById = async (req, res) => {
 };
 
 exports.createNewPost = async (req, res) => {
-    const { title, text, categoryName, published } = req.body;
-    const categoryId = await db.getCategoryIdByName(categoryName);
+    const { title, text, categoryId, published } = req.body;
 
-    await db.createNewPost(title, text, categoryId, published);
+    await db.createNewPost(title, text, Number(categoryId), published);
     res.status(200).json({
         msg: "Successfully created a new post!",
     });
