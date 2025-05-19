@@ -6,10 +6,12 @@ import {
     type FormEvent,
 } from "react";
 import { Editor } from "@tinymce/tinymce-react";
+import type { Editor as TinyMCEEditor } from "tinymce";
+
 import type { Category } from "../../types/category";
 
 function NewPost() {
-    const editorRef = useRef(null);
+    const editorRef = useRef<TinyMCEEditor | null>(null);
     const [readyToPublish, setReadyToPublish] = useState<boolean>(false);
     const [formData, setFormData] = useState({
         title: "",
@@ -44,65 +46,25 @@ function NewPost() {
             }
         }
         fetchAllCategories();
-    }, []);
+    });
 
     function toggleReadyToPublish() {
         setReadyToPublish(!readyToPublish);
-    }
-
-    function renderTextEditor() {
-        return (
-            <div className="flex flex-col items-center w-full h-full">
-                <Editor
-                    apiKey={`${import.meta.env.VITE_TINYMCE_API}`}
-                    onInit={(evt, editor) => (editorRef.current = editor)}
-                    initialValue="<p>Whats on your mind today?</p>"
-                    init={{
-                        height: 500,
-                        menubar: false,
-                        plugins: [
-                            "advlist",
-                            "autolink",
-                            "lists",
-                            "link",
-                            "image",
-                            "charmap",
-                            "preview",
-                            "anchor",
-                            "searchreplace",
-                            "visualblocks",
-                            "code",
-                            "fullscreen",
-                            "insertdatetime",
-                            "media",
-                            "table",
-                            "code",
-                            "help",
-                            "wordcount",
-                        ],
-                        toolbar:
-                            "undo redo | blocks | " +
-                            "bold italic forecolor | alignleft aligncenter " +
-                            "alignright alignjustify | bullist numlist outdent indent | " +
-                            "removeformat | help",
-                        content_style:
-                            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-                    }}
-                />
-                <button
-                    className="cursor-pointer font-bold text-4xl text-white border-1 border-gray-300 py-3 px-5 bg-gray-700 rounded-md mt-5 hover:bg-gray-600"
-                    onClick={toggleReadyToPublish}
-                >
-                    Publish
-                </button>
-            </div>
-        );
     }
 
     function handleChange(
         e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) {
         setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    }
+
+    function resetFormData() {
+        setFormData({
+            title: "",
+            text: "",
+            categoryId: "",
+            published: "false",
+        });
     }
 
     function renderReadyToPublishContainer() {
@@ -188,13 +150,54 @@ function NewPost() {
         );
     }
 
-    function resetFormData() {
-        setFormData({
-            title: "",
-            text: "",
-            categoryId: "",
-            published: "false",
-        });
+    function renderTextEditor() {
+        return (
+            <div className="flex flex-col items-center w-full h-full">
+                <Editor
+                    apiKey={`${import.meta.env.VITE_TINYMCE_API}`}
+                    onInit={(_evt, editor) => {
+                        editorRef.current = editor as TinyMCEEditor;
+                    }}
+                    init={{
+                        height: 500,
+                        menubar: false,
+                        plugins: [
+                            "advlist",
+                            "autolink",
+                            "lists",
+                            "link",
+                            "image",
+                            "charmap",
+                            "preview",
+                            "anchor",
+                            "searchreplace",
+                            "visualblocks",
+                            "code",
+                            "fullscreen",
+                            "insertdatetime",
+                            "media",
+                            "table",
+                            "code",
+                            "help",
+                            "wordcount",
+                        ],
+                        toolbar:
+                            "undo redo | blocks | " +
+                            "bold italic forecolor | alignleft aligncenter " +
+                            "alignright alignjustify | bullist numlist outdent indent | " +
+                            "removeformat | help",
+                        content_style:
+                            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                    }}
+                />
+                <button
+                    className="cursor-pointer font-bold text-4xl text-white border-1 border-gray-300 py-3 px-5 bg-gray-700 rounded-md mt-5 hover:bg-gray-600"
+                    onClick={toggleReadyToPublish}
+                >
+                    Publish
+                </button>
+            </div>
+        );
     }
 
     async function addNewPost(e: FormEvent<HTMLFormElement>) {
@@ -219,15 +222,12 @@ function NewPost() {
                     headers: { "Content-type": "application/json" },
                 }
             );
-            if (!response.ok) {
-                const body = await response.json();
-                console.error(body);
-            } else {
-                const body = await response.json();
-                console.log(body);
-
+            if (response.ok) {
                 toggleReadyToPublish();
                 resetFormData();
+                if (editorRef.current) {
+                    editorRef.current.setContent("");
+                }
             }
         } catch (err) {
             if (err instanceof Error) {
