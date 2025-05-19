@@ -1,5 +1,7 @@
 import App from "./App";
 import Dashboard from "./components/Dashboard";
+import ManageCategories from "./components/managing/ManageCategories";
+import ManageComments from "./components/managing/ManageComments";
 import ManagePosts from "./components/managing/ManagePosts";
 import ManagingPanel from "./components/managing/ManagingPanel";
 import NewPost from "./components/managing/NewPost";
@@ -37,6 +39,14 @@ const routes = [
                     {
                         path: "/manage/posts",
                         element: <ManagePosts />,
+                    },
+                    {
+                        path: "/manage/categories",
+                        element: <ManageCategories />,
+                    },
+                    {
+                        path: "/manage/comments",
+                        element: <ManageComments />,
                     },
                 ],
             },

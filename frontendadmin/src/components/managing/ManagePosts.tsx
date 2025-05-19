@@ -339,7 +339,7 @@ function ManagePosts() {
                             <p>{post.title}</p>
                         </div>
                         <div className="flex flex-row gap-3 items-center self-center justify-center">
-                            <span className="text-gray-500">Published</span>
+                            <span className="text-gray-500">Published:</span>
                             <div className="flex items-center">
                                 <label className="relative inline-block w-[40px] h-[20px]">
                                     <input
