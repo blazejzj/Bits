@@ -1,53 +1,55 @@
 # **Blog Platform – Fullstack Project**
 
-## **Tech Stack**
-- Frontend: React (TypeScript), TailwindCSS
-- Backend: Node.js, Express, Prisma ORM, PostgreSQL
-- Auth: JWT (stored in cookies)
-- Testing: Vitest
+A personal blog platform I built to learn fullstack development from scratch. It features a public blog and an admin dashboard for managing posts and comments.
+
+## 🧰 Tech Stack
+- 🎨 **Frontend**: React (TypeScript), TailwindCSS
+- 🛠️ **Backend**: Node.js, Express, Prisma ORM, PostgreSQL
+- 🔐 **Auth**: JWT (stored in cookies)
+- ✅ **Testing**: Vitest
 
 ```
-/frontenduser     ← Public blog site (register/login, read + comment)
-/frontendadmin    ← Admin dashboard (create/edit/publish)
-/backend          ← REST API with auth, posts, comments
+📁 /frontenduser – Public blog site (register/login, read + comment)
+📁 /frontendadmin – Admin dashboard (create/edit/publish)
+📁 /backend – REST API (auth, posts, comments)
 ```
-## **Features**
 
-### **Admin Dashboard (/frontendadmin)**
-- Login with JWT auth
-- Create, edit, delete blog posts
-- Publish/unpublish with one click
-- See all posts in a dashboard view
-- Manage comments
+## ✨ Features
 
-### **Public Blog (/frontenduser)**
-- View all published posts
-- Read full blog content
-- Post comments and respond to them when logged in
-- Manage your profile information
+### Admin Dashboard (`/frontendadmin`)
+- Secure login with JWT (stored in cookies)
+- Create, edit, and delete blog posts
+- Publish/unpublish posts with one click
+- View all posts in a dashboard table
+- Moderate and delete user comments
+
+### Public Blog (`/frontenduser`)
+- Browse all published blog posts
+- Read full content with a clean UI
+- Register/login to post and reply to comments
+- Update profile information
+
 
 ## **Screenshots**
 
-### Admin Dashboard 
-  ![Admin Welcome](./gitImages/adminWelcome.png)
+<details>
+  <summary>📸 Admin Dashboard Screens</summary>
 
-  ![Add Post](./gitImages/adminAddPost.png)
+  ![Admin Welcome](./gitImages/adminWelcome.png)  
+  ![Add Post](./gitImages/adminAddPost.png)  
+  ![Manage Posts](./gitImages/adminManagePosts.png)  
+  ![Publish Post](./gitImages/adminPublishPost.png)  
+  ![Manage Profile](./gitImages/manageProfileAdmin.png)
 
-  ![Manage Posts](./gitImages/adminManagePosts.png)
-  
-  ![Publish Post](./gitImages/adminPublishPost.png)
+</details>
 
-  ![Publish Post](./gitImages/manageProfileAdmin.png)
-  
----
+<details>
+  <summary>🌐 Public Blog Screens</summary>
 
-### Public Blog 
-  ![User Welcome](./gitImages/userWelcome.png)
+  ![User Welcome](./gitImages/userWelcome.png)  
+  ![Register](./gitImages/register.png)  
+  ![Read and Comment](./gitImages/userReadAndComment.png)  
+  ![Manage Profile](./gitImages/manageProfile.png)  
+  ![Browse Posts](./gitImages/browsePosts.png)
 
-  ![Register](./gitImages/register.png)
-  
-  ![Read and Comment](./gitImages/userReadAndComment.png)
- 
-  ![Manage Profile](./gitImages/manageProfile.png)
-
-  ![Publish Post](./gitImages/browsePosts.png)
+</details>
