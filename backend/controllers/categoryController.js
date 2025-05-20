@@ -25,8 +25,8 @@ exports.createNewCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
     const slugname = req.params.slugname.toLowerCase();
 
-    const categoryExists = await db.categoryExists(slugname);
-    if (!categoryExists) {
+    const categoryExists = await db.categoryExistsBySlugname(slugname);
+    if (categoryExists) {
         await db.deleteCategoryBySlugname(slugname);
 
         return res.status(200).json({
