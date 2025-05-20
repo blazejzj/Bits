@@ -254,7 +254,14 @@ async function getAllCategories() {
     });
 }
 
-async function categoryExists(slugname) {
+async function categoryExists(name) {
+    const category = await prisma.category.findUnique({
+        where: { name },
+    });
+    return !!category;
+}
+
+async function categoryExistsBySlugname(slugname) {
     const category = await prisma.category.findUnique({
         where: { slugname },
     });
@@ -404,6 +411,7 @@ module.exports = {
     getUserPasswordHash,
     getAllPostsAdmin,
     getCategoryIdByName,
+    categoryExistsBySlugname,
 
     getAllPublishedPosts,
     getSinglePostById,

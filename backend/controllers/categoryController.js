@@ -59,7 +59,7 @@ exports.updateCategoryName = async (req, res) => {
 exports.updateCategorySlugname = async (req, res) => {
     const { slugname, newSlugname } = req.body;
 
-    const categoryExists = await db.categoryExists(slugname);
+    const categoryExists = await db.categoryExistsBySlugname(slugname);
     if (!categoryExists) {
         return res.status(400).json({ msg: "Category doesn't exist." });
     }
