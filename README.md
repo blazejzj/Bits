@@ -24,7 +24,7 @@
 - View all published posts
 - Read full blog content
 - Post comments and respond to them when logged in
-- Manage your profile informatiion
+- Manage your profile information
 
 ## **Screenshots**
 
@@ -38,7 +38,7 @@
   ![Publish Post](./gitImages/adminPublishPost.png)
 
   ![Publish Post](./gitImages/manageProfileAdmin.png)
-
+  
 ---
 
 ### Public Blog 
