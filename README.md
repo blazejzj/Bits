@@ -30,7 +30,7 @@ A personal blog platform I built to learn fullstack development from scratch. It
 - Update profile information
 
 
-## **Screenshots**
+## **📸 Screenshots** (Click to expand)
 
 <details>
   <summary>📸 Admin Dashboard Screens</summary>
