@@ -166,6 +166,30 @@ async function getCommentsByPostId(postId, skip, take) {
     });
 }
 
+async function getAllCommentsAndResponses() {
+    return await prisma.comment.findMany({
+        include: {
+            user: {
+                select: {
+                    name: true,
+                },
+            },
+            responses: {
+                include: {
+                    user: {
+                        select: {
+                            name: true,
+                        },
+                    },
+                },
+            },
+        },
+        orderBy: {
+            published_at: "desc",
+        },
+    });
+}
+
 async function postComment(text, postId, userId) {
     return await prisma.comment.create({
         data: {
@@ -440,4 +464,5 @@ module.exports = {
     getCategoryIdBySlugname,
     updateCategorySlugname,
     getPostsByCategorySlugname,
+    getAllCommentsAndResponses,
 };

@@ -81,3 +81,16 @@ exports.deleteComment = async (req, res) => {
         msg: "Comment succesfully deleted.",
     });
 };
+
+exports.getAllCommentsAndResponsesAdmin = async (req, res) => {
+    const user = req.user;
+
+    if (user.role !== "ADMIN") {
+        return res.status(401).json({
+            msg: "Not Authorized!",
+        });
+    }
+
+    const comments = await db.getAllCommentsAndResponses();
+    res.status(200).json(comments);
+};

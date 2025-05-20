@@ -97,6 +97,13 @@ postsRouter.post(
 );
 
 // comments
+postsRouter.get(
+    "/comments",
+    authenticateJWT,
+    isAdmin,
+    commentController.getAllCommentsAndResponsesAdmin
+);
+
 postsRouter.get("/:id/comments", commentController.getAllPostsComments);
 postsRouter.post(
     "/:id/comments",
