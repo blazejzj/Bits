@@ -36,16 +36,77 @@ function ManageCategories() {
         fetchCategories();
     }, []);
 
+    function resetFormData() {
+        setOldCategoryName("");
+        setEditedCategoryName("");
+        setEditedCategoryId(null);
+    }
+
     async function deleteCategory(id: number) {}
 
     async function updateCategory(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
+
+        // we have to update both name and slugname together, because of questionable api design xD
         const nameUpdateData = {
             name: oldCategoryName,
             newName: editedCategoryName,
         };
-        console.log(editedCategoryName);
-        console.log(oldCategoryName);
+        const updateDataSlug = {
+            slugname: slugify(oldCategoryName),
+            newSlugname: slugify(editedCategoryName),
+        };
+
+        try {
+            // /category/:name/updatename
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/posts/category/${
+                    nameUpdateData.name
+                }/updatename`,
+                {
+                    method: "PATCH",
+                    credentials: "include",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify(nameUpdateData),
+                }
+            );
+            if (response.ok) {
+                resetFormData();
+                // opmtimisticially update categories now
+                setCategories((prev) =>
+                    prev.map((p) =>
+                        p.name === nameUpdateData.name
+                            ? { ...p, name: nameUpdateData.newName }
+                            : p
+                    )
+                );
+            }
+        } catch (err) {
+            console.log(err);
+        }
+
+        try {
+            // /category/:slugname/updateslugname
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/posts/category/${
+                    updateDataSlug.slugname
+                }/updateslugname`,
+                {
+                    method: "PATCH",
+                    credentials: "include",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify(updateDataSlug),
+                }
+            );
+            if (!response.ok) {
+                const body = await response.json();
+                console.log(body);
+            } else {
+                resetFormData();
+            }
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     async function createCategory(name: string) {}
