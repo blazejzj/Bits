@@ -14,9 +14,9 @@ function Posts() {
     const [errors, setErrors] = useState<string[]>([]);
     const categories = useCategories({ addNewError });
     const posts = usePosts({ addNewError, searchParams });
+    const category = searchParams.get("category");
 
     const getCategoryName = () => {
-        const category = searchParams.get("category");
         let categoryName = "All Posts";
 
         categories?.forEach((cat: Category) => {
