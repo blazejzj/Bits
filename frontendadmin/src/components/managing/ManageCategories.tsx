@@ -46,8 +46,27 @@ function ManageCategories() {
         setNewCategoryName("");
     }
 
-    async function deleteCategory(id: number) {
-        console.log(id);
+    async function deleteCategory(name: string) {
+        //     "/category/:slugname/delete",
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/posts/category/${slugify(
+                    name
+                )}/delete`,
+                {
+                    method: "DELETE",
+                    credentials: "include",
+                }
+            );
+            const body = await response.json();
+            if (!response.ok) {
+                console.log(body);
+            } else {
+                fetchCategories();
+            }
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     async function updateCategory(e: FormEvent<HTMLFormElement>) {
@@ -223,7 +242,7 @@ function ManageCategories() {
                                         </button>
                                         <button
                                             onClick={() =>
-                                                deleteCategory(cat.id)
+                                                deleteCategory(cat.name)
                                             }
                                             className="p-2 cursor-pointer hover:text-gray-500 text-gray-700"
                                         >

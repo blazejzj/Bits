@@ -48,7 +48,7 @@ postsRouter.patch(
     isAdmin,
     categoryController.updateCategorySlugname
 );
-postsRouter.post(
+postsRouter.delete(
     "/category/:slugname/delete",
     authenticateJWT,
     isAuthenticated,
