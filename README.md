@@ -28,30 +28,26 @@
 
 ## **Screenshots**
 
-### Admin Dashboard
-- **Login & Welcome Page**  
+### Admin Dashboard 
   ![Admin Welcome](./gitImages/adminWelcome.png)
 
-- **Add New Post**  
   ![Add Post](./gitImages/adminAddPost.png)
 
-- **Manage Posts**  
   ![Manage Posts](./gitImages/adminManagePosts.png)
-
-- **Publish/Unpublish Post**  
+  
   ![Publish Post](./gitImages/adminPublishPost.png)
+
+  ![Publish Post](./gitImages/manageProfileAdmin.png)
 
 ---
 
-### Public Blog
-- **User Welcome Page**  
+### Public Blog 
   ![User Welcome](./gitImages/userWelcome.png)
 
-- **Register Page**  
   ![Register](./gitImages/register.png)
-
-- **Read & Comment**  
+  
   ![Read and Comment](./gitImages/userReadAndComment.png)
-
-- **Manage Profile**  
+ 
   ![Manage Profile](./gitImages/manageProfile.png)
+
+  ![Publish Post](./gitImages/browsePosts.png)
