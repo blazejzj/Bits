@@ -79,7 +79,7 @@ exports.unpublishPost = async (req, res) => {
 
 exports.getPostsByCategorySlugname = async (req, res) => {
     const { slugname } = req.params;
-    const exists = await db.categoryExists(slugname);
+    const exists = await db.categoryExistsBySlugname(slugname);
     if (!exists) {
         return res.status(404).json({
             msg: "Category name doesn't exist.",
