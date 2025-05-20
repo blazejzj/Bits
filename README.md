@@ -25,3 +25,33 @@
 - Read full blog content
 - Post comments and respond to them when logged in
 - Manage your profile informatiion
+
+## **Screenshots**
+
+### Admin Dashboard
+- **Login & Welcome Page**  
+  ![Admin Welcome](./gitImages/adminWelcome.png)
+
+- **Add New Post**  
+  ![Add Post](./gitImages/adminAddPost.png)
+
+- **Manage Posts**  
+  ![Manage Posts](./gitImages/adminManagePosts.png)
+
+- **Publish/Unpublish Post**  
+  ![Publish Post](./gitImages/adminPublishPost.png)
+
+---
+
+### Public Blog
+- **User Welcome Page**  
+  ![User Welcome](./gitImages/userWelcome.png)
+
+- **Register Page**  
+  ![Register](./gitImages/register.png)
+
+- **Read & Comment**  
+  ![Read and Comment](./gitImages/userReadAndComment.png)
+
+- **Manage Profile**  
+  ![Manage Profile](./gitImages/manageProfile.png)
